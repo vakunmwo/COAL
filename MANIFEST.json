@@ -1,0 +1,12 @@
+{
+  "package": "COALUP-CRM-GOOGLE-AI-STUDIO-HANDOFF",
+  "front": "Frente 2 — COAL UP Marketing e Presença Digital",
+  "target": "PHP + MySQL/MariaDB + Hostinger",
+  "preview": "GitHub + Google AI Studio + Vercel",
+  "approved_ux": "V10.4 Readability + Funnel UX Lab",
+  "database_foundation": "V10.5 Funnel Engine Foundation",
+  "backend_slice": "V10.6 Backend Local Slice",
+  "production_modified": false,
+  "contains_real_secrets": false,
+  "contains_real_client_data": false
+}
