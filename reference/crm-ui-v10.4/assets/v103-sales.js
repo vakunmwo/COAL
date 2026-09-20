@@ -1,0 +1,33 @@
+(() => {
+'use strict';
+const CU=window.CU;
+CU.stageMetrics=stage=>{const ds=CU.openDeals().filter(d=>d.stage===stage);return{count:ds.length,value:ds.reduce((a,d)=>a+Number(d.value),0),avg:ds.length?Math.round(ds.reduce((a,d)=>a+CU.dealAge(d),0)/ds.length):0,attention:ds.filter(d=>d.risk||d.nextDue<CU.today()).length}};
+CU.salesFunnelView=()=>{
+  const f=CU.state.ui.filters;
+  const deals=CU.openDeals().filter(d=>(f.owner==='all'||d.owner===f.owner)&&(f.stage==='all'||d.stage===f.stage)&&(f.risk==='all'||(f.risk==='risk'?d.risk:!d.risk))&&(f.service==='all'||d.service===f.service)&&(f.next==='all'||(f.next==='late'?d.nextDue<CU.today():f.next==='today'?d.nextDue===CU.today():true)));
+  const services=[...new Set(CU.state.deals.map(d=>d.service))];
+  return `<div class="sales-toolbar">
+  <select class="filter" data-filter="owner"><option value="all">Todos responsáveis</option><option value="admin123" ${f.owner==='admin123'?'selected':''}>Sócio A</option><option value="Gadmin123" ${f.owner==='Gadmin123'?'selected':''}>Sócio B</option></select>
+  <select class="filter" data-filter="stage"><option value="all">Todas etapas</option>${CU.state.stages.map(s=>`<option value="${s.id}" ${f.stage===s.id?'selected':''}>${s.name}</option>`).join('')}</select>
+  <select class="filter" data-filter="risk"><option value="all">Todo risco</option><option value="risk" ${f.risk==='risk'?'selected':''}>Com atenção</option><option value="ok" ${f.risk==='ok'?'selected':''}>Sem atenção</option></select>
+  <select class="filter" data-filter="service"><option value="all">Todos serviços</option>${services.map(s=>`<option ${f.service===s?'selected':''}>${CU.esc(s)}</option>`).join('')}</select>
+  <select class="filter" data-filter="next"><option value="all">Todo próximo passo</option><option value="today" ${f.next==='today'?'selected':''}>Hoje</option><option value="late" ${f.next==='late'?'selected':''}>Vencido</option></select></div>
+  <div class="funnel-wrap"><div class="funnel">${CU.state.stages.map(s=>{const m=CU.stageMetrics(s.id);return `<div class="stage" data-stage="${s.id}"><div class="stage-head"><b>${CU.esc(s.name.toUpperCase())}</b><span>${deals.filter(d=>d.stage===s.id).length}</span><div class="stage-stats"><div>VALOR <strong>${CU.money(m.value)}</strong></div><div>MÉDIA <strong>${m.avg}d</strong></div><div>ATENÇÃO <strong class="${m.attention?'red':''}">${m.attention}</strong></div><div>TOTAL <strong>${m.count}</strong></div></div></div><div class="deal-list">${deals.filter(d=>d.stage===s.id).map(CU.dealCard).join('')}</div></div>`}).join('')}</div></div>`;
+};
+CU.salesFollowView=()=>{
+  const rows=CU.openDeals().filter(d=>d.nextTitle&&d.nextDue).sort((a,b)=>a.nextDue.localeCompare(b.nextDue));
+  return `<div class="panel"><div class="panel-head"><b>PRÓXIMOS PASSOS</b><span>${rows.length}</span></div><div class="panel-body"><div class="follow-list">${rows.map(d=>{const cls=d.nextDue<CU.today()?'overdue':d.nextDue===CU.today()?'today':'';return `<div class="follow-card ${cls}"><div><h3>${CU.esc(d.name)} <span class="operator-chip">${CU.ownerName(d.owner)}</span></h3><p>${CU.esc(d.nextTitle)} · ${CU.fmtDate(d.nextDue)}</p><p>${CU.stageName(d.stage)} · ${CU.money(d.value)} · ${CU.dealAge(d)} dia(s) na etapa</p></div><div class="follow-actions"><button class="btn sm" data-open-entity="${d.id}" data-type="deal">ABRIR</button><button class="btn sm primary" data-v103-conversation="${d.id}">REGISTRAR CONVERSA</button></div></div>`}).join('')||'<div class="muted">Nenhum próximo passo aberto.</div>'}</div></div></div>`;
+};
+CU.salesProposalView=()=>{
+  const rows=CU.state.proposals.filter(p=>['draft','sent'].includes(p.status)).sort((a,b)=>a.followupDue.localeCompare(b.followupDue));
+  return `<div class="proposal-grid">${rows.map(p=>{const d=CU.state.deals.find(d=>d.id===p.dealId);return `<article class="proposal-card" data-open-entity="${d?.id||''}" data-type="deal"><h3>${CU.esc(d?.name||'Venda removida')}</h3><div class="value">${CU.money(p.value)}</div><div class="proposal-meta"><span>${p.status==='sent'?'ENVIADA':'RASCUNHO'}</span><span>retorno ${CU.fmtDate(p.followupDue)}</span></div><div class="proposal-meta"><span>${d?CU.ownerName(d.owner):'—'}</span><span>${d?CU.stageName(d.stage):'—'}</span></div></article>`}).join('')||'<div class="muted">Nenhuma proposta aberta.</div>'}</div>`;
+};
+CU.sceneSales=()=>{
+  const view=CU.state.ui.salesView||'funnel';
+  return `<section class="scene"><div class="scene-head"><div><div class="eyebrow">VENDAS / CRM COMERCIAL</div><h1>Vendas</h1><div class="scene-sub">Funil, acompanhamentos e propostas usam a mesma fonte de verdade. A tela troca de visão sem abrir várias áreas simultâneas.</div></div><div class="head-actions"><button class="btn" id="newProspectBtn">+ POSSÍVEL CLIENTE</button><button class="btn primary" id="newDealBtn">+ NOVA VENDA</button></div></div>
+  <div class="kpis"><div class="kpi" style="--c:var(--blue)"><label>VENDAS ABERTAS</label><strong>${CU.openDeals().length}</strong><small>em andamento</small></div><div class="kpi" style="--c:var(--blue)"><label>VALOR EM ANDAMENTO</label><strong>${CU.money(CU.openDeals().reduce((a,d)=>a+Number(d.value),0))}</strong><small>potencial, não caixa</small></div><div class="kpi" style="--c:var(--purple)"><label>PROPOSTAS ABERTAS</label><strong>${CU.proposalsOpen().length}</strong><small>retorno pendente</small></div><div class="kpi" style="--c:var(--red)"><label>PRECISAM DE ATENÇÃO</label><strong>${CU.openDeals().filter(d=>d.risk||d.nextDue<CU.today()).length}</strong><small>risco ou prazo vencido</small></div></div>
+  <div class="panel" style="margin-bottom:9px"><div class="panel-head"><b>POSSÍVEIS CLIENTES</b><span>${CU.state.prospects.length}</span></div><div class="panel-body"><div class="prospect-strip">${CU.state.prospects.map(p=>`<div class="prospect-card"><b>${CU.esc(p.name)}</b><p>${CU.esc(p.contact)} · ${CU.esc(p.channel)}</p><p>${CU.esc(p.next)}</p><div class="actions"><button class="btn sm primary" data-prospect-qualify="${p.id}">QUALIFICAR</button><button class="btn sm ghost" data-prospect-action="${p.id}">NOVA AÇÃO</button></div></div>`).join('')}</div></div></div>
+  <div class="subnav"><button class="seg-btn ${view==='funnel'?'active':''}" data-sales-view="funnel">FUNIL</button><button class="seg-btn ${view==='follow'?'active':''}" data-sales-view="follow">ACOMPANHAMENTOS</button><button class="seg-btn ${view==='proposals'?'active':''}" data-sales-view="proposals">PROPOSTAS</button></div>
+  ${view==='follow'?CU.salesFollowView():view==='proposals'?CU.salesProposalView():CU.salesFunnelView()}</section>`;
+};
+})();

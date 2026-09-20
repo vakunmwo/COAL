@@ -1,0 +1,21 @@
+{
+  "name": "COALUP CRM V10.6 — Backend Local Slice",
+  "created_for": "Frente 2 — COAL UP Marketing e Presença Digital",
+  "status": "local vertical slice implemented; MySQL gate pending",
+  "implemented_routes": [
+    "POST /crm/api/v1/auth/login",
+    "GET /crm/api/v1/auth/me",
+    "POST /crm/api/v1/auth/logout",
+    "GET /crm/api/v1/funnel/board",
+    "GET /crm/api/v1/funnel/followups",
+    "GET /crm/api/v1/proposals",
+    "GET /crm/api/v1/commercial-cases/{caseId}",
+    "POST /crm/api/v1/commercial-cases/{caseId}/activities",
+    "PUT /crm/api/v1/commercial-cases/{caseId}/next-action",
+    "POST /crm/api/v1/commercial-cases/{caseId}/transition",
+    "POST /crm/api/v1/tasks/{taskId}/complete"
+  ],
+  "storage": "JsonStore local development adapter only",
+  "production_storage_target": "MySQL/MariaDB + 001_initial_schema.sql",
+  "qa": "PASS local; MySQL runtime pending"
+}

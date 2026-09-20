@@ -1,0 +1,48 @@
+openapi: 3.0.3
+info:
+  title: COAL UP Public Intake API
+  version: 1.0.0
+servers:
+  - url: https://coalup.com.br/api/public
+paths:
+  /intake:
+    post:
+      summary: Recebe solicitação pública de diagnóstico
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, business_name, phone, message]
+              properties:
+                client_submission_id: {type: string, format: uuid, nullable: true}
+                name: {type: string, maxLength: 160}
+                business_name: {type: string, maxLength: 190}
+                phone: {type: string, maxLength: 40}
+                email: {type: string, format: email, nullable: true}
+                message: {type: string, maxLength: 2000}
+                page_url: {type: string, maxLength: 500, nullable: true}
+                cta_key: {type: string, maxLength: 120, nullable: true}
+                service_context: {type: string, maxLength: 120, nullable: true}
+                utm_source: {type: string, nullable: true}
+                utm_medium: {type: string, nullable: true}
+                utm_campaign: {type: string, nullable: true}
+                utm_content: {type: string, nullable: true}
+                utm_term: {type: string, nullable: true}
+                referrer: {type: string, nullable: true}
+                website:
+                  type: string
+                  description: Honeypot; deve chegar vazio.
+      responses:
+        '200':
+          description: Captura aceita sem expor IDs internos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: {type: boolean, example: true}
+                  message: {type: string, example: Recebemos sua solicitação.}
+        '400': {description: Payload inválido}
+        '429': {description: Limite de tentativas atingido}

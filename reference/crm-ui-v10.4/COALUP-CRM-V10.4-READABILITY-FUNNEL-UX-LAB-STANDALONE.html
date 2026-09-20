@@ -1,0 +1,1636 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>COAL UP CRM V10.4 · Readability + Funnel UX Lab</title>
+<style>
+:root{--bg:#121212;--deep:#0d0d0e;--work:#161616;--panel:#1b1c1e;--panel2:#202226;--line:#303238;--line2:#27292e;--text:#f1f3f5;--text2:#c8cdd4;--muted:#8a919c;--blue:#73b7ff;--cyan:#65d8e3;--purple:#a991e8;--green:#68d7ba;--yellow:#e8c66d;--red:#ff7884;--shadow:0 24px 80px rgba(0,0,0,.34);--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text2);font-family:var(--sans)}body{overflow:hidden}button,input,select,textarea{font:inherit}button{color:inherit}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:2px}button:disabled{opacity:.45}.hidden{display:none!important}.mono{font-family:var(--mono)}.green{color:var(--green)}.blue{color:var(--blue)}.cyan{color:var(--cyan)}.purple{color:var(--purple)}.yellow{color:var(--yellow)}.red{color:var(--red)}.muted{color:var(--muted)}#app{height:100dvh}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:#101011}::-webkit-scrollbar-thumb{background:#3a3d43;border:2px solid #101011;border-radius:8px}
+.login{height:100dvh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(420px,.9fr);background:radial-gradient(circle at 24% 47%,rgba(115,183,255,.07),transparent 28%),var(--bg)}
+.login-visual{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}.login-visual:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:34px 34px}
+.login-core{width:min(520px,68%);aspect-ratio:1;position:relative;display:flex;align-items:center;justify-content:center}.login-core img{width:72%;animation:float 7s ease-in-out infinite}.orbit{position:absolute;inset:12%;border:1px solid rgba(115,183,255,.13);border-radius:50%;animation:spin 28s linear infinite}.orbit.o2{inset:23%;border-color:rgba(169,145,232,.12);animation-direction:reverse;animation-duration:36s}
+.login-copy{position:absolute;left:7vw;bottom:9vh;max-width:650px}.eyebrow{font:9px var(--mono);letter-spacing:.09em;color:var(--muted)}.login-copy .eyebrow{font-size:11px;color:var(--cyan)}.login-copy h1{font-size:clamp(38px,5.4vw,76px);line-height:.95;letter-spacing:-.06em;margin:10px 0;color:var(--text)}.login-copy p{font-size:15px;line-height:1.62;color:var(--muted);max-width:550px}
+.login-side{display:flex;align-items:center;justify-content:center;padding:34px;border-left:1px solid var(--line2);background:rgba(13,13,14,.72);backdrop-filter:blur(14px)}.login-card{width:min(455px,100%);background:linear-gradient(180deg,#1f2023,#171718);border:1px solid var(--line);border-radius:14px;padding:25px;box-shadow:var(--shadow)}
+.login-brand{display:flex;gap:12px;align-items:center}.login-brand img{width:46px}.login-brand b{font:13px var(--mono);color:var(--text)}.login-brand span{display:block;font:9px var(--mono);color:var(--muted);margin-top:4px}.login-card h2{font-size:28px;margin:25px 0 5px;color:var(--text)}.login-card>p{font-size:13px;color:var(--muted);line-height:1.5}
+.field{margin:13px 0}.field label,.form-label{display:block;font:8px var(--mono);letter-spacing:.07em;color:var(--muted);margin-bottom:6px}.field input,.field select,.field textarea,.form-control{width:100%;border:1px solid var(--line);background:#121314;color:var(--text);border-radius:8px;padding:8px 10px}.field input,.field select{height:46px}.field textarea{min-height:92px;resize:vertical}
+.login-submit{width:100%;height:48px;border:1px solid #426b8d;border-radius:8px;background:#263a4b;color:#f2f8ff;font:11px var(--mono);cursor:pointer}.login-error{min-height:18px;color:var(--red);font:10px var(--mono);margin-top:9px}.demo-login{border-top:1px solid var(--line);padding-top:14px;margin-top:14px;color:var(--muted);font-size:11px}.demo-users{display:flex;gap:7px;margin-top:8px}.demo-user{border:1px solid var(--line);background:#151617;border-radius:5px;padding:6px 8px;font:9px var(--mono)}
+.shell{height:100dvh;display:grid;grid-template-rows:64px minmax(0,1fr)}.topbar{display:grid;grid-template-columns:auto minmax(260px,1fr) auto;gap:16px;align-items:center;padding:0 14px;background:var(--deep);border-bottom:1px solid #080809;z-index:40}
+.brand{display:flex;align-items:center;gap:10px;min-width:220px}.brand img{width:34px}.brand b{display:block;font:11px var(--mono);color:var(--text)}.brand span{display:block;font:8px var(--mono);color:var(--muted);margin-top:3px}
+.search-wrap{position:relative;max-width:700px;width:100%;justify-self:center}.search-wrap input{width:100%;height:40px;border:1px solid var(--line);background:#151617;border-radius:8px;color:var(--text);padding:0 40px 0 13px;font-size:12px}.search-icon{position:absolute;right:12px;top:10px;color:var(--muted)}
+.search-results{position:absolute;left:0;right:0;top:46px;background:#18191b;border:1px solid var(--line);border-radius:9px;box-shadow:var(--shadow);padding:7px;max-height:390px;overflow:auto;z-index:100}.search-group{font:8px var(--mono);color:var(--muted);padding:8px 9px 5px}.search-item{display:flex;justify-content:space-between;gap:10px;padding:9px;border-radius:6px;cursor:pointer}.search-item:hover{background:#222428}.search-item b{font-size:11px;color:var(--text)}.search-item span{font:8px var(--mono);color:var(--muted)}
+.top-actions{display:flex;align-items:center;gap:8px}.new-btn,.btn{border:1px solid var(--line);background:#1c1e21;color:var(--text2);border-radius:7px;cursor:pointer}.new-btn{height:40px;padding:0 13px;background:#253949;border-color:#426b8d;color:#f1f7fc;font:10px var(--mono)}.btn{min-height:36px;padding:7px 10px;font:9px var(--mono)}.btn:hover,.new-btn:hover{filter:brightness(1.12)}.btn.primary{background:#263a4b;border-color:#426b8d;color:#eff7fd}.btn.success{background:#204139;border-color:#356b5b;color:#e5faf3}.btn.danger{background:#47272d;border-color:#72404a;color:#ffe9ec}.btn.warn{background:#443a22;border-color:#6d5c32;color:#fff5d9}.btn.ghost{background:transparent}.btn.sm{min-height:29px;padding:4px 7px;font-size:8px}
+.partner-chip{height:36px;display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:#151617;border-radius:8px;padding:0 9px;font:8px var(--mono);color:var(--muted)}.dot{width:7px;height:7px;border-radius:50%;background:var(--green)}.user-btn,.icon-button{height:36px;min-width:36px;border:1px solid var(--line);background:#151617;border-radius:8px;cursor:pointer;font:10px var(--mono)}
+.user-menu{position:fixed;right:14px;top:58px;z-index:110;width:220px;border:1px solid var(--line);background:#18191b;border-radius:9px;box-shadow:var(--shadow);padding:7px}.user-menu button{width:100%;text-align:left;border:0;background:transparent;color:var(--text2);padding:10px;border-radius:6px;cursor:pointer;font-size:11px}.user-menu button:hover{background:#232529}
+.main{min-height:0;display:grid;grid-template-columns:168px minmax(0,1fr) 320px}.nav{background:#101011;border-right:1px solid #080809;padding:11px 8px;display:flex;flex-direction:column;gap:4px}.nav-btn{min-height:46px;border:1px solid transparent;background:transparent;border-radius:8px;color:var(--muted);cursor:pointer;text-align:left;padding:0 11px;font-size:11px;display:flex;align-items:center;gap:10px}.nav-btn .ico{width:20px;text-align:center;font:12px var(--mono)}.nav-btn:hover{background:#191a1c;color:var(--text2)}.nav-btn.active{background:#202226;border-color:#35383e;color:var(--text)}.nav-divider{height:1px;background:#24262a;margin:7px 4px}.nav-foot{margin-top:auto;border-top:1px solid #24262a;padding-top:9px}.training{font:8px var(--mono);color:var(--yellow);padding:7px 10px;line-height:1.5}
+.workspace{min-width:0;min-height:0;overflow:auto;background:linear-gradient(rgba(255,255,255,.009) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.008) 1px,transparent 1px),var(--work);background-size:36px 36px}.scene{padding:18px;min-height:100%}.scene-head{display:flex;justify-content:space-between;gap:16px;margin-bottom:14px}.scene-head h1{font-size:30px;letter-spacing:-.04em;line-height:1;margin:5px 0;color:var(--text)}.scene-sub{font-size:13px;color:var(--muted);line-height:1.55;max-width:760px}.head-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:9px}.s3{grid-column:span 3}.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}.s8{grid-column:span 8}.s9{grid-column:span 9}.s12{grid-column:span 12}
+.panel{border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),#18191b);border-radius:9px;overflow:hidden;min-width:0}.panel-head{min-height:40px;border-bottom:1px solid var(--line2);display:flex;align-items:center;justify-content:space-between;padding:0 12px;font:8px var(--mono);color:var(--muted)}.panel-head b{font-weight:500;color:var(--text2)}.panel-body{padding:12px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(125px,1fr));gap:8px;margin-bottom:10px}.kpi{border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),#171819);border-radius:9px;padding:12px;position:relative}.kpi:before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--c,var(--blue))}.kpi label{font:8px var(--mono);color:var(--muted)}.kpi strong{display:block;font:21px var(--mono);color:var(--text);margin-top:7px}.kpi small{display:block;font-size:9px;color:var(--muted);margin-top:4px}
+.context{background:#111112;border-left:1px solid #080809;display:flex;flex-direction:column;overflow:hidden}.context-head{height:43px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 11px;font:8px var(--mono);color:var(--muted)}.context-body{overflow:auto;padding:12px}.ctx-empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);padding:30px}.ctx-empty b{color:var(--text2);font-size:13px;margin-bottom:5px}.ctx-kicker{font:8px var(--mono);color:var(--blue)}.ctx-title{font-size:20px;color:var(--text);margin:5px 0}.ctx-sub{font-size:10px;color:var(--muted)}.ctx-section{border-top:1px solid var(--line);padding-top:11px;margin-top:12px}.ctx-label{font:8px var(--mono);color:var(--muted);margin-bottom:7px}.ctx-row{display:flex;justify-content:space-between;gap:12px;margin:7px 0;font-size:10px}.ctx-row span:first-child{color:var(--muted)}.ctx-row strong{font-weight:500;color:var(--text2);text-align:right}.context-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}.context-actions .wide{grid-column:1/-1}
+.accordion{border:1px solid var(--line2);border-radius:7px;margin-top:7px;overflow:hidden;background:#17181a}.accordion summary{cursor:pointer;list-style:none;padding:10px;font-size:10px;color:var(--text2);display:flex;justify-content:space-between}.accordion summary::-webkit-details-marker{display:none}.accordion-content{border-top:1px solid var(--line2);padding:10px;font-size:10px;line-height:1.5;color:var(--muted)}
+.priority-stack{display:flex;flex-direction:column;gap:7px}.priority{border:1px solid var(--line);background:#1b1d20;border-radius:8px;padding:11px;display:grid;grid-template-columns:4px minmax(0,1fr) auto;gap:10px}.priority-bar{border-radius:4px;background:var(--c,var(--blue))}.priority b,.simple-row b,.alert-row b{font-size:11px;color:var(--text2)}.priority p,.simple-row p,.alert-row p{font-size:9px;line-height:1.4;color:var(--muted);margin:4px 0}.priority .meta{font:8px var(--mono);color:var(--muted);margin-top:5px}
+.alert-row,.simple-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:9px 0;border-bottom:1px solid var(--line2);align-items:center}.alert-row:last-child,.simple-row:last-child{border-bottom:0}.pill{border:1px solid var(--line);border-radius:999px;padding:4px 7px;font:7px var(--mono);white-space:nowrap}.pill.red{border-color:#624047;background:#302024}.pill.yellow{border-color:#655731;background:#2d291e}.pill.blue{border-color:#3d5c76;background:#1d2933}.pill.green{border-color:#355f53;background:#1c2c27}
+.coop-list{display:flex;flex-direction:column;gap:7px}.coop-item{display:grid;grid-template-columns:34px 1fr auto;gap:9px;align-items:center;padding:9px;border:1px solid var(--line2);border-radius:7px;background:#18191b}.avatar{width:32px;height:32px;border-radius:50%;border:1px solid #46515f;background:#202326;display:flex;align-items:center;justify-content:center;font:9px var(--mono);color:var(--cyan)}.coop-name{font-size:10px;color:var(--text)}.coop-meta{font:8px var(--mono);color:var(--muted);margin-top:3px}.online{font:7px var(--mono);color:var(--green)}
+.sales-toolbar{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:7px;margin-bottom:9px}.filter{border:1px solid var(--line);background:#18191b;border-radius:7px;height:38px;color:var(--text2);padding:0 9px;font-size:9px}.prospect-strip{display:flex;gap:7px;overflow:auto}.prospect-card{min-width:210px;border:1px solid var(--line);background:#191b1e;border-radius:8px;padding:10px}.prospect-card b{font-size:10px;color:var(--text)}.prospect-card p{font-size:8px;color:var(--muted);margin:4px 0}.prospect-card .actions{display:flex;gap:5px;margin-top:8px}
+.funnel-wrap{overflow:auto;border:1px solid var(--line);background:#131415;border-radius:9px;padding:8px}.funnel{display:grid;grid-auto-flow:column;grid-auto-columns:260px;gap:7px;min-width:max-content}.stage{background:#1a1c1f;border:1px solid var(--line);border-radius:8px;min-height:440px}.stage.dragover{border-color:var(--cyan)}.stage-head{padding:10px;border-bottom:1px solid var(--line2)}.stage-head b,.stage-head span{font:8px var(--mono)}.stage-head b{color:var(--text2)}.stage-head span{float:right;color:var(--muted)}.deal-list{padding:7px;display:flex;flex-direction:column;gap:6px;min-height:350px}.deal{border:1px solid #3a3d43;background:#22252a;border-radius:7px;padding:10px;cursor:pointer}.deal:hover{border-color:#555c66}.deal.risk{border-left:2px solid var(--red)}.deal-top{display:flex;justify-content:space-between;gap:8px}.deal-name{font-size:10px;color:var(--text)}.deal-value{font:9px var(--mono);color:var(--blue)}.deal-contact,.deal-foot,.deal-stage{font:8px var(--mono);color:var(--muted)}.deal-stage{color:var(--blue);margin-top:8px}.deal-next{font-size:9px;color:var(--text2);margin-top:5px;line-height:1.35}.deal-foot{display:flex;justify-content:space-between;margin-top:8px}
+.gate-list{display:flex;flex-direction:column;gap:5px}.gate-item{display:grid;grid-template-columns:16px 1fr;gap:6px;font-size:9px}.gate-ok{color:var(--green)}.gate-miss{color:var(--yellow)}.history-line{border-left:1px solid #3a3d43;margin-left:5px;padding:0 0 10px 10px}.history-line b{font-size:9px;color:var(--text2)}.history-line span{display:block;font:7px var(--mono);color:var(--muted);margin-top:2px}
+.two-col{display:grid;grid-template-columns:290px minmax(0,1fr);gap:9px}.listbox{border:1px solid var(--line);background:#17181a;border-radius:8px;overflow:hidden}.list-search{padding:8px;border-bottom:1px solid var(--line2)}.list-search input{width:100%;height:36px;border:1px solid var(--line);background:#121314;color:var(--text);border-radius:6px;padding:0 9px}.list-item{padding:10px;border-bottom:1px solid var(--line2);cursor:pointer}.list-item:hover,.list-item.active{background:#222428}.list-item b{font-size:10px;color:var(--text)}.list-item span{display:block;font:7px var(--mono);color:var(--muted);margin-top:4px}.detail{border:1px solid var(--line);background:#17181a;border-radius:9px;overflow:hidden}.detail-hero{display:flex;justify-content:space-between;gap:12px;padding:14px;border-bottom:1px solid var(--line)}.detail-hero h2{font-size:22px;margin:0;color:var(--text)}.detail-hero p{font:8px var(--mono);color:var(--muted)}.block-grid{display:grid;grid-template-columns:1fr 1fr}.block{padding:13px;border-right:1px solid var(--line2);border-bottom:1px solid var(--line2);min-height:130px}.block:nth-child(2n){border-right:0}.block-title{font:8px var(--mono);color:var(--muted);margin-bottom:8px}.progress{height:6px;background:#101112;border-radius:5px;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--green))}
+.work-tabs,.finance-tabs{display:flex;gap:6px;overflow:auto;padding-bottom:7px}.seg-btn{height:34px;border:1px solid var(--line);background:#18191b;border-radius:7px;color:var(--muted);padding:0 10px;font:8px var(--mono);white-space:nowrap;cursor:pointer}.seg-btn.active{background:#282b30;border-color:#454a52;color:var(--text)}.action-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:9px;padding:10px 0;border-bottom:1px solid var(--line2);align-items:center}.check{width:25px;height:25px;border:1px solid var(--line);border-radius:6px;background:#18191b;cursor:pointer;color:var(--green)}.action-row b{font-size:10px;color:var(--text2)}.action-row p{font:7px var(--mono);color:var(--muted)}.action-row .due{font:8px var(--mono)}.project-card{border:1px solid var(--line);background:#191b1e;border-radius:8px;padding:11px}.project-card b{font-size:11px;color:var(--text)}.project-card p{font-size:9px;color:var(--muted)}.project-meta{display:flex;justify-content:space-between;font:7px var(--mono);color:var(--muted);margin-top:8px}
+.finance-hero{display:grid;grid-template-columns:repeat(6,minmax(115px,1fr));gap:8px;margin-bottom:9px}.fin-card{border:1px solid var(--line);background:#1a1b1d;border-radius:9px;padding:11px}.fin-card label{font:7px var(--mono);color:var(--muted)}.fin-card strong{display:block;font:17px var(--mono);color:var(--text);margin-top:6px}.fin-card small{font-size:8px;color:var(--muted)}.money-table{width:100%;border-collapse:collapse}.money-table th{text-align:left;font:7px var(--mono);color:var(--muted);font-weight:500;padding:8px;border-bottom:1px solid var(--line)}.money-table td{padding:9px 8px;border-bottom:1px solid var(--line2);font-size:9px}.money-table .amount{text-align:right;font-family:var(--mono)}.budget-bar{height:7px;background:#111213;border-radius:6px;overflow:hidden}.budget-bar span{display:block;height:100%;background:var(--blue)}.budget-bar.over span{background:var(--red)}.insufficient{border:1px dashed #5d5168;background:#221f27;border-radius:8px;padding:14px;color:var(--purple);font-size:10px;line-height:1.5}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal-head{font:7px var(--mono);color:var(--muted);text-align:center;padding:6px}.cal-day{min-height:78px;border:1px solid var(--line2);background:#18191b;border-radius:6px;padding:6px}.cal-day b{font:8px var(--mono);color:var(--text2)}.cal-event{font-size:7px;line-height:1.3;border-left:2px solid var(--blue);padding-left:4px;margin-top:5px;color:var(--muted)}.cal-event.out{border-color:var(--red)}.cal-event.in{border-color:var(--green)}
+.milestones{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.milestone{border:1px solid var(--line);background:#191b1e;border-radius:9px;padding:13px}.milestone.locked{opacity:.6}.milestone-icon{width:38px;height:38px;border-radius:50%;border:1px solid #454a52;display:flex;align-items:center;justify-content:center;font:11px var(--mono);color:var(--purple)}.milestone.done .milestone-icon{color:var(--green);border-color:#3e675c}.milestone h3{font-size:12px;color:var(--text);margin:9px 0 4px}.milestone p{font-size:9px;color:var(--muted)}
+.manual{display:grid;grid-template-columns:230px minmax(0,1fr);gap:9px}.manual-nav{border:1px solid var(--line);background:#17181a;border-radius:8px;padding:6px;height:max-content}.manual-nav button{width:100%;border:0;background:transparent;color:var(--muted);padding:9px;text-align:left;border-radius:6px;cursor:pointer;font-size:10px}.manual-nav button:hover,.manual-nav button.active{background:#232529;color:var(--text)}.doc{border:1px solid var(--line);background:#17181a;border-radius:8px;padding:18px;min-height:500px}.doc h2{font-size:24px;margin:0;color:var(--text)}.doc h3{font-size:14px;color:var(--text)}.doc p,.doc li{font-size:12px;line-height:1.65}
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.58);z-index:150;display:flex;align-items:center;justify-content:center;padding:18px}.modal{width:min(620px,100%);max-height:86dvh;overflow:auto;background:#1b1c1e;border:1px solid #3b3e44;border-radius:12px;box-shadow:var(--shadow)}.modal-head{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--line)}.modal-head b{font-size:12px;color:var(--text)}.modal-body{padding:14px}.modal-foot{display:flex;justify-content:flex-end;gap:7px;padding:12px 14px;border-top:1px solid var(--line)}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-grid .wide{grid-column:1/-1}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.quick-card{border:1px solid var(--line);background:#202226;border-radius:8px;padding:12px;cursor:pointer;text-align:left}.quick-card:hover{border-color:#555b64}.quick-card b{display:block;font-size:11px;color:var(--text)}.quick-card span{display:block;font-size:8px;color:var(--muted);margin-top:4px}
+.toast-wrap{position:fixed;right:16px;bottom:16px;z-index:200;display:flex;flex-direction:column;gap:6px}.toast{min-width:260px;border:1px solid var(--line);background:#1c1e21;border-radius:7px;padding:10px 12px;box-shadow:var(--shadow);font:8px var(--mono)}.toast.ok{border-left:2px solid var(--green)}.toast.info{border-left:2px solid var(--blue)}.toast.err{border-left:2px solid var(--red)}.mobile-more,.mobile-context{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes float{50%{transform:translateY(-9px) scale(1.01)}}
+@media(max-width:1280px){.main{grid-template-columns:150px minmax(0,1fr) 285px}.finance-hero{grid-template-columns:repeat(3,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}.grid .s3,.grid .s4,.grid .s5,.grid .s6,.grid .s7,.grid .s8,.grid .s9{grid-column:span 12}}
+@media(max-width:980px){.main{grid-template-columns:128px minmax(0,1fr)}.context{display:none}.sales-toolbar{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.manual{grid-template-columns:1fr}.manual-nav{display:flex;overflow:auto}.manual-nav button{width:auto;white-space:nowrap}.mobile-context{display:block;position:fixed;left:0;right:0;bottom:0;max-height:80dvh;background:#111112;border-top:1px solid var(--line);z-index:140;transform:translateY(calc(100% + 80px));transition:.2s ease;overflow:auto;padding-bottom:env(safe-area-inset-bottom)}.mobile-context.open{transform:none}}
+@media(max-width:760px){.login{grid-template-columns:1fr}.login-visual{display:none}.login-side{border:0;padding:17px}.topbar{grid-template-columns:1fr auto;padding:0 8px}.search-wrap{position:fixed;left:8px;right:8px;top:64px;z-index:80;max-width:none;display:none}.search-wrap.mobile-open{display:block}.partner-chip{display:none}.user-btn{display:none}.main{grid-template-columns:1fr}.nav{position:fixed;left:0;right:0;bottom:0;height:62px;z-index:90;display:grid;grid-template-columns:repeat(5,1fr);padding:0;border-right:0;border-top:1px solid #080809}.nav-btn{min-height:61px;border-radius:0;padding:0;justify-content:center;flex-direction:column;gap:3px;text-align:center;font-size:7px}.nav-btn:nth-of-type(3),.nav-btn:nth-of-type(6),.nav-btn:nth-of-type(7){display:none}.nav-divider,.nav-foot{display:none}.workspace{padding-bottom:62px}.scene{padding:12px 9px 20px}.scene-head{flex-direction:column}.scene-head h1{font-size:25px}.head-actions{justify-content:flex-start}.kpis,.finance-hero{grid-template-columns:1fr 1fr}.sales-toolbar{grid-template-columns:1fr}.funnel{grid-auto-columns:235px}.block-grid{grid-template-columns:1fr}.block{border-right:0}.milestones{grid-template-columns:1fr}.calendar-grid{grid-template-columns:repeat(7,minmax(54px,1fr));overflow:auto}.quick-grid,.form-grid{grid-template-columns:1fr}.form-grid .wide{grid-column:auto}.mobile-more{display:block}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* V10.3 — Operação Integrada */
+.subnav{display:flex;gap:6px;align-items:center;overflow:auto;padding-bottom:8px}.subnav .seg-btn{flex:0 0 auto}
+.stage-stats{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:7px;font:7px var(--mono);color:var(--muted)}.stage-stats strong{font-weight:500;color:var(--text2)}
+.follow-list{display:flex;flex-direction:column;gap:7px}.follow-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;border:1px solid var(--line);background:#191b1e;border-radius:8px;padding:11px}.follow-card.overdue{border-left:2px solid var(--red)}.follow-card.today{border-left:2px solid var(--yellow)}.follow-card h3{font-size:11px;color:var(--text);margin:0 0 5px}.follow-card p{font-size:9px;color:var(--muted);margin:3px 0}.follow-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.proposal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.proposal-card{border:1px solid var(--line);background:#191b1e;border-radius:8px;padding:12px;cursor:pointer}.proposal-card:hover{border-color:#515760}.proposal-card h3{font-size:11px;color:var(--text);margin:0 0 6px}.proposal-card .value{font:16px var(--mono);color:var(--purple)}.proposal-meta{display:flex;justify-content:space-between;gap:8px;margin-top:9px;font:8px var(--mono);color:var(--muted)}
+.close-list{display:flex;flex-direction:column;gap:7px}.close-item{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:9px;align-items:center;border:1px solid var(--line);background:#191b1e;border-radius:8px;padding:10px}.close-check{width:25px;height:25px;border:1px solid var(--line);border-radius:6px;background:#131415;color:var(--green);cursor:pointer}.close-item.done{border-color:#355f53}.close-item b{font-size:10px;color:var(--text2)}.close-item p{font-size:8px;color:var(--muted);margin:3px 0 0}.close-status{font:7px var(--mono);color:var(--muted)}
+.note-card{border:1px solid var(--line2);background:#17181a;border-radius:7px;padding:9px;margin-top:7px}.note-card b{font:8px var(--mono);color:var(--cyan)}.note-card p{font-size:9px;line-height:1.45;color:var(--text2);margin:5px 0 0}
+.operator-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:4px 7px;font:7px var(--mono);color:var(--muted)}
+@media(max-width:1100px){.proposal-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.proposal-grid{grid-template-columns:1fr}.follow-card{grid-template-columns:1fr}.follow-actions{justify-content:flex-start}.stage-stats{grid-template-columns:1fr}}
+
+
+/* ==========================================================
+   V10.4 — READABILITY + FUNNEL UX LAB
+   Regra: nenhuma informação operacional intencional < 12px.
+   ========================================================== */
+
+:root{
+  --fs-scene:32px;
+  --fs-section:18px;
+  --fs-card:16px;
+  --fs-body:15px;
+  --fs-secondary:14px;
+  --fs-label:12px;
+  --fs-button:14px;
+  --fs-input:15px;
+  --fs-kpi:28px;
+  --lh-body:1.55;
+}
+
+html,body{font-size:var(--fs-body);line-height:var(--lh-body)}
+button,input,select,textarea{font-size:var(--fs-input)}
+.btn,.new-btn,.nav-btn,.seg-btn,.filter,.user-menu button{
+  font-family:var(--sans);
+  font-size:var(--fs-button);
+  line-height:1.25;
+}
+.btn,.new-btn,.seg-btn,.filter,.icon-button,.user-btn{min-height:44px}
+.btn.sm{min-height:40px;font-size:13px;padding:8px 11px}
+.new-btn{height:44px}
+.icon-button,.user-btn{width:44px;height:44px}
+.eyebrow,.panel-head,.ctx-kicker,.ctx-label,.form-label,.field label,
+.kpi label,.partner-chip,.training,.stage-head>span,.operator-chip,.proposal-meta{
+  font-family:var(--sans);
+  font-size:var(--fs-label);
+  letter-spacing:.02em;
+}
+.brand b{font-family:var(--sans);font-size:14px}
+.brand span{font-family:var(--sans);font-size:12px}
+.search-wrap input{height:44px;font-size:15px}
+.search-group{font:600 12px/1.35 var(--sans)}
+.search-item b{font-size:15px}.search-item span{font:12px/1.4 var(--sans)}
+.nav-btn{font-size:14px;min-height:50px}
+.scene-head h1{font-size:var(--fs-scene);line-height:1.1;letter-spacing:-.035em}
+.scene-sub{font-size:var(--fs-body);line-height:1.55}
+.panel-head{min-height:46px}
+.panel-head b{font-size:13px}
+.panel-body{font-size:var(--fs-body)}
+.kpi{padding:14px}.kpi label{font-size:12px}.kpi strong{font:600 var(--fs-kpi)/1.1 var(--mono)}.kpi small{font-size:13px;line-height:1.4}
+.priority b,.simple-row b,.alert-row b{font-size:15px}.priority p,.simple-row p,.alert-row p{font-size:14px;line-height:1.5}.priority .meta{font:12px/1.35 var(--sans)}
+.pill{font:600 12px/1.2 var(--sans);padding:5px 8px}
+.ctx-empty b{font-size:16px}.ctx-empty span{font-size:14px;line-height:1.5}
+.context-head{height:50px;font:12px/1.2 var(--sans)}
+.context-body{padding:15px;font-size:14px}
+.ctx-kicker{font-weight:650;color:var(--blue)}
+.ctx-title{font-size:24px;line-height:1.2}
+.ctx-sub{font-size:14px;line-height:1.5}
+.ctx-label{font-weight:650}
+.ctx-row{font-size:14px;line-height:1.45;margin:10px 0}
+.accordion summary{padding:13px;font-size:14px;min-height:46px;align-items:center}
+.accordion-content{padding:13px;font-size:14px;line-height:1.55}
+.gate-item{font-size:14px;line-height:1.45}
+.history-line b{font-size:14px}.history-line span{font:12px/1.4 var(--sans)}
+.field label,.form-label{font-size:12px;font-weight:600}
+.field input,.field select,.field textarea,.form-control{font-size:15px;min-height:44px}
+.quick-card b{font-size:15px}.quick-card span{font-size:13px;line-height:1.45}
+.toast{font:13px/1.4 var(--sans)}
+.follow-card h3{font-size:16px;line-height:1.35}.follow-card p{font-size:14px;line-height:1.45}
+.proposal-card h3{font-size:16px}.proposal-card .value{font:600 20px/1.15 var(--mono)}
+.proposal-meta{font-size:12px;line-height:1.4}
+.note-card b{font:600 12px/1.3 var(--sans)}.note-card p{font-size:14px;line-height:1.5}
+.operator-chip{font-size:12px}
+.action-row b{font-size:15px}.action-row p{font:13px/1.4 var(--sans)}.action-row .due{font:13px/1.35 var(--sans)}
+.project-card b{font-size:15px}.project-card p{font-size:14px}.project-meta{font:12px/1.35 var(--sans)}
+.fin-card label{font:12px/1.35 var(--sans)}.fin-card strong{font:600 22px/1.1 var(--mono)}.fin-card small{font-size:13px}
+.money-table th{font:600 12px/1.35 var(--sans)}.money-table td{font-size:14px}
+.manual-nav button{font-size:14px}.doc p,.doc li{font-size:15px}.doc h3{font-size:18px}
+
+/* ------------ V10.4 SALES ------------ */
+.sales-v104 .kpis{margin-bottom:14px}
+.sales-v104 .subnav{
+  position:sticky;
+  top:-18px;
+  z-index:12;
+  margin:0 -18px 14px;
+  padding:10px 18px;
+  background:linear-gradient(180deg,#161616 78%,rgba(22,22,22,.88));
+  border-bottom:1px solid var(--line2);
+}
+.sales-v104 .subnav .seg-btn{
+  min-height:44px;
+  padding:0 15px;
+  font-size:14px;
+  font-weight:650;
+}
+.sales-v104 .sales-toolbar{grid-template-columns:repeat(5,minmax(150px,1fr));gap:8px;margin-bottom:12px}
+.sales-v104 .filter{font-size:14px;height:44px}
+
+/* possible clients stays useful but less dominant */
+.sales-v104 .prospect-strip{gap:10px}
+.sales-v104 .prospect-card{min-width:245px;padding:13px}
+.sales-v104 .prospect-card b{font-size:15px}
+.sales-v104 .prospect-card p{font-size:13px;line-height:1.45;margin:5px 0}
+
+/* desktop funnel */
+.funnel-desktop{display:block}
+.funnel-mobile{display:none}
+.sales-v104 .funnel-wrap{padding:10px}
+.sales-v104 .funnel{
+  grid-auto-columns:minmax(300px,320px);
+  gap:10px;
+  align-items:start;
+}
+.sales-v104 .stage{
+  min-height:520px;
+  border-radius:11px;
+  overflow:visible;
+}
+.sales-v104 .stage-head{
+  position:sticky;
+  top:0;
+  z-index:3;
+  padding:14px;
+  background:#1a1c1f;
+  border-radius:11px 11px 0 0;
+}
+.sales-v104 .stage-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sales-v104 .stage-name{
+  font-size:15px;
+  line-height:1.3;
+  font-weight:700;
+  color:var(--text);
+}
+.sales-v104 .stage-count{
+  min-width:30px;height:30px;border:1px solid var(--line);border-radius:999px;
+  display:flex;align-items:center;justify-content:center;
+  font:600 13px/1 var(--mono);color:var(--text2)
+}
+.sales-v104 .stage-summary{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px 10px;
+  margin-top:12px;
+}
+.stage-metric{min-width:0}
+.stage-metric span{display:block;font-size:12px;color:var(--muted);line-height:1.35}
+.stage-metric strong{display:block;margin-top:2px;font-size:14px;line-height:1.35;color:var(--text2);font-weight:650}
+.sales-v104 .deal-list{padding:9px;gap:9px;min-height:390px}
+.sales-v104 .deal{
+  border-radius:10px;
+  padding:14px;
+  background:linear-gradient(180deg,#24272b,#202327);
+}
+.sales-v104 .deal:hover{border-color:#626a75;transform:translateY(-1px)}
+.sales-v104 .deal.risk{border-left:3px solid var(--red)}
+.sales-v104 .deal-top{align-items:flex-start}
+.sales-v104 .deal-name{font-size:16px;line-height:1.35;font-weight:700}
+.sales-v104 .deal-value{font:650 15px/1.35 var(--mono)}
+.sales-v104 .deal-contact{font:14px/1.45 var(--sans);margin-top:5px}
+.sales-v104 .deal-stage{font:600 13px/1.35 var(--sans);margin-top:13px;color:var(--blue)}
+.sales-v104 .deal-next-label{font-size:12px;color:var(--muted);margin-top:13px}
+.sales-v104 .deal-next{font-size:15px;line-height:1.42;margin-top:3px}
+.sales-v104 .deal-next-date{font-size:13px;color:var(--muted);margin-top:4px}
+.sales-v104 .deal-foot{font:13px/1.35 var(--sans);margin-top:14px;align-items:center}
+.sales-v104 .deal-status{font-size:12px;font-weight:700}
+
+/* follow-up */
+.follow-section{margin-bottom:12px}
+.follow-section-title{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:0 0 8px;padding:0 2px;
+}
+.follow-section-title h2{font-size:18px;line-height:1.3;margin:0;color:var(--text)}
+.follow-section-title span{font-size:13px;color:var(--muted)}
+.follow-card-v104{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:14px;
+  align-items:center;
+  border:1px solid var(--line);
+  background:#1a1c1f;
+  border-radius:10px;
+  padding:14px;
+  margin-bottom:8px;
+}
+.follow-card-v104.overdue{border-left:3px solid var(--red)}
+.follow-card-v104.today{border-left:3px solid var(--yellow)}
+.follow-card-v104.missing{border-left:3px solid var(--purple)}
+.follow-main h3{font-size:16px;line-height:1.35;margin:0;color:var(--text)}
+.follow-main .next{font-size:15px;line-height:1.45;margin-top:5px;color:var(--text2)}
+.follow-main .meta{font-size:13px;line-height:1.45;margin-top:5px;color:var(--muted)}
+.follow-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+
+/* proposals */
+.proposal-board-v104{display:flex;flex-direction:column;gap:14px}
+.proposal-group h2{font-size:18px;margin:0 0 8px;color:var(--text)}
+.proposal-grid-v104{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.proposal-card-v104{
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,#1c1e21,#181a1c);
+  border-radius:10px;
+  padding:15px;
+  cursor:pointer;
+}
+.proposal-card-v104:hover{border-color:#575f69}
+.proposal-card-v104 h3{font-size:16px;line-height:1.35;margin:0;color:var(--text)}
+.proposal-card-v104 .proposal-value{font:650 22px/1.2 var(--mono);color:var(--purple);margin:10px 0}
+.proposal-row{display:flex;justify-content:space-between;gap:12px;margin-top:7px;font-size:13px;line-height:1.4}
+.proposal-row span:first-child{color:var(--muted)}
+.proposal-state{display:inline-flex;margin-top:11px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:12px;font-weight:700}
+
+/* Venda 360 */
+.deal360-head{padding-bottom:3px}
+.deal360-title-row{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
+.deal360-title{font-size:26px;line-height:1.15;color:var(--text);font-weight:750;letter-spacing:-.025em}
+.deal360-value{font:650 18px/1.25 var(--mono);color:var(--blue);white-space:nowrap}
+.deal360-contact{font-size:14px;color:var(--muted);margin-top:5px}
+.deal360-meta{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  margin-top:14px;padding:11px;border:1px solid var(--line2);border-radius:9px;background:#161719
+}
+.deal360-meta div span{display:block;font-size:12px;color:var(--muted)}
+.deal360-meta div strong{display:block;font-size:14px;color:var(--text2);margin-top:2px}
+.deal360-primary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.deal360-primary .btn{min-height:46px}
+.next-action-box{
+  border:1px solid #3b5063;
+  background:#17222b;
+  border-radius:10px;
+  padding:13px;
+}
+.next-action-box.attention{border-color:#675842;background:#28231a}
+.next-action-box.missing{border-color:#594869;background:#241f29}
+.next-action-label{font-size:12px;color:var(--muted);font-weight:650}
+.next-action-title{font-size:16px;color:var(--text);font-weight:700;margin-top:4px;line-height:1.4}
+.next-action-meta{font-size:13px;color:var(--muted);margin-top:4px}
+.empty-structured{
+  border:1px dashed var(--line);
+  border-radius:8px;
+  padding:12px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+
+/* mobile stage view */
+.mobile-stage-strip{display:flex;gap:8px;overflow:auto;padding:2px 0 10px;scrollbar-width:none}
+.mobile-stage-strip::-webkit-scrollbar{display:none}
+.mobile-stage-btn{
+  min-height:44px;flex:0 0 auto;border:1px solid var(--line);border-radius:999px;
+  background:#17191b;color:var(--muted);padding:0 13px;font-size:13px;font-weight:650
+}
+.mobile-stage-btn.active{background:#27313b;border-color:#45617a;color:var(--text)}
+.mobile-stage-summary{
+  display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
+  padding:13px;border:1px solid var(--line);border-radius:10px;background:#191b1e;margin-bottom:9px
+}
+.mobile-stage-summary h2{font-size:18px;line-height:1.3;margin:0;color:var(--text)}
+.mobile-stage-summary p{font-size:13px;line-height:1.45;margin:4px 0 0;color:var(--muted)}
+.mobile-stage-summary strong{font:650 16px/1.3 var(--mono);color:var(--blue)}
+.mobile-deal-list{display:flex;flex-direction:column;gap:9px}
+
+/* wider context for cockpit */
+@media(min-width:981px){
+  .main{grid-template-columns:176px minmax(0,1fr) 390px}
+}
+
+@media(max-width:1100px){
+  .proposal-grid-v104{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:760px){
+  :root{
+    --fs-scene:27px;
+    --fs-section:18px;
+    --fs-card:16px;
+    --fs-body:16px;
+    --fs-secondary:14px;
+    --fs-label:13px;
+    --fs-button:16px;
+    --fs-input:16px;
+    --fs-kpi:26px;
+  }
+
+  html,body{font-size:16px}
+  .scene{padding:14px 10px 24px}
+  .scene-head h1{font-size:27px}
+  .scene-sub{font-size:16px}
+  .btn,.new-btn,.seg-btn,.filter{font-size:16px;min-height:46px}
+  .btn.sm{font-size:14px;min-height:44px}
+  .nav-btn{font-size:12px}
+  .panel-head{font-size:13px;min-height:48px}
+  .kpi label{font-size:13px}.kpi small{font-size:14px}.kpi strong{font-size:26px}
+  .field input,.field select,.field textarea,.form-control,.search-wrap input{font-size:16px}
+
+  .sales-v104 .subnav{
+    top:-14px;margin:0 -10px 12px;padding:8px 10px;
+  }
+  .sales-v104 .subnav .seg-btn{font-size:14px;min-height:44px;padding:0 12px}
+  .sales-v104 .kpis{grid-template-columns:1fr 1fr}
+  .sales-v104 .prospect-card{min-width:82vw}
+  .sales-v104 .sales-toolbar{grid-template-columns:1fr}
+
+  .funnel-desktop{display:none}
+  .funnel-mobile{display:block}
+  .sales-v104 .deal{padding:15px}
+  .sales-v104 .deal-name{font-size:16px}
+  .sales-v104 .deal-value{font-size:15px}
+  .sales-v104 .deal-contact{font-size:14px}
+  .sales-v104 .deal-stage{font-size:13px}
+  .sales-v104 .deal-next{font-size:16px}
+  .sales-v104 .deal-next-date{font-size:14px}
+  .sales-v104 .deal-foot{font-size:13px}
+
+  .follow-card-v104{grid-template-columns:1fr;padding:14px}
+  .follow-actions{justify-content:flex-start}
+  .proposal-grid-v104{grid-template-columns:1fr}
+
+  /* Venda 360 mobile = almost full-screen */
+  .mobile-context{
+    display:block;
+    inset:0;
+    max-height:none;
+    height:100dvh;
+    background:#111112;
+    border:0;
+    z-index:160;
+    transform:translateY(calc(100% + 16px));
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .mobile-context.open{transform:none}
+  .mobile-context .context-head{
+    position:sticky;top:0;z-index:4;height:60px;background:#111112;
+    padding-top:env(safe-area-inset-top);
+  }
+  .mobile-context .context-body{
+    padding:16px 14px calc(28px + env(safe-area-inset-bottom));
+  }
+  .deal360-title{font-size:25px}
+  .deal360-value{font-size:17px}
+  .deal360-primary{grid-template-columns:1fr}
+  .context-actions{grid-template-columns:1fr}
+  .context-actions .wide{grid-column:auto}
+  .accordion summary,.accordion-content,.ctx-row{font-size:15px}
+  .ctx-sub{font-size:14px}
+}
+
+@media(max-width:430px){
+  .sales-v104 .kpis{grid-template-columns:1fr 1fr}
+  .sales-v104 .kpi{padding:12px}
+  .sales-v104 .kpi strong{font-size:22px}
+  .sales-v104 .kpi small{font-size:13px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .sales-v104 .deal:hover{transform:none}
+}
+
+
+/* V10.4 mobile intrinsic-width fix — 320/360 */
+@media(max-width:760px){
+  .shell,.topbar,.main,.workspace,.scene{min-width:0;max-width:100vw}
+  .topbar{width:100%;overflow:hidden}
+  .brand{min-width:0;max-width:145px;overflow:hidden}
+  .brand span{display:none}
+  .brand b{white-space:nowrap;font-size:13px}
+  .top-actions{min-width:0}
+  .prospect-strip,.mobile-stage-strip,.subnav{max-width:100%;min-width:0}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="mobileContext" class="mobile-context"></div>
+<div id="toasts" class="toast-wrap"></div>
+<script>
+(() => {
+'use strict';
+const CU=window.CU=window.CU||{};
+
+CU.USERS={
+  admin123:{hash:'240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',label:'Sócio A'},
+  Gadmin123:{hash:'6f10ec7107715576e0dcf16ebe9880a1c860a6e3ba6ccd14901c74f967b57c6b',label:'Sócio B'}
+};
+CU.STATE_KEY='coalup-v103-operacao-integrada';
+CU.SESSION_KEY='coalup-v104-session';
+CU.memoryState=null;CU.memorySession=null;CU.presence={};CU.bc=null;CU.presenceTimer=null;
+try{if('BroadcastChannel' in window)CU.bc=new BroadcastChannel('coalup-v104-coop')}catch(err){console.warn('[V10.4] Co-op local indisponível',err)}
+CU.today=()=>new Date().toISOString().slice(0,10);
+CU.month=()=>new Date().toISOString().slice(0,7);
+CU.uid=p=>`${p}-${Date.now()}-${Math.random().toString(36).slice(2,7)}`;
+CU.clone=x=>JSON.parse(JSON.stringify(x));
+CU.esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+CU.money=v=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(v)||0);
+CU.fmtDate=v=>{if(!v)return '—';const [y,m,d]=String(v).slice(0,10).split('-');return `${d}/${m}/${y}`};
+CU.nowTime=()=>new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+CU.daysDiff=(a,b)=>Math.max(0,Math.ceil((new Date(a+'T12:00:00')-new Date(b+'T12:00:00'))/86400000));
+CU.addDays=n=>{const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+CU.hist=(text,actor,days)=>({text,actor,date:CU.addDays(days),time:'10:00'});
+CU.evt=(text,actor,days)=>({id:CU.uid('EV'),text,actor,date:CU.addDays(days),time:'10:00'});
+
+CU.seed=()=>({
+  meta:{training:true,version:'10.3',financeMonth:CU.month(),openingBalance:null},
+  ui:{route:'today',context:null,financeView:'overview',salesView:'funnel',workView:'actions',manualTopic:'start',filters:{owner:'all',stage:'all',risk:'all',service:'all',next:'all'}},
+  prospects:[
+    {id:'L-01',name:'Brava Fitness',contact:'Renata',channel:'Indicação',next:'Pesquisar presença digital',owner:'admin123'},
+    {id:'L-02',name:'Oficina Delta',contact:'Lucas',channel:'Google',next:'Levantar evidências',owner:'Gadmin123'},
+    {id:'L-03',name:'Casa Lume',contact:'Fernanda',channel:'Instagram',next:'Primeiro contato',owner:'admin123'}
+  ],
+  stages:[
+    {id:'pesquisa',name:'Pesquisa'},{id:'evidencia',name:'Evidência'},{id:'abordagem',name:'Abordagem'},
+    {id:'diagnostico',name:'Diagnóstico'},{id:'oferta',name:'Oferta'},{id:'proposta',name:'Proposta'},{id:'decisao',name:'Decisão'}
+  ],
+  deals:[
+    {id:'O-01',name:'Atlas Oficina',contact:'Matheus',stage:'proposta',value:1800,owner:'admin123',enteredAt:CU.addDays(-4),nextTitle:'Retomar proposta',nextDue:CU.addDays(0),risk:true,source:'Indicação',service:'Site',status:'open',history:[CU.hist('Proposta enviada','Gadmin123',-3),CU.hist('Diagnóstico concluído','admin123',-5)]},
+    {id:'O-02',name:'Nativa Pet',contact:'Camila',stage:'diagnostico',value:1990,owner:'Gadmin123',enteredAt:CU.addDays(-2),nextTitle:'Fechar diagnóstico',nextDue:CU.addDays(0),risk:false,source:'Instagram',service:'Presença Digital',status:'open',history:[CU.hist('Conversa registrada','Gadmin123',-2)]},
+    {id:'O-03',name:'Aurora Studio',contact:'Andréia',stage:'proposta',value:1329.90,owner:'admin123',enteredAt:CU.addDays(-3),nextTitle:'Acompanhar proposta',nextDue:CU.addDays(1),risk:false,source:'Indicação',service:'Site',status:'open',history:[CU.hist('Proposta criada','admin123',-3)]},
+    {id:'O-04',name:'Studio Norte',contact:'Carla',stage:'oferta',value:2490,owner:'Gadmin123',enteredAt:CU.addDays(-2),nextTitle:'Montar oferta',nextDue:CU.addDays(1),risk:false,source:'Google',service:'Presença Digital',status:'open',history:[CU.hist('Diagnóstico registrado','Gadmin123',-2)]},
+    {id:'O-05',name:'Café Horizonte',contact:'Paula',stage:'pesquisa',value:800,owner:'admin123',enteredAt:CU.addDays(-1),nextTitle:'Completar pesquisa',nextDue:CU.addDays(0),risk:false,source:'Prospecção',service:'GMN',status:'open',history:[CU.hist('Venda criada','admin123',-1)]},
+    {id:'O-06',name:'Casa Nobre',contact:'Mariana',stage:'evidencia',value:1100,owner:'Gadmin123',enteredAt:CU.addDays(-5),nextTitle:'Registrar evidências',nextDue:CU.addDays(-1),risk:true,source:'Prospecção',service:'GMN',status:'open',history:[CU.hist('Pesquisa concluída','Gadmin123',-5)]}
+  ],
+  proposals:[
+    {id:'PR-01',dealId:'O-01',value:1800,status:'sent',createdAt:CU.addDays(-3),followupDue:CU.addDays(0)},
+    {id:'PR-02',dealId:'O-03',value:1329.90,status:'sent',createdAt:CU.addDays(-3),followupDue:CU.addDays(1)}
+  ],
+  clients:[
+    {id:'C-01',name:'Mosaico Café',contact:'Bruno Lima',role:'Proprietário',phone:'(41) 99900-1001',email:'bruno@mosaico.demo',service:'Site + GMN',owner:'admin123',status:'active'},
+    {id:'C-02',name:'Estúdio Prisma',contact:'Lívia Santos',role:'Gestora',phone:'(41) 99900-2002',email:'livia@prisma.demo',service:'Presença Digital',owner:'Gadmin123',status:'active'},
+    {id:'C-03',name:'Lume Arquitetura',contact:'Paula Reis',role:'Sócia',phone:'(41) 99900-3003',email:'paula@lume.demo',service:'Site',owner:'admin123',status:'active'}
+  ],
+  actions:[
+    {id:'A-01',title:'Retomar proposta Atlas Oficina',due:CU.addDays(0),status:'open',owner:'admin123',entityType:'deal',entityId:'O-01'},
+    {id:'A-02',title:'Fechar diagnóstico Nativa Pet',due:CU.addDays(0),status:'open',owner:'Gadmin123',entityType:'deal',entityId:'O-02'},
+    {id:'A-03',title:'Cobrar materiais do Estúdio Prisma',due:CU.addDays(-1),status:'open',owner:'Gadmin123',entityType:'client',entityId:'C-02'},
+    {id:'A-04',title:'Revisar entrega Mosaico Café',due:CU.addDays(1),status:'open',owner:'admin123',entityType:'project',entityId:'P-01'}
+  ],
+  projects:[
+    {id:'P-01',clientId:'C-01',name:'Site institucional',status:'doing',progress:72,due:CU.addDays(5),blockedReason:''},
+    {id:'P-02',clientId:'C-02',name:'Presença Digital',status:'waiting',progress:48,due:CU.addDays(7),blockedReason:'Aguardando materiais do cliente'},
+    {id:'P-03',clientId:'C-03',name:'Site portfólio',status:'planned',progress:15,due:CU.addDays(14),blockedReason:''}
+  ],
+  receivables:[
+    {id:'R-01',clientId:'C-01',dealId:null,projectId:'P-01',description:'Parcela 2 · Site',amount:700,due:CU.addDays(3),status:'open'},
+    {id:'R-02',clientId:'C-02',dealId:null,projectId:'P-02',description:'Mensalidade setembro',amount:250,due:CU.addDays(-2),status:'open'},
+    {id:'R-03',clientId:'C-03',dealId:null,projectId:'P-03',description:'Entrada do projeto',amount:500,due:CU.addDays(-10),status:'received'}
+  ],
+  payments:[
+    {id:'PAY-01',receivableId:'R-03',amount:500,date:CU.addDays(-10),type:'received'},
+    {id:'PAY-02',receivableId:null,amount:300,date:CU.addDays(-4),type:'received',description:'Serviço pontual'},
+    {id:'PAY-03',receivableId:null,amount:129.90,date:CU.addDays(-2),type:'received',description:'Recorrência de serviço'}
+  ],
+  expenses:[
+    {id:'E-01',description:'Hospedagem',category:'Infraestrutura',amount:29.90,due:CU.addDays(-8),paidAt:CU.addDays(-8),status:'paid',kind:'fixed',supplier:'Fornecedor Demo'},
+    {id:'E-02',description:'Ferramenta de design',category:'Ferramentas',amount:79.90,due:CU.addDays(-6),paidAt:CU.addDays(-6),status:'paid',kind:'fixed',supplier:'Fornecedor Demo'},
+    {id:'E-03',description:'Impressão de material',category:'Marketing',amount:120,due:CU.addDays(2),paidAt:null,status:'open',kind:'variable',supplier:'Gráfica Demo'},
+    {id:'E-04',description:'Imposto MEI',category:'Impostos',amount:80,due:CU.addDays(5),paidAt:null,status:'open',kind:'fixed',supplier:'Obrigação cadastrada'}
+  ],
+  budgets:{month:CU.month(),categories:[
+    {name:'Infraestrutura',planned:160},{name:'Ferramentas',planned:200},{name:'Marketing',planned:350},{name:'Impostos',planned:100},{name:'Outros',planned:150}
+  ]},
+  recurrences:[
+    {id:'REC-01',name:'Hospedagem clientes',type:'infrastructure',amount:89.70,status:'active'},
+    {id:'REC-02',name:'Serviço recorrente',type:'service',amount:250,status:'active'}
+  ],
+  events:[CU.evt('Pagamento registrado · R$ 129,90','admin123',-2),CU.evt('Proposta criada · Aurora Studio','admin123',-3),CU.evt('Diagnóstico concluído · Atlas Oficina','Gadmin123',-5)]
+});
+
+CU.loadState=()=>{try{const raw=localStorage.getItem(CU.STATE_KEY);return raw?JSON.parse(raw):CU.seed()}catch(err){console.warn('[V10.4] localStorage indisponível',err);return CU.memoryState?CU.clone(CU.memoryState):CU.seed()}};
+CU.saveState=(reason='update')=>{CU.memoryState=CU.clone(CU.state);try{localStorage.setItem(CU.STATE_KEY,JSON.stringify(CU.state))}catch(err){console.warn('[V10.4] localStorage indisponível',err)}if(CU.bc)CU.bc.postMessage({type:'state',state:CU.state,from:CU.session?.user||null,reason,at:Date.now()})};
+CU.loadSession=()=>{try{return JSON.parse(sessionStorage.getItem(CU.SESSION_KEY)||'null')}catch(err){console.warn('[V10.4] sessionStorage indisponível',err);return CU.memorySession?CU.clone(CU.memorySession):null}};
+CU.saveSession=()=>{CU.memorySession=CU.session?CU.clone(CU.session):null;try{sessionStorage.setItem(CU.SESSION_KEY,JSON.stringify(CU.session))}catch(err){console.warn('[V10.4] não foi possível persistir a sessão neste contexto',err)}};
+CU.clearSession=()=>{CU.memorySession=null;try{sessionStorage.removeItem(CU.SESSION_KEY)}catch(err){console.warn('[V10.4] não foi possível limpar a sessão persistida',err)}};
+
+CU.state=CU.loadState();CU.session=CU.loadSession();
+
+CU.ownerName=u=>u==='admin123'?'Sócio A':u==='Gadmin123'?'Sócio B':u||'Sem responsável';
+CU.stageName=id=>CU.state.stages.find(s=>s.id===id)?.name||id;
+CU.clientName=id=>CU.state.clients.find(c=>c.id===id)?.name||'Sem cliente';
+CU.projectName=p=>`${CU.clientName(p.clientId)} · ${p.name}`;
+CU.entityLabel=(type,id)=>{
+  if(type==='deal')return CU.state.deals.find(d=>d.id===id)?.name||'Venda';
+  if(type==='client')return CU.clientName(id);
+  if(type==='project'){const p=CU.state.projects.find(p=>p.id===id);return p?CU.projectName(p):'Projeto'}
+  return 'Operação';
+};
+CU.openDeals=()=>CU.state.deals.filter(d=>d.status==='open');
+CU.proposalsOpen=()=>CU.state.proposals.filter(p=>['draft','sent'].includes(p.status));
+CU.dealAge=d=>CU.daysDiff(CU.today(),d.enteredAt);
+CU.paidForReceivable=id=>CU.state.payments.filter(p=>p.receivableId===id&&p.type==='received').reduce((a,p)=>a+Number(p.amount),0);
+CU.remainingReceivable=r=>Math.max(0,Number(r.amount)-CU.paidForReceivable(r.id));
+CU.recStatus=r=>{if(r.status==='cancelled')return'cancelled';if(CU.remainingReceivable(r)<=0)return'received';if(r.due<CU.today())return'late';if(r.due===CU.today())return'today';return'open'};
+CU.expStatus=e=>{if(e.status==='cancelled')return'cancelled';if(e.paidAt||e.status==='paid')return'paid';if(e.due<CU.today())return'late';if(e.due===CU.today())return'today';return'open'};
+CU.financeMetrics=()=>{
+  const m=CU.state.meta.financeMonth||CU.month();
+  const received=CU.state.payments.filter(p=>p.type==='received'&&String(p.date).startsWith(m)).reduce((a,p)=>a+Number(p.amount),0)-CU.state.payments.filter(p=>p.type==='reversal'&&String(p.date).startsWith(m)).reduce((a,p)=>a+Number(p.amount),0);
+  const expensesPaid=CU.state.expenses.filter(e=>e.paidAt&&String(e.paidAt).startsWith(m)).reduce((a,e)=>a+Number(e.amount),0);
+  const toReceive=CU.state.receivables.filter(r=>['open','today'].includes(CU.recStatus(r))).reduce((a,r)=>a+CU.remainingReceivable(r),0);
+  const late=CU.state.receivables.filter(r=>CU.recStatus(r)==='late').reduce((a,r)=>a+CU.remainingReceivable(r),0);
+  const toPay=CU.state.expenses.filter(e=>['open','today','late'].includes(CU.expStatus(e))).reduce((a,e)=>a+Number(e.amount),0);
+  const recurring=CU.state.recurrences.filter(r=>r.status==='active').reduce((a,r)=>a+Number(r.amount),0);
+  return{received,expensesPaid,toReceive,late,toPay,recurring,operational:received-expensesPaid};
+};
+CU.actualBudget=cat=>{const m=CU.state.meta.financeMonth||CU.month();return CU.state.expenses.filter(e=>e.category===cat&&e.paidAt&&String(e.paidAt).startsWith(m)).reduce((a,e)=>a+Number(e.amount),0)};
+CU.missingNextDeals=()=>CU.openDeals().filter(d=>!d.nextTitle||!d.nextDue);
+
+CU.risks=()=>{
+  const arr=[];
+  CU.openDeals().filter(d=>d.risk||d.nextDue<CU.today()).forEach(d=>arr.push({type:'sale',id:d.id,title:d.name,text:d.nextDue<CU.today()?'Próximo passo vencido':`${CU.dealAge(d)} dias nesta etapa`,severity:'red'}));
+  CU.state.projects.filter(p=>['waiting','blocked'].includes(p.status)).forEach(p=>arr.push({type:'project',id:p.id,title:CU.projectName(p),text:p.blockedReason||'Projeto aguardando condição',severity:'yellow'}));
+  CU.state.receivables.filter(r=>CU.recStatus(r)==='late').forEach(r=>arr.push({type:'receivable',id:r.id,title:CU.clientName(r.clientId),text:`${CU.money(CU.remainingReceivable(r))} atrasado`,severity:'red'}));
+  return arr;
+};
+CU.priorities=()=>{
+  const out=[],late=CU.openDeals().find(d=>d.nextDue<=CU.today()&&(d.risk||d.nextDue<CU.today()));
+  if(late)out.push({kind:'main',title:`Retomar ${late.name}`,text:`${CU.stageName(late.stage)} · próximo passo ${CU.fmtDate(late.nextDue)}`,entityType:'deal',entityId:late.id});
+  const diag=CU.openDeals().find(d=>d.stage==='diagnostico');if(diag)out.push({kind:'advance',title:`Avançar ${diag.name}`,text:'Fechar diagnóstico e preparar a próxima etapa.',entityType:'deal',entityId:diag.id});
+  const p=CU.state.projects.find(p=>['waiting','blocked'].includes(p.status));if(p)out.push({kind:'protect',title:`Desbloquear ${CU.projectName(p)}`,text:p.blockedReason||'Projeto precisa de atenção.',entityType:'project',entityId:p.id});
+  return out.slice(0,3);
+};
+CU.journey=()=>{
+  const fm=CU.financeMetrics();
+  return[
+    {title:'Primeiro recebimento',done:CU.state.payments.some(p=>p.type==='received'&&p.amount>0),text:'Registrar o primeiro pagamento real.'},
+    {title:'R$ 1 mil recebidos',done:fm.received>=1000,text:`Mês atual: ${CU.money(fm.received)}`},
+    {title:'Primeira recorrência',done:CU.state.recurrences.some(r=>r.status==='active'&&r.amount>0),text:`Ativa: ${CU.money(fm.recurring)}/m`},
+    {title:'Funil com próximo passo',done:CU.missingNextDeals().length===0,text:CU.missingNextDeals().length?`${CU.missingNextDeals().length} venda(s) sem próximo passo`:'Todas cobertas'},
+    {title:'Sem atraso financeiro',done:fm.late===0,text:fm.late?`${CU.money(fm.late)} atrasado`:'Nenhum valor atrasado'},
+    {title:'R$ 5 mil recebidos',done:fm.received>=5000,text:`Faltam ${CU.money(Math.max(0,5000-fm.received))}`}
+  ];
+};
+
+CU.addEvent=(text,actor=CU.session?.user||'sistema')=>{CU.state.events.unshift({id:CU.uid('EV'),text,actor,date:CU.today(),time:CU.nowTime()});CU.state.events=CU.state.events.slice(0,40)};
+CU.toast=(msg,type='ok')=>{const box=document.getElementById('toasts');if(!box)return;const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;box.appendChild(t);setTimeout(()=>t.remove(),3300)};
+
+CU.sha256Fallback=function(ascii){
+  function rr(value,amount){return(value>>>amount)|(value<<(32-amount))}
+  const mp=Math.pow,mw=mp(2,32);let result='',words=[],len=ascii.length*8,hash=[];const k=[],comp={};let pc=0;
+  for(let cand=2;pc<64;cand++)if(!comp[cand]){for(let i=0;i<313;i+=cand)comp[i]=cand;hash[pc]=(mp(cand,.5)*mw)|0;k[pc++]=(mp(cand,1/3)*mw)|0}
+  ascii+='\x80';while(ascii.length%64-56)ascii+='\x00';
+  for(let i=0;i<ascii.length;i++){const j=ascii.charCodeAt(i);if(j>>8)return'';words[i>>2]|=j<<((3-i)%4)*8}
+  words[words.length]=((len/mw)|0);words[words.length]=len;
+  for(let j=0;j<words.length;){const w=words.slice(j,j+=16),old=hash.slice(0);for(let i=0;i<64;i++){const w15=w[i-15],w2=w[i-2],a=hash[0],e=hash[4],t1=hash[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+(w[i]=(i<16)?w[i]:(w[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+w[i-7]+(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0),t2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));hash=[(t1+t2)|0].concat(hash);hash[4]=(hash[4]+t1)|0;hash.pop()}for(let i=0;i<8;i++)hash[i]=(hash[i]+old[i])|0}
+  for(let i=0;i<8;i++)for(let j=3;j+1;j--){const b=(hash[i]>>(j*8))&255;result+=(b<16?'0':'')+b.toString(16)}return result;
+};
+CU.sha256=async text=>{try{if(globalThis.crypto?.subtle){const data=new TextEncoder().encode(text),hash=await crypto.subtle.digest('SHA-256',data);return[...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('')}}catch(err){console.warn('[V10.4] Web Crypto indisponível',err)}return CU.sha256Fallback(text)};
+
+})();
+
+
+(() => {
+'use strict';
+const CU=window.CU;
+function ensure(){
+  CU.state.meta.version='10.3';
+  CU.state.ui.salesView=CU.state.ui.salesView||'funnel';
+  CU.state.monthClosures=CU.state.monthClosures||{};
+  CU.state.clientNotes=CU.state.clientNotes||[];
+  CU.state.projects.forEach(p=>{if(!('processSnapshot' in p))p.processSnapshot=null});
+  const month=CU.state.meta.financeMonth||CU.month();
+  if(!CU.state.monthClosures[month])CU.state.monthClosures[month]={items:{payments:false,expenses:false,overdue:false,recurrence:false,budget:false,nextMonth:false},closedAt:null,closedBy:null};
+}
+ensure();
+CU.ensureV103State=ensure;
+})();
+
+
+(() => {
+'use strict';
+const CU=window.CU;
+
+CU.state.meta.version='10.4';
+CU.state.ui.salesView=CU.state.ui.salesView||'funnel';
+CU.state.ui.mobileSalesStage=CU.state.ui.mobileSalesStage||'proposta';
+
+/*
+UX LAB:
+O backend real ainda não está ligado.
+Para aproximar a experiência do contrato final, cada venda aberta ganha um
+nextActionTaskId apontando para uma Action real quando possível.
+Os campos legacy nextTitle/nextDue continuam existentes apenas para
+compatibilidade com a V10.3.
+*/
+CU.state.deals.filter(d=>d.status==='open').forEach(d=>{
+  let task=CU.state.actions.find(a=>a.entityType==='deal'&&a.entityId===d.id&&a.status==='open');
+  if(!task && d.nextTitle && d.nextDue){
+    task={
+      id:CU.uid('A'),
+      title:d.nextTitle,
+      due:d.nextDue,
+      status:'open',
+      owner:d.owner,
+      entityType:'deal',
+      entityId:d.id,
+      source:'v104-compat'
+    };
+    CU.state.actions.push(task);
+  }
+  d.nextActionTaskId=task?.id||null;
+});
+
+CU.nextActionOf=d=>{
+  if(!d)return null;
+  let task=d.nextActionTaskId?CU.state.actions.find(a=>a.id===d.nextActionTaskId&&a.status==='open'):null;
+  if(!task){
+    task=CU.state.actions.find(a=>a.entityType==='deal'&&a.entityId===d.id&&a.status==='open');
+    if(task)d.nextActionTaskId=task.id;
+  }
+  return task||null;
+};
+
+CU.hasAttention=d=>{
+  const task=CU.nextActionOf(d);
+  return !!(d.risk || !task || (task.due && task.due<CU.today()));
+};
+
+CU.nextActionBucket=d=>{
+  const task=CU.nextActionOf(d);
+  if(!task)return 'missing';
+  if(task.due<CU.today())return 'overdue';
+  if(task.due===CU.today())return 'today';
+  return 'next';
+};
+
+CU.proposalDisplayState=p=>{
+  if(p.status==='draft')return {key:'draft',label:'Rascunho'};
+  if(p.status==='accepted')return {key:'accepted',label:'Aceita'};
+  if(['rejected','closed'].includes(p.status))return {key:'closed',label:'Recusada / encerrada'};
+  if(p.status==='sent' && p.followupDue && p.followupDue<=CU.today())return {key:'waiting',label:'Aguardando retorno'};
+  if(p.status==='sent')return {key:'sent',label:'Enviada'};
+  return {key:p.status||'unknown',label:p.status||'Sem estado'};
+};
+
+CU.saveState('v104.state.bridge');
+})();
+
+
+
+(() => {
+'use strict';
+const CU=window.CU;
+
+CU.NAV=[['today','◉','HOJE'],['sales','↗','VENDAS'],['clients','◎','CLIENTES'],['work','✓','TRABALHO'],['finance','R$','FINANCEIRO'],['journey','◇','JORNADA'],['manual','?','MANUAL']];
+
+CU.shell=()=>`<div class="shell">
+<header class="topbar">
+  <div class="brand"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20120%20120%22%3E%0A%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2373B7FF%22%20stop-opacity%3D%22.28%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23141414%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%0A%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2256%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2238%22%20fill%3D%22none%22%20stroke%3D%22%23303238%22%20stroke-width%3D%221.3%22%20stroke-dasharray%3D%223%206%22%2F%3E%0A%3Cellipse%20cx%3D%2260%22%20cy%3D%2260%22%20rx%3D%2243%22%20ry%3D%2217%22%20fill%3D%22none%22%20stroke%3D%22%2373B7FF%22%20stroke-opacity%3D%22.55%22%2F%3E%3Cellipse%20cx%3D%2260%22%20cy%3D%2260%22%20rx%3D%2243%22%20ry%3D%2217%22%20transform%3D%22rotate%2860%2060%2060%29%22%20fill%3D%22none%22%20stroke%3D%22%23A991E8%22%20stroke-opacity%3D%22.5%22%2F%3E%0A%3Cellipse%20cx%3D%2260%22%20cy%3D%2260%22%20rx%3D%2243%22%20ry%3D%2217%22%20transform%3D%22rotate%28120%2060%2060%29%22%20fill%3D%22none%22%20stroke%3D%22%2368D7BA%22%20stroke-opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%228%22%20fill%3D%22%23171717%22%20stroke%3D%22%2368D7BA%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%223%22%20fill%3D%22%2368D7BA%22%2F%3E%0A%3C%2Fsvg%3E" alt=""><div><b>COAL UP CRM</b><span>READABILITY + FUNNEL UX · MODO TREINO</span></div></div>
+  <div class="search-wrap" id="searchWrap"><input id="globalSearch" placeholder="Buscar cliente, venda, projeto ou ação..."><span class="search-icon">⌕</span><div class="search-results hidden" id="searchResults"></div></div>
+  <div class="top-actions"><button class="icon-button mobile-more" id="mobileSearchBtn">⌕</button><div class="partner-chip"><span class="dot"></span><span id="partnerTop">parceiro offline</span></div><button class="new-btn" id="quickNew">+ NOVO</button><button class="user-btn" id="userBtn">${CU.session.user==='Gadmin123'?'G':'A'}</button></div>
+</header>
+<div class="main">
+  <nav class="nav">${CU.NAV.map(([r,i,n])=>`<button class="nav-btn ${CU.state.ui.route===r?'active':''}" data-route="${r}"><span class="ico">${i}</span><span>${n}</span></button>`).join('')}<div class="nav-divider"></div><div class="nav-foot"><div class="training">MODO TREINO<br>dados sintéticos</div></div></nav>
+  <main class="workspace" id="workspace"></main>
+  <aside class="context"><div class="context-head"><span>DETALHES</span><button class="icon-button" id="contextClose">×</button></div><div class="context-body" id="contextBody"></div></aside>
+</div></div>`;
+
+CU.renderScene=()=>{
+  const map={today:CU.sceneToday,sales:CU.sceneSales,clients:CU.sceneClients,work:CU.sceneWork,finance:CU.sceneFinance,journey:CU.sceneJourney,manual:CU.sceneManual};
+  document.getElementById('workspace').innerHTML=(map[CU.state.ui.route]||CU.sceneToday)();
+};
+
+CU.sceneToday=()=>{
+  const fm=CU.financeMetrics(),prs=CU.priorities(),att=CU.risks().slice(0,5);
+  const todayActions=CU.state.actions.filter(a=>a.status==='open'&&a.due===CU.today()).length;
+  const overdue=CU.state.actions.filter(a=>a.status==='open'&&a.due<CU.today()).length;
+  const blocked=CU.state.projects.filter(p=>['blocked','waiting'].includes(p.status)).length;
+  return `<section class="scene">
+  <div class="scene-head"><div><div class="eyebrow">HOJE / VISÃO OPERACIONAL</div><h1>O que precisa acontecer agora</h1><div class="scene-sub">Prioridades, riscos, vendas, trabalho e dinheiro em uma leitura curta.</div></div><div class="head-actions"><button class="btn primary" id="todayNew">+ NOVO</button></div></div>
+  <div class="grid">
+    <div class="panel s7"><div class="panel-head"><b>PRIORIDADES</b><span>até 3</span></div><div class="panel-body"><div class="priority-stack">${prs.map(p=>`<div class="priority" style="--c:${p.kind==='main'?'var(--blue)':p.kind==='protect'?'var(--red)':'var(--cyan)'}"><div class="priority-bar"></div><div><b>${CU.esc(p.title)}</b><p>${CU.esc(p.text)}</p><div class="meta">${p.kind==='main'?'MISSÃO PRINCIPAL':p.kind==='protect'?'PROTEÇÃO':'AVANÇO'}</div></div><button class="btn sm" data-priority="${p.entityId}" data-type="${p.entityType}">ABRIR</button></div>`).join('')||'<div class="muted">Nenhuma prioridade crítica.</div>'}</div></div></div>
+    <div class="panel s5"><div class="panel-head"><b>ATENÇÕES</b><span>${att.length}</span></div><div class="panel-body">${att.map(a=>`<div class="alert-row"><div><b>${CU.esc(a.title)}</b><p>${CU.esc(a.text)}</p></div><span class="pill ${a.severity}">${a.type==='sale'?'VENDA':a.type==='project'?'TRABALHO':'FINANCEIRO'}</span></div>`).join('')||'<div class="muted">Sem alertas críticos.</div>'}</div></div>
+    <div class="panel s4"><div class="panel-head"><b>DINHEIRO</b><button class="btn sm ghost" data-route-jump="finance">VER</button></div><div class="panel-body"><div class="ctx-row"><span>Recebido no mês</span><strong class="green">${CU.money(fm.received)}</strong></div><div class="ctx-row"><span>A receber</span><strong>${CU.money(fm.toReceive)}</strong></div><div class="ctx-row"><span>Atrasado</span><strong class="${fm.late?'red':''}">${CU.money(fm.late)}</strong></div><div class="ctx-row"><span>Recorrência</span><strong class="cyan">${CU.money(fm.recurring)}/m</strong></div></div></div>
+    <div class="panel s4"><div class="panel-head"><b>VENDAS</b><span>funil</span></div><div class="panel-body"><div class="ctx-row"><span>Abertas</span><strong>${CU.openDeals().length}</strong></div><div class="ctx-row"><span>Propostas</span><strong>${CU.proposalsOpen().length}</strong></div><div class="ctx-row"><span>Sem próximo passo</span><strong class="${CU.missingNextDeals().length?'yellow':''}">${CU.missingNextDeals().length}</strong></div><div class="ctx-row"><span>Valor em andamento</span><strong class="blue">${CU.money(CU.openDeals().reduce((a,d)=>a+Number(d.value),0))}</strong></div></div></div>
+    <div class="panel s4"><div class="panel-head"><b>TRABALHO</b><span>ações e projetos</span></div><div class="panel-body"><div class="ctx-row"><span>Ações hoje</span><strong>${todayActions}</strong></div><div class="ctx-row"><span>Atrasadas</span><strong class="${overdue?'red':''}">${overdue}</strong></div><div class="ctx-row"><span>Projetos bloqueados</span><strong class="${blocked?'yellow':''}">${blocked}</strong></div></div></div>
+    <div class="panel s6"><div class="panel-head"><b>DUPLA</b><span>CO-OP</span></div><div class="panel-body"><div class="coop-list" id="coopToday">${CU.presenceHTML()}</div></div></div>
+    <div class="panel s6"><div class="panel-head"><b>ATIVIDADE RECENTE</b><span>histórico</span></div><div class="panel-body">${CU.state.events.slice(0,6).map(e=>`<div class="simple-row"><div><b>${CU.esc(e.text)}</b><p>${CU.ownerName(e.actor)} · ${CU.fmtDate(e.date)} ${e.time||''}</p></div></div>`).join('')}</div></div>
+  </div></section>`;
+};
+
+CU.sceneSales=()=>{
+  const f=CU.state.ui.filters;
+  const deals=CU.openDeals().filter(d=>(f.owner==='all'||d.owner===f.owner)&&(f.stage==='all'||d.stage===f.stage)&&(f.risk==='all'||(f.risk==='risk'?d.risk:!d.risk))&&(f.service==='all'||d.service===f.service)&&(f.next==='all'||(f.next==='late'?d.nextDue<CU.today():f.next==='today'?d.nextDue===CU.today():true)));
+  const services=[...new Set(CU.state.deals.map(d=>d.service))];
+  return `<section class="scene">
+  <div class="scene-head"><div><div class="eyebrow">VENDAS / FUNIL</div><h1>Funil de vendas</h1><div class="scene-sub">Etapa, tempo, próximo passo, responsável e risco. Valor em funil é potencial — não dinheiro recebido.</div></div><div class="head-actions"><button class="btn" id="newProspectBtn">+ POSSÍVEL CLIENTE</button><button class="btn primary" id="newDealBtn">+ NOVA VENDA</button></div></div>
+  <div class="kpis">
+    <div class="kpi" style="--c:var(--blue)"><label>VENDAS ABERTAS</label><strong>${CU.openDeals().length}</strong><small>em andamento</small></div>
+    <div class="kpi" style="--c:var(--blue)"><label>VALOR EM ANDAMENTO</label><strong>${CU.money(CU.openDeals().reduce((a,d)=>a+Number(d.value),0))}</strong><small>potencial comercial</small></div>
+    <div class="kpi" style="--c:var(--purple)"><label>PROPOSTAS ABERTAS</label><strong>${CU.proposalsOpen().length}</strong><small>aguardando retorno</small></div>
+    <div class="kpi" style="--c:var(--red)"><label>PRECISAM DE ATENÇÃO</label><strong>${CU.openDeals().filter(d=>d.risk||d.nextDue<CU.today()).length}</strong><small>risco ou passo vencido</small></div>
+  </div>
+  <div class="panel" style="margin-bottom:9px"><div class="panel-head"><b>POSSÍVEIS CLIENTES</b><span>${CU.state.prospects.length}</span></div><div class="panel-body"><div class="prospect-strip">${CU.state.prospects.map(p=>`<div class="prospect-card"><b>${CU.esc(p.name)}</b><p>${CU.esc(p.contact)} · ${CU.esc(p.channel)}</p><p>${CU.esc(p.next)}</p><div class="actions"><button class="btn sm primary" data-prospect-qualify="${p.id}">QUALIFICAR</button><button class="btn sm ghost" data-prospect-action="${p.id}">NOVA AÇÃO</button></div></div>`).join('')}</div></div></div>
+  <div class="sales-toolbar">
+    <select class="filter" data-filter="owner"><option value="all">Todos responsáveis</option><option value="admin123" ${f.owner==='admin123'?'selected':''}>Sócio A</option><option value="Gadmin123" ${f.owner==='Gadmin123'?'selected':''}>Sócio B</option></select>
+    <select class="filter" data-filter="stage"><option value="all">Todas etapas</option>${CU.state.stages.map(s=>`<option value="${s.id}" ${f.stage===s.id?'selected':''}>${s.name}</option>`).join('')}</select>
+    <select class="filter" data-filter="risk"><option value="all">Todo risco</option><option value="risk" ${f.risk==='risk'?'selected':''}>Com atenção</option><option value="ok" ${f.risk==='ok'?'selected':''}>Sem atenção</option></select>
+    <select class="filter" data-filter="service"><option value="all">Todos serviços</option>${services.map(s=>`<option ${f.service===s?'selected':''}>${CU.esc(s)}</option>`).join('')}</select>
+    <select class="filter" data-filter="next"><option value="all">Todo próximo passo</option><option value="today" ${f.next==='today'?'selected':''}>Hoje</option><option value="late" ${f.next==='late'?'selected':''}>Vencido</option></select>
+  </div>
+  <div class="funnel-wrap"><div class="funnel">${CU.state.stages.map(s=>`<div class="stage" data-stage="${s.id}"><div class="stage-head"><b>${CU.esc(s.name.toUpperCase())}</b><span>${deals.filter(d=>d.stage===s.id).length}</span></div><div class="deal-list">${deals.filter(d=>d.stage===s.id).map(CU.dealCard).join('')}</div></div>`).join('')}</div></div>
+  </section>`;
+};
+CU.dealCard=d=>`<article class="deal ${d.risk||d.nextDue<CU.today()?'risk':''}" draggable="true" data-open-entity="${d.id}" data-type="deal"><div class="deal-top"><div class="deal-name">${CU.esc(d.name)}</div><div class="deal-value">${CU.money(d.value)}</div></div><div class="deal-contact">${CU.esc(d.contact)}</div><div class="deal-stage">${CU.esc(CU.stageName(d.stage).toUpperCase())} · ${CU.dealAge(d)} dia(s)</div><div class="deal-next"><span class="muted">Próximo passo:</span><br>${CU.esc(d.nextTitle||'Não definido')} · ${CU.fmtDate(d.nextDue)}</div><div class="deal-foot"><span>${CU.ownerName(d.owner)}</span><span>${d.nextDue<CU.today()?'<span class="red">VENCIDO</span>':d.risk?'<span class="yellow">ATENÇÃO</span>':'OK'}</span></div></article>`;
+
+CU.sceneClients=()=>{
+  const sel=CU.state.ui.context?.type==='client'?CU.state.ui.context.id:CU.state.clients[0]?.id,c=CU.state.clients.find(x=>x.id===sel)||CU.state.clients[0];
+  const projects=CU.state.projects.filter(p=>p.clientId===c?.id),recs=CU.state.receivables.filter(r=>r.clientId===c?.id);
+  return `<section class="scene"><div class="scene-head"><div><div class="eyebrow">CLIENTES / RELACIONAMENTO</div><h1>Clientes</h1><div class="scene-sub">Contato, serviços, trabalho e dinheiro conectados no mesmo cadastro.</div></div><div class="head-actions"><button class="btn primary" id="newClientAction">+ NOVA AÇÃO</button></div></div><div class="two-col">
+  <div class="listbox"><div class="list-search"><input id="clientFilter" placeholder="Buscar cliente..."></div>${CU.state.clients.map(x=>`<div class="list-item ${x.id===c?.id?'active':''}" data-open-entity="${x.id}" data-type="client"><b>${CU.esc(x.name)}</b><span>${CU.esc(x.contact)} · ${CU.esc(x.service)}</span></div>`).join('')}</div>
+  <div class="detail"><div class="detail-hero"><div><h2>${CU.esc(c?.name||'')}</h2><p>${CU.esc(c?.contact||'')} · ${CU.esc(c?.service||'')}</p></div><span class="pill green">CLIENTE ATIVO</span></div><div class="block-grid">
+    <div class="block"><div class="block-title">CONTATO</div><div class="ctx-row"><span>Nome</span><strong>${CU.esc(c?.contact||'—')}</strong></div><div class="ctx-row"><span>Função</span><strong>${CU.esc(c?.role||'—')}</strong></div><div class="ctx-row"><span>Telefone</span><strong class="cyan">${CU.esc(c?.phone||'—')}</strong></div><div class="ctx-row"><span>E-mail</span><strong>${CU.esc(c?.email||'—')}</strong></div></div>
+    <div class="block"><div class="block-title">TRABALHO</div>${projects.map(p=>`<div class="simple-row"><div><b>${CU.esc(p.name)}</b><p>${p.progress}% · ${CU.fmtDate(p.due)}</p><div class="progress"><span style="width:${p.progress}%"></span></div></div><button class="btn sm" data-open-entity="${p.id}" data-type="project">ABRIR</button></div>`).join('')||'<div class="muted">Sem projeto ativo.</div>'}</div>
+    <div class="block"><div class="block-title">DINHEIRO</div><div class="ctx-row"><span>Recebido registrado</span><strong class="green">${CU.money(CU.state.payments.filter(p=>recs.some(r=>r.id===p.receivableId)&&p.type==='received').reduce((a,p)=>a+Number(p.amount),0))}</strong></div><div class="ctx-row"><span>Em aberto</span><strong>${CU.money(recs.reduce((a,r)=>a+CU.remainingReceivable(r),0))}</strong></div></div>
+    <div class="block"><div class="block-title">RESPONSABILIDADE</div><div class="ctx-row"><span>Responsável</span><strong>${CU.ownerName(c?.owner)}</strong></div><div class="ctx-row"><span>Status</span><strong>Ativo</strong></div></div>
+  </div></div></div></section>`;
+};
+
+CU.sceneWork=()=>{
+  const view=CU.state.ui.workView||'actions';
+  return `<section class="scene"><div class="scene-head"><div><div class="eyebrow">TRABALHO / EXECUÇÃO</div><h1>Trabalho</h1><div class="scene-sub">Ações futuras e projetos ficam separados. Histórico continua sendo registro do que aconteceu.</div></div><div class="head-actions"><button class="btn" id="newActionBtn">+ NOVA AÇÃO</button><button class="btn primary" id="newProjectBtn">+ NOVO PROJETO</button></div></div><div class="work-tabs"><button class="seg-btn ${view==='actions'?'active':''}" data-work-view="actions">AÇÕES</button><button class="seg-btn ${view==='projects'?'active':''}" data-work-view="projects">PROJETOS</button><button class="seg-btn ${view==='processes'?'active':''}" data-work-view="processes">PROCESSOS</button></div>${view==='actions'?CU.workActions():view==='projects'?CU.workProjects():CU.workProcesses()}</section>`;
+};
+CU.workActions=()=>{
+  const groups=[['ATRASADAS',CU.state.actions.filter(a=>a.status==='open'&&a.due<CU.today())],['HOJE',CU.state.actions.filter(a=>a.status==='open'&&a.due===CU.today())],['PRÓXIMAS',CU.state.actions.filter(a=>a.status==='open'&&a.due>CU.today())],['CONCLUÍDAS',CU.state.actions.filter(a=>a.status==='done')]];
+  return `<div class="grid">${groups.map(([name,items])=>`<div class="panel s6"><div class="panel-head"><b>${name}</b><span>${items.length}</span></div><div class="panel-body">${items.map(a=>`<div class="action-row"><button class="check" data-toggle-action="${a.id}">${a.status==='done'?'✓':''}</button><div data-open-entity="${a.id}" data-type="action" style="cursor:pointer"><b>${CU.esc(a.title)}</b><p>${CU.entityLabel(a.entityType,a.entityId)} · ${CU.ownerName(a.owner)}</p></div><span class="due ${a.status==='open'&&a.due<CU.today()?'red':''}">${CU.fmtDate(a.due)}</span></div>`).join('')||'<div class="muted">Nenhuma ação.</div>'}</div></div>`).join('')}</div>`;
+};
+CU.workProjects=()=>{
+  const groups=[['PLANEJADO','planned'],['EM ANDAMENTO','doing'],['AGUARDANDO CLIENTE','waiting'],['BLOQUEADO','blocked'],['ENTREGUE','done']];
+  return `<div class="grid">${groups.map(([n,s])=>`<div class="panel s4"><div class="panel-head"><b>${n}</b><span>${CU.state.projects.filter(p=>p.status===s).length}</span></div><div class="panel-body" style="display:flex;flex-direction:column;gap:7px">${CU.state.projects.filter(p=>p.status===s).map(p=>`<div class="project-card" data-open-entity="${p.id}" data-type="project" style="cursor:pointer"><b>${CU.esc(CU.projectName(p))}</b><p>${p.blockedReason?CU.esc(p.blockedReason):`Entrega prevista ${CU.fmtDate(p.due)}`}</p><div class="progress"><span style="width:${p.progress}%"></span></div><div class="project-meta"><span>${p.progress}%</span><span>${CU.fmtDate(p.due)}</span></div></div>`).join('')||'<div class="muted">Vazio.</div>'}</div></div>`).join('')}</div>`;
+};
+CU.workProcesses=()=>`<div class="grid"><div class="panel s6"><div class="panel-head"><b>MODELOS DE PROCESSO</b><span>reutilizáveis</span></div><div class="panel-body"><div class="simple-row"><div><b>Entrega de site</b><p>Briefing → conteúdo → primeira versão → ajustes → QA → publicação</p></div><span class="pill blue">MODELO</span></div><div class="simple-row"><div><b>Presença local</b><p>Diagnóstico → evidências → ficha → materiais → acompanhamento</p></div><span class="pill blue">MODELO</span></div></div></div><div class="panel s6"><div class="panel-head"><b>REGRA</b></div><div class="panel-body"><p class="muted">Aplicar um processo em um projeto cria um snapshot. Alterar o modelo depois não muda silenciosamente uma entrega em andamento.</p></div></div></div>`;
+
+})();
+
+
+
+(() => {
+'use strict';
+const CU=window.CU;
+
+CU.sceneFinance=()=>{
+  const view=CU.state.ui.financeView||'overview',fm=CU.financeMetrics();
+  const tabs=[['overview','VISÃO GERAL'],['receive','RECEBER'],['pay','PAGAR'],['expenses','DESPESAS'],['budget','ORÇAMENTO'],['recurrence','RECORRÊNCIA'],['cashflow','FLUXO DE CAIXA'],['calendar','CALENDÁRIO']];
+  return `<section class="scene"><div class="scene-head"><div><div class="eyebrow">FINANCEIRO / ORGANIZAÇÃO OPERACIONAL</div><h1>Financeiro</h1><div class="scene-sub">Recebimentos, compromissos, orçamento e fluxo de caixa. Não substitui contabilidade.</div></div><div class="head-actions"><button class="btn" id="newExpenseBtn">+ DESPESA</button><button class="btn primary" id="registerPaymentBtn">+ PAGAMENTO</button></div></div>
+  <div class="finance-hero">
+    <div class="fin-card"><label>RECEBIDO NO MÊS</label><strong class="green">${CU.money(fm.received)}</strong><small>pagamentos - estornos</small></div>
+    <div class="fin-card"><label>A RECEBER</label><strong>${CU.money(fm.toReceive)}</strong><small>a vencer / hoje</small></div>
+    <div class="fin-card"><label>ATRASADO</label><strong class="${fm.late?'red':''}">${CU.money(fm.late)}</strong><small>saldo vencido</small></div>
+    <div class="fin-card"><label>DESPESAS PAGAS</label><strong>${CU.money(fm.expensesPaid)}</strong><small>mês atual</small></div>
+    <div class="fin-card"><label>A PAGAR</label><strong>${CU.money(fm.toPay)}</strong><small>inclui vencidas</small></div>
+    <div class="fin-card"><label>RECORRÊNCIA ATIVA</label><strong class="cyan">${CU.money(fm.recurring)}/m</strong><small>infra + serviço</small></div>
+  </div>
+  <div class="finance-tabs">${tabs.map(([k,n])=>`<button class="seg-btn ${view===k?'active':''}" data-finance-view="${k}">${n}</button>`).join('')}</div>
+  ${CU.financeView(view,fm)}</section>`;
+};
+
+CU.financeView=(view,fm)=>{
+  if(view==='receive')return CU.financeReceive();
+  if(view==='pay')return CU.financePay();
+  if(view==='expenses')return CU.financeExpenses();
+  if(view==='budget')return CU.financeBudget();
+  if(view==='recurrence')return CU.financeRecurrence();
+  if(view==='cashflow')return CU.financeCashflow(fm);
+  if(view==='calendar')return CU.financeCalendar();
+  return CU.financeOverview(fm);
+};
+
+CU.financeOverview=fm=>`<div class="grid">
+<div class="panel s7"><div class="panel-head"><b>RESULTADO OPERACIONAL REGISTRADO</b><span>mês atual</span></div><div class="panel-body"><div class="ctx-row"><span>Receitas recebidas registradas</span><strong class="green">${CU.money(fm.received)}</strong></div><div class="ctx-row"><span>Despesas pagas registradas</span><strong>${CU.money(fm.expensesPaid)}</strong></div><div style="height:1px;background:var(--line2);margin:11px 0"></div><div class="ctx-row"><span>Resultado operacional registrado</span><strong class="${fm.operational>=0?'green':'red'}">${CU.money(fm.operational)}</strong></div><p class="muted" style="font-size:9px">Conta: recebido - despesas pagas. Não é lucro contábil.</p></div></div>
+<div class="panel s5"><div class="panel-head"><b>PRÓXIMOS COMPROMISSOS</b><span>financeiro</span></div><div class="panel-body">${CU.financialUpcoming(5)}</div></div>
+<div class="panel s12"><div class="panel-head"><b>ORÇAMENTO DO MÊS</b><button class="btn sm ghost" data-finance-view="budget">ABRIR ORÇAMENTO</button></div><div class="panel-body">${CU.budgetSummary()}</div></div>
+</div>`;
+
+CU.financeReceive=()=>`<div class="panel"><div class="panel-head"><b>CONTAS A RECEBER</b><span>cliente · projeto · parcela</span></div><div class="panel-body" style="overflow:auto"><table class="money-table"><thead><tr><th>Descrição</th><th>Cliente</th><th>Vencimento</th><th>Status</th><th>Valor</th><th>Saldo</th><th></th></tr></thead><tbody>${CU.state.receivables.map(r=>`<tr><td>${CU.esc(r.description)}</td><td>${CU.esc(CU.clientName(r.clientId))}</td><td>${CU.fmtDate(r.due)}</td><td>${CU.statusReceivableLabel(CU.recStatus(r))}</td><td class="amount">${CU.money(r.amount)}</td><td class="amount">${CU.money(CU.remainingReceivable(r))}</td><td>${CU.remainingReceivable(r)>0?`<button class="btn sm primary" data-pay-receivable="${r.id}">REGISTRAR</button>`:''}</td></tr>`).join('')}</tbody></table></div></div>`;
+
+CU.financePay=()=>`<div class="panel"><div class="panel-head"><b>CONTAS A PAGAR</b><span>vencimentos</span></div><div class="panel-body" style="overflow:auto"><table class="money-table"><thead><tr><th>Descrição</th><th>Categoria</th><th>Fornecedor</th><th>Vencimento</th><th>Status</th><th>Valor</th><th></th></tr></thead><tbody>${CU.state.expenses.map(e=>`<tr><td>${CU.esc(e.description)}</td><td>${CU.esc(e.category)}</td><td>${CU.esc(e.supplier||'—')}</td><td>${CU.fmtDate(e.due)}</td><td>${CU.statusExpenseLabel(CU.expStatus(e))}</td><td class="amount">${CU.money(e.amount)}</td><td>${CU.expStatus(e)!=='paid'?`<button class="btn sm success" data-pay-expense="${e.id}">MARCAR PAGA</button>`:''}</td></tr>`).join('')}</tbody></table></div></div>`;
+
+CU.financeExpenses=()=>{
+  const fixed=CU.state.expenses.filter(e=>e.kind==='fixed').reduce((a,e)=>a+Number(e.amount),0),variable=CU.state.expenses.filter(e=>e.kind==='variable').reduce((a,e)=>a+Number(e.amount),0),one=CU.state.expenses.filter(e=>e.kind==='one').reduce((a,e)=>a+Number(e.amount),0);
+  return `<div class="grid"><div class="panel s4"><div class="panel-head"><b>FIXAS / RECORRENTES</b></div><div class="panel-body"><div style="font:24px var(--mono);color:var(--text)">${CU.money(fixed)}</div><p class="muted">Compromissos cadastrados como fixos.</p></div></div><div class="panel s4"><div class="panel-head"><b>VARIÁVEIS</b></div><div class="panel-body"><div style="font:24px var(--mono);color:var(--text)">${CU.money(variable)}</div><p class="muted">Ligadas ao movimento da operação.</p></div></div><div class="panel s4"><div class="panel-head"><b>ÚNICAS</b></div><div class="panel-body"><div style="font:24px var(--mono);color:var(--text)">${CU.money(one)}</div><p class="muted">Sem recorrência.</p></div></div><div class="panel s12"><div class="panel-head"><b>DESPESAS CADASTRADAS</b></div><div class="panel-body" style="overflow:auto"><table class="money-table"><thead><tr><th>Descrição</th><th>Tipo</th><th>Categoria</th><th>Status</th><th>Vencimento</th><th>Valor</th></tr></thead><tbody>${CU.state.expenses.map(e=>`<tr><td>${CU.esc(e.description)}</td><td>${CU.kindLabel(e.kind)}</td><td>${CU.esc(e.category)}</td><td>${CU.statusExpenseLabel(CU.expStatus(e))}</td><td>${CU.fmtDate(e.due)}</td><td class="amount">${CU.money(e.amount)}</td></tr>`).join('')}</tbody></table></div></div></div>`;
+};
+
+CU.financeBudget=()=>`<div class="grid"><div class="panel s8"><div class="panel-head"><b>ORÇAMENTO · ${CU.state.budgets.month}</b><span>planejado x realizado pago</span></div><div class="panel-body" style="overflow:auto"><table class="money-table"><thead><tr><th>Categoria</th><th>Planejado</th><th>Realizado</th><th>Diferença</th><th>Uso</th><th></th></tr></thead><tbody>${CU.state.budgets.categories.map(c=>{const actual=CU.actualBudget(c.name),diff=actual-Number(c.planned),pct=c.planned?Math.min(100,(actual/c.planned)*100):0;return `<tr><td>${CU.esc(c.name)}</td><td class="amount">${CU.money(c.planned)}</td><td class="amount">${CU.money(actual)}</td><td class="amount ${diff>0?'red':'green'}">${diff>=0?'+ ':''}${CU.money(diff)}</td><td style="min-width:130px"><div class="budget-bar ${diff>0?'over':''}"><span style="width:${pct}%"></span></div></td><td><button class="btn sm ghost" data-budget-edit="${CU.esc(c.name)}">EDITAR</button></td></tr>`}).join('')}</tbody></table></div></div><div class="panel s4"><div class="panel-head"><b>COMO LER</b></div><div class="panel-body"><p class="muted">Diferença = realizado pago - planejado. Positivo significa gasto acima do orçamento da categoria.</p></div></div></div>`;
+
+CU.financeRecurrence=()=>{
+  const infra=CU.state.recurrences.filter(r=>r.type==='infrastructure'&&r.status==='active').reduce((a,r)=>a+Number(r.amount),0),service=CU.state.recurrences.filter(r=>r.type==='service'&&r.status==='active').reduce((a,r)=>a+Number(r.amount),0);
+  return `<div class="grid"><div class="panel s6"><div class="panel-head"><b>INFRAESTRUTURA RECORRENTE</b></div><div class="panel-body"><div style="font:24px var(--mono)" class="cyan">${CU.money(infra)}/m</div><p class="muted">Hospedagem, domínio e serviços necessários para manter ativos publicados.</p>${CU.state.recurrences.filter(r=>r.type==='infrastructure').map(r=>`<div class="simple-row"><div><b>${CU.esc(r.name)}</b><p>${r.status}</p></div><strong>${CU.money(r.amount)}/m</strong></div>`).join('')}</div></div><div class="panel s6"><div class="panel-head"><b>SERVIÇO RECORRENTE</b></div><div class="panel-body"><div style="font:24px var(--mono)" class="green">${CU.money(service)}/m</div><p class="muted">Suporte/acompanhamento somente quando existe entrega recorrente real.</p>${CU.state.recurrences.filter(r=>r.type==='service').map(r=>`<div class="simple-row"><div><b>${CU.esc(r.name)}</b><p>${r.status}</p></div><strong>${CU.money(r.amount)}/m</strong></div>`).join('')}</div></div></div>`;
+};
+
+CU.financeCashflow=fm=>{
+  const incoming=CU.state.receivables.filter(r=>CU.remainingReceivable(r)>0&&r.status!=='cancelled').reduce((a,r)=>a+CU.remainingReceivable(r),0),outgoing=CU.state.expenses.filter(e=>!['paid','cancelled'].includes(CU.expStatus(e))).reduce((a,e)=>a+Number(e.amount),0),has=CU.state.meta.openingBalance!==null&&CU.state.meta.openingBalance!=='',projected=has?Number(CU.state.meta.openingBalance)+incoming-outgoing:null;
+  return `<div class="grid"><div class="panel s6"><div class="panel-head"><b>REALIZADO</b><span>mês atual</span></div><div class="panel-body"><div class="ctx-row"><span>Entradas realizadas</span><strong class="green">${CU.money(fm.received)}</strong></div><div class="ctx-row"><span>Saídas realizadas</span><strong>${CU.money(fm.expensesPaid)}</strong></div><div class="ctx-row"><span>Movimento operacional</span><strong>${CU.money(fm.operational)}</strong></div></div></div>
+  <div class="panel s6"><div class="panel-head"><b>PREVISTO</b><span>valores cadastrados</span></div><div class="panel-body"><div class="ctx-row"><span>Entradas previstas</span><strong>${CU.money(incoming)}</strong></div><div class="ctx-row"><span>Saídas previstas</span><strong>${CU.money(outgoing)}</strong></div>${has?`<div class="ctx-row"><span>Saldo inicial registrado</span><strong>${CU.money(CU.state.meta.openingBalance)}</strong></div><div class="ctx-row"><span>Saldo projetado</span><strong class="${projected>=0?'green':'red'}">${CU.money(projected)}</strong></div>`:`<div class="insufficient"><b>DADOS INSUFICIENTES PARA PROJETAR SALDO</b><br>Defina um saldo inicial conferido. O CRM não inventa saldo bancário.</div><button class="btn primary" style="margin-top:10px" data-set-balance>DEFINIR SALDO INICIAL</button>`}</div></div></div>`;
+};
+
+CU.financeCalendar=()=>{
+  const d=new Date(),y=d.getFullYear(),m=d.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),cells=[];
+  for(let i=0;i<first.getDay();i++)cells.push(null);for(let day=1;day<=last.getDate();day++)cells.push(new Date(y,m,day));
+  const ev=date=>{if(!date)return[];const iso=date.toISOString().slice(0,10),arr=[];CU.state.receivables.filter(r=>r.due===iso&&CU.remainingReceivable(r)>0).forEach(r=>arr.push({type:'in',text:`Receber ${CU.money(CU.remainingReceivable(r))}`}));CU.state.expenses.filter(e=>e.due===iso&&CU.expStatus(e)!=='paid').forEach(e=>arr.push({type:'out',text:`Pagar ${CU.money(e.amount)}`}));return arr};
+  return `<div class="panel"><div class="panel-head"><b>CALENDÁRIO FINANCEIRO</b><span>${CU.month()}</span></div><div class="panel-body"><div class="calendar-grid">${['DOM','SEG','TER','QUA','QUI','SEX','SÁB'].map(x=>`<div class="cal-head">${x}</div>`).join('')}${cells.map(date=>date?`<div class="cal-day"><b>${date.getDate()}</b>${ev(date).map(e=>`<div class="cal-event ${e.type}">${CU.esc(e.text)}</div>`).join('')}</div>`:'<div></div>').join('')}</div></div></div>`;
+};
+
+CU.financialUpcoming=n=>{
+  const arr=[];CU.state.receivables.filter(r=>CU.remainingReceivable(r)>0).forEach(r=>arr.push({date:r.due,type:'in',title:`Receber · ${CU.clientName(r.clientId)}`,amount:CU.remainingReceivable(r)}));CU.state.expenses.filter(e=>CU.expStatus(e)!=='paid').forEach(e=>arr.push({date:e.due,type:'out',title:`Pagar · ${e.description}`,amount:e.amount}));
+  return arr.sort((a,b)=>a.date.localeCompare(b.date)).slice(0,n).map(i=>`<div class="simple-row"><div><b>${CU.esc(i.title)}</b><p>${CU.fmtDate(i.date)}</p></div><strong class="${i.type==='in'?'green':'red'}">${i.type==='in'?'+ ':'- '}${CU.money(i.amount)}</strong></div>`).join('');
+};
+CU.budgetSummary=()=>CU.state.budgets.categories.map(c=>{const a=CU.actualBudget(c.name),p=Number(c.planned),pct=p?Math.min(100,a/p*100):0;return `<div style="display:grid;grid-template-columns:140px minmax(120px,1fr) 120px;gap:10px;align-items:center;margin:8px 0"><span style="font-size:9px">${CU.esc(c.name)}</span><div class="budget-bar ${a>p?'over':''}"><span style="width:${pct}%"></span></div><span class="mono muted" style="font-size:8px;text-align:right">${CU.money(a)} / ${CU.money(p)}</span></div>`}).join('');
+CU.statusReceivableLabel=s=>({received:'<span class="green">RECEBIDO</span>',late:'<span class="red">ATRASADO</span>',today:'<span class="yellow">HOJE</span>',open:'A VENCER',cancelled:'CANCELADO'})[s]||s;
+CU.statusExpenseLabel=s=>({paid:'<span class="green">PAGA</span>',late:'<span class="red">ATRASADA</span>',today:'<span class="yellow">HOJE</span>',open:'A VENCER',cancelled:'CANCELADA'})[s]||s;
+CU.kindLabel=k=>({fixed:'Fixa / recorrente',variable:'Variável',one:'Única'})[k]||k;
+
+CU.sceneJourney=()=>{
+  const ms=CU.journey(),done=ms.filter(m=>m.done).length,fm=CU.financeMetrics();
+  return `<section class="scene"><div class="scene-head"><div><div class="eyebrow">JORNADA / PROGRESSO REAL</div><h1>Jornada da empresa</h1><div class="scene-sub">A empresa avança com fatos: vendas, entrega, recebimentos e recorrência. Nada de XP por clique.</div></div></div><div class="kpis"><div class="kpi" style="--c:var(--purple)"><label>MARCOS DESBLOQUEADOS</label><strong>${done}/${ms.length}</strong><small>derivados da operação</small></div><div class="kpi" style="--c:var(--green)"><label>RECEBIDO NO MÊS</label><strong>${CU.money(fm.received)}</strong><small>placar econômico</small></div><div class="kpi" style="--c:var(--cyan)"><label>RECORRÊNCIA</label><strong>${CU.money(fm.recurring)}/m</strong><small>estabilidade</small></div><div class="kpi" style="--c:var(--yellow)"><label>RISCOS ABERTOS</label><strong>${CU.risks().length}</strong><small>pedem ação</small></div></div><div class="milestones">${ms.map(m=>`<div class="milestone ${m.done?'done':'locked'}"><div class="milestone-icon">${m.done?'✓':'◇'}</div><h3>${CU.esc(m.title)}</h3><p>${CU.esc(m.text)}</p></div>`).join('')}</div></section>`;
+};
+
+CU.DOCS={
+  start:{title:'Comece aqui',html:`<p>Use <b>Hoje</b> para saber o que fazer. Use <b>Vendas</b> para o funil, <b>Clientes</b> para relacionamento, <b>Trabalho</b> para ações/projetos e <b>Financeiro</b> para recebimentos e despesas.</p><h3>Regra principal</h3><p>Venda não é pagamento. Projeto não é histórico. Ação futura não é atividade passada.</p>`},
+  sales:{title:'Como usar Vendas',html:`<p>Possível cliente fica separado de venda em andamento. Ao qualificar, o CRM cria uma venda no Funil.</p><p>Clique no card para abrir a Venda 360: conversa, ação, proposta, avançar etapa e decisão comercial.</p>`},
+  finance:{title:'Como usar Financeiro',html:`<p>O financeiro é operacional, não contábil.</p><ul><li>Recebido = pagamentos registrados - estornos.</li><li>Resultado operacional = recebido - despesas pagas.</li><li>Orçamento compara planejado com despesas pagas.</li><li>Saldo projetado só existe depois de registrar saldo inicial.</li></ul>`},
+  coop:{title:'Co-op',html:`<p>Os dois sócios usam contas individuais. No laboratório, abas podem compartilhar estado por BroadcastChannel/localStorage.</p><p>Produção deve usar backend como autoridade, sessão individual, auditoria e sincronização real.</p>`},
+  safety:{title:'Segurança e produção',html:`<p>As credenciais deste laboratório não representam autenticação de produção.</p><p>Produção exige Argon2id, TOTP, sessão segura, rate limit, CSRF, autorização por mutação, auditoria e backups testados.</p>`}
+};
+CU.sceneManual=()=>{const topic=CU.state.ui.manualTopic||'start',d=CU.DOCS[topic];return `<section class="scene"><div class="scene-head"><div><div class="eyebrow">MANUAL / AJUDA</div><h1>Manual do CRM</h1><div class="scene-sub">Documentação curta e permanente. O sistema deve ser simples sem decorar comandos.</div></div></div><div class="manual"><nav class="manual-nav">${Object.entries(CU.DOCS).map(([k,v])=>`<button class="${topic===k?'active':''}" data-manual="${k}">${CU.esc(v.title)}</button>`).join('')}</nav><article class="doc"><h2>${CU.esc(d.title)}</h2>${d.html}</article></div></section>`};
+
+CU.gateFor=d=>{
+  const proposal=CU.state.proposals.find(p=>p.dealId===d.id),hasAction=CU.state.actions.some(a=>a.entityType==='deal'&&a.entityId===d.id&&a.status==='open');
+  const base=[{label:'Contato principal identificado',ok:!!d.contact},{label:'Próximo passo definido',ok:!!d.nextTitle&&!!d.nextDue}];
+  if(['diagnostico','oferta','proposta','decisao'].includes(d.stage))base.push({label:'Problema / diagnóstico registrado',ok:(d.history||[]).some(h=>/diagn|problema|conversa/i.test(h.text))});
+  if(['oferta','proposta','decisao'].includes(d.stage))base.push({label:'Solução / oferta definida',ok:(d.history||[]).some(h=>/oferta|solu/i.test(h.text))||['oferta','proposta','decisao'].includes(d.stage)});
+  if(['proposta','decisao'].includes(d.stage))base.push({label:'Proposta criada',ok:!!proposal});
+  base.push({label:'Existe ação futura relacionada',ok:hasAction});return base;
+};
+
+CU.contextHTML=()=>{
+  const c=CU.state.ui.context;if(!c)return `<div class="ctx-empty"><b>Selecione algo</b><span>Clique numa venda, cliente, projeto ou ação para abrir detalhes sem sair da cena.</span></div>`;
+  if(c.type==='deal'){
+    const d=CU.state.deals.find(x=>x.id===c.id);if(!d)return `<div class="ctx-empty">Venda não encontrada.</div>`;
+    const p=CU.state.proposals.find(x=>x.dealId===d.id),g=CU.gateFor(d);
+    return `<div class="ctx-kicker">VENDA 360</div><div class="ctx-title">${CU.esc(d.name)}</div><div class="ctx-sub">${CU.esc(d.contact)} · ${CU.money(d.value)}</div>
+    <div class="ctx-section"><div class="ctx-row"><span>Etapa</span><strong>${CU.stageName(d.stage)}</strong></div><div class="ctx-row"><span>Tempo</span><strong>${CU.dealAge(d)} dia(s)</strong></div><div class="ctx-row"><span>Responsável</span><strong>${CU.ownerName(d.owner)}</strong></div><div class="ctx-row"><span>Próximo passo</span><strong class="${d.nextDue<CU.today()?'red':''}">${CU.esc(d.nextTitle||'Não definido')} · ${CU.fmtDate(d.nextDue)}</strong></div></div>
+    <div class="ctx-section"><div class="ctx-label">AÇÕES PRINCIPAIS</div><div class="context-actions"><button class="btn" data-deal-action="conversation" data-id="${d.id}">REGISTRAR CONVERSA</button><button class="btn" data-deal-action="task" data-id="${d.id}">NOVA AÇÃO</button><button class="btn primary" data-deal-action="proposal" data-id="${d.id}">${p?'ABRIR PROPOSTA':'CRIAR PROPOSTA'}</button><button class="btn primary" data-deal-action="advance" data-id="${d.id}">AVANÇAR ETAPA</button></div></div>
+    <details class="accordion" open><summary>Para avançar <span>${g.filter(x=>x.ok).length}/${g.length}</span></summary><div class="accordion-content"><div class="gate-list">${g.map(x=>`<div class="gate-item"><span class="${x.ok?'gate-ok':'gate-miss'}">${x.ok?'✓':'!'}</span><span>${CU.esc(x.label)}</span></div>`).join('')}</div></div></details>
+    <details class="accordion"><summary>Histórico <span>${d.history?.length||0}</span></summary><div class="accordion-content">${(d.history||[]).map(h=>`<div class="history-line"><b>${CU.esc(h.text)}</b><span>${CU.ownerName(h.actor)} · ${CU.fmtDate(h.date)}</span></div>`).join('')||'Sem histórico.'}</div></details>
+    <details class="accordion"><summary>Proposta <span>${p?CU.money(p.value):'—'}</span></summary><div class="accordion-content">${p?`Status: ${p.status}<br>Valor: ${CU.money(p.value)}<br>Retorno: ${CU.fmtDate(p.followupDue)}`:'Nenhuma proposta criada.'}</div></details>
+    <div class="ctx-section"><div class="ctx-label">DECISÃO COMERCIAL</div><div class="context-actions"><button class="btn success" data-deal-final="won" data-id="${d.id}">GANHOU</button><button class="btn danger" data-deal-final="lost" data-id="${d.id}">PERDEU</button><button class="btn warn wide" data-deal-final="later" data-id="${d.id}">NÃO AGORA</button></div></div>`;
+  }
+  if(c.type==='client'){
+    const x=CU.state.clients.find(v=>v.id===c.id);if(!x)return'<div class="ctx-empty">Cliente não encontrado.</div>';const ps=CU.state.projects.filter(p=>p.clientId===x.id),rs=CU.state.receivables.filter(r=>r.clientId===x.id);
+    return `<div class="ctx-kicker">CLIENTE 360</div><div class="ctx-title">${CU.esc(x.name)}</div><div class="ctx-sub">${CU.esc(x.contact)} · ${CU.esc(x.service)}</div><div class="ctx-section"><div class="ctx-row"><span>Responsável</span><strong>${CU.ownerName(x.owner)}</strong></div><div class="ctx-row"><span>Telefone</span><strong>${CU.esc(x.phone)}</strong></div><div class="ctx-row"><span>E-mail</span><strong>${CU.esc(x.email)}</strong></div></div><details class="accordion" open><summary>Projetos <span>${ps.length}</span></summary><div class="accordion-content">${ps.map(p=>`${CU.esc(p.name)} · ${p.progress}%`).join('<br>')||'Sem projeto.'}</div></details><details class="accordion"><summary>Financeiro <span>${CU.money(rs.reduce((a,r)=>a+CU.remainingReceivable(r),0))}</span></summary><div class="accordion-content">${rs.map(r=>`${CU.esc(r.description)} · saldo ${CU.money(CU.remainingReceivable(r))}`).join('<br>')||'Sem recebíveis.'}</div></details><div class="ctx-section"><button class="btn primary" data-client-action="${x.id}">NOVA AÇÃO</button></div>`;
+  }
+  if(c.type==='project'){
+    const p=CU.state.projects.find(x=>x.id===c.id);if(!p)return'<div class="ctx-empty">Projeto não encontrado.</div>';
+    return `<div class="ctx-kicker">PROJETO</div><div class="ctx-title">${CU.esc(p.name)}</div><div class="ctx-sub">${CU.esc(CU.clientName(p.clientId))}</div><div class="ctx-section"><div class="ctx-row"><span>Status</span><strong>${CU.esc(p.status)}</strong></div><div class="ctx-row"><span>Progresso</span><strong>${p.progress}%</strong></div><div class="ctx-row"><span>Prazo</span><strong>${CU.fmtDate(p.due)}</strong></div>${p.blockedReason?`<div class="ctx-row"><span>Bloqueio</span><strong class="yellow">${CU.esc(p.blockedReason)}</strong></div>`:''}</div><div class="ctx-section"><button class="btn primary" data-project-action="${p.id}">NOVA AÇÃO</button></div>`;
+  }
+  if(c.type==='action'){
+    const a=CU.state.actions.find(x=>x.id===c.id);if(!a)return'<div class="ctx-empty">Ação não encontrada.</div>';
+    return `<div class="ctx-kicker">AÇÃO</div><div class="ctx-title">${CU.esc(a.title)}</div><div class="ctx-sub">${CU.entityLabel(a.entityType,a.entityId)}</div><div class="ctx-section"><div class="ctx-row"><span>Responsável</span><strong>${CU.ownerName(a.owner)}</strong></div><div class="ctx-row"><span>Prazo</span><strong>${CU.fmtDate(a.due)}</strong></div><div class="ctx-row"><span>Status</span><strong>${a.status==='done'?'Concluída':'Aberta'}</strong></div></div><div class="ctx-section"><button class="btn ${a.status==='done'?'':'success'}" data-toggle-action="${a.id}">${a.status==='done'?'REABRIR':'CONCLUIR'}</button></div>`;
+  }
+  return '<div class="ctx-empty">Sem detalhes.</div>';
+};
+
+})();
+
+
+
+(() => {
+'use strict';
+const CU=window.CU;
+
+CU.openModal=(title,body,foot='')=>{
+  CU.closeModal();
+  const wrap=document.createElement('div');wrap.className='backdrop';wrap.id='modalRoot';
+  wrap.innerHTML=`<div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><b>${CU.esc(title)}</b><button class="icon-button" data-close-modal>×</button></div><div class="modal-body">${body}</div>${foot?`<div class="modal-foot">${foot}</div>`:''}</div>`;
+  document.body.appendChild(wrap);wrap.querySelectorAll('[data-close-modal]').forEach(b=>b.onclick=CU.closeModal);wrap.onclick=e=>{if(e.target===wrap)CU.closeModal()};
+};
+CU.closeModal=()=>document.getElementById('modalRoot')?.remove();
+CU.v=id=>document.getElementById(id)?.value.trim()||'';
+
+CU.quickNew=()=>{
+  CU.openModal('Criar novo',`<div class="quick-grid">
+  ${CU.quickCard('prospect','Possível cliente','Começar pesquisa e qualificação.')}
+  ${CU.quickCard('conversation','Registrar conversa','Histórico + próximo passo.')}
+  ${CU.quickCard('action','Nova ação','Algo que precisa acontecer.')}
+  ${CU.quickCard('deal','Nova venda','Criar venda em andamento.')}
+  ${CU.quickCard('proposal','Nova proposta','Ligar proposta a uma venda.')}
+  ${CU.quickCard('payment','Registrar pagamento','Entrada real de dinheiro.')}
+  ${CU.quickCard('expense','Nova despesa','Fixa, variável ou única.')}
+  ${CU.quickCard('project','Novo projeto','Trabalho ligado a cliente.')}
+  </div>`,`<button class="btn" data-close-modal>FECHAR</button>`);
+  document.querySelectorAll('[data-quick]').forEach(b=>b.onclick=()=>{const t=b.dataset.quick;CU.closeModal();setTimeout(()=>CU.quickForm(t),0)});
+};
+CU.quickCard=(t,title,desc)=>`<button class="quick-card" data-quick="${t}"><b>${title}</b><span>${desc}</span></button>`;
+CU.quickForm=type=>{
+  if(type==='prospect')return CU.prospectForm();
+  if(type==='conversation')return CU.chooseDealThen('conversation');
+  if(type==='action')return CU.actionForm();
+  if(type==='deal')return CU.dealForm();
+  if(type==='proposal')return CU.chooseDealThen('proposal');
+  if(type==='payment')return CU.paymentForm();
+  if(type==='expense')return CU.expenseForm();
+  if(type==='project')return CU.projectForm();
+};
+
+CU.prospectForm=()=>{
+  CU.openModal('Novo possível cliente',`<div class="form-grid"><div class="wide"><div class="form-label">NEGÓCIO</div><input class="form-control" id="pName"></div><div><div class="form-label">CONTATO</div><input class="form-control" id="pContact"></div><div><div class="form-label">ORIGEM</div><input class="form-control" id="pChannel" placeholder="Indicação, Google..."></div><div class="wide"><div class="form-label">PRÓXIMO PASSO</div><input class="form-control" id="pNext" placeholder="Pesquisar presença digital"></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveProspect">SALVAR</button>`);
+  document.getElementById('saveProspect').onclick=()=>{
+    const name=CU.v('pName'),contact=CU.v('pContact'),channel=CU.v('pChannel'),next=CU.v('pNext');
+    if(!name||!contact||!next)return CU.toast('Preencha negócio, contato e próximo passo.','err');
+    CU.state.prospects.push({id:CU.uid('L'),name,contact,channel:channel||'Não informado',next,owner:CU.session.user});
+    CU.addEvent(`Possível cliente criado · ${name}`);CU.saveState('prospect');CU.closeModal();CU.state.ui.route='sales';CU.renderApp();CU.toast('Possível cliente criado');
+  };
+};
+
+CU.qualifyProspect=id=>{
+  const p=CU.state.prospects.find(x=>x.id===id);if(!p)return;
+  CU.openModal(`Qualificar · ${p.name}`,`<div class="form-grid"><div><div class="form-label">VALOR ESTIMADO</div><input class="form-control" id="qValue" type="number" step="0.01"></div><div><div class="form-label">SERVIÇO</div><input class="form-control" id="qService" placeholder="Site, GMN..."></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveQualify">CRIAR VENDA</button>`);
+  document.getElementById('saveQualify').onclick=()=>{
+    const value=Number(document.getElementById('qValue').value),service=CU.v('qService');if(!value||!service)return CU.toast('Informe valor e serviço.','err');
+    const d={id:CU.uid('O'),name:p.name,contact:p.contact,stage:'pesquisa',value,owner:p.owner,enteredAt:CU.today(),nextTitle:p.next,nextDue:CU.addDays(1),risk:false,source:p.channel,service,status:'open',history:[{text:'Possível cliente qualificado',actor:CU.session.user,date:CU.today(),time:CU.nowTime()}]};
+    CU.state.deals.push(d);CU.state.prospects=CU.state.prospects.filter(x=>x.id!==id);CU.state.actions.push({id:CU.uid('A'),title:p.next,due:CU.addDays(1),status:'open',owner:p.owner,entityType:'deal',entityId:d.id});
+    CU.addEvent(`Venda criada a partir de possível cliente · ${p.name}`);CU.saveState('qualify');CU.closeModal();CU.state.ui.context={type:'deal',id:d.id};CU.renderApp(false);CU.renderContext();CU.toast('Venda criada');
+  };
+};
+
+CU.dealForm=()=>{
+  CU.openModal('Nova venda',`<div class="form-grid"><div class="wide"><div class="form-label">NEGÓCIO</div><input class="form-control" id="dName"></div><div><div class="form-label">CONTATO</div><input class="form-control" id="dContact"></div><div><div class="form-label">VALOR</div><input class="form-control" id="dValue" type="number" step="0.01"></div><div><div class="form-label">SERVIÇO</div><input class="form-control" id="dService"></div><div><div class="form-label">RESPONSÁVEL</div><select class="form-control" id="dOwner"><option value="admin123">Sócio A</option><option value="Gadmin123">Sócio B</option></select></div><div class="wide"><div class="form-label">PRÓXIMO PASSO</div><input class="form-control" id="dNext" placeholder="Ex.: pesquisar presença digital"></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveDeal">CRIAR VENDA</button>`);
+  document.getElementById('dOwner').value=CU.session.user;
+  document.getElementById('saveDeal').onclick=()=>{
+    const name=CU.v('dName'),contact=CU.v('dContact'),value=Number(document.getElementById('dValue').value),service=CU.v('dService'),owner=CU.v('dOwner'),next=CU.v('dNext');
+    if(!name||!contact||!value||!service||!next)return CU.toast('Preencha todos os campos.','err');
+    const d={id:CU.uid('O'),name,contact,stage:'pesquisa',value,owner,enteredAt:CU.today(),nextTitle:next,nextDue:CU.addDays(1),risk:false,source:'Manual',service,status:'open',history:[{text:'Venda criada',actor:CU.session.user,date:CU.today(),time:CU.nowTime()}]};
+    CU.state.deals.push(d);CU.state.actions.push({id:CU.uid('A'),title:next,due:CU.addDays(1),status:'open',owner,entityType:'deal',entityId:d.id});
+    CU.addEvent(`Nova venda · ${name}`);CU.saveState('deal.new');CU.closeModal();CU.state.ui.route='sales';CU.state.ui.context={type:'deal',id:d.id};CU.renderApp();CU.toast('Venda criada');
+  };
+};
+
+CU.chooseDealThen=action=>{
+  const opts=CU.openDeals().map(d=>`<option value="${d.id}">${CU.esc(d.name)} · ${CU.stageName(d.stage)}</option>`).join('');if(!opts)return CU.toast('Não há venda aberta.','err');
+  CU.openModal(action==='proposal'?'Criar proposta':'Registrar conversa',`<div class="field"><label>VENDA</label><select class="form-control" id="chooseDeal">${opts}</select></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="continueDeal">CONTINUAR</button>`);
+  document.getElementById('continueDeal').onclick=()=>{const id=CU.v('chooseDeal');CU.closeModal();setTimeout(()=>action==='proposal'?CU.proposalForm(id):CU.conversationForm(id),0)};
+};
+
+CU.actionForm=(entityType='general',entityId='')=>{
+  CU.openModal('Nova ação',`<div class="form-grid"><div class="wide"><div class="form-label">AÇÃO</div><input class="form-control" id="aTitle"></div><div><div class="form-label">PRAZO</div><input class="form-control" id="aDue" type="date" value="${CU.addDays(1)}"></div><div><div class="form-label">RESPONSÁVEL</div><select class="form-control" id="aOwner"><option value="admin123">Sócio A</option><option value="Gadmin123">Sócio B</option></select></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveAction">SALVAR</button>`);
+  document.getElementById('aOwner').value=CU.session.user;
+  document.getElementById('saveAction').onclick=()=>{
+    const title=CU.v('aTitle'),due=CU.v('aDue'),owner=CU.v('aOwner');if(!title||!due)return CU.toast('Informe ação e prazo.','err');
+    CU.state.actions.push({id:CU.uid('A'),title,due,status:'open',owner,entityType,entityId});CU.addEvent(`Ação criada · ${title}`);CU.saveState('action.new');CU.closeModal();CU.renderApp(false);CU.toast('Ação criada');
+  };
+};
+
+CU.toggleAction=id=>{
+  const a=CU.state.actions.find(x=>x.id===id);if(!a)return;a.status=a.status==='done'?'open':'done';CU.addEvent(`${a.status==='done'?'Ação concluída':'Ação reaberta'} · ${a.title}`);CU.saveState('action.toggle');CU.renderApp(false);if(CU.state.ui.context?.id===id)CU.renderContext();CU.toast(a.status==='done'?'Ação concluída':'Ação reaberta','info');
+};
+
+CU.conversationForm=id=>{
+  const d=CU.state.deals.find(x=>x.id===id);
+  CU.openModal(`Registrar conversa · ${d.name}`,`<div class="field"><label>RESUMO DA CONVERSA</label><textarea class="form-control" id="convSummary" placeholder="O que aconteceu?"></textarea></div><div class="form-grid"><div><div class="form-label">PRÓXIMO PASSO</div><input class="form-control" id="convNext" placeholder="Ex.: enviar proposta"></div><div><div class="form-label">DATA</div><input class="form-control" id="convDue" type="date" value="${CU.addDays(1)}"></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveConversation">SALVAR</button>`);
+  document.getElementById('saveConversation').onclick=()=>{
+    const summary=CU.v('convSummary'),next=CU.v('convNext'),due=CU.v('convDue');if(!summary)return CU.toast('Escreva um resumo da conversa.','err');
+    d.history.unshift({text:`Conversa: ${summary}`,actor:CU.session.user,date:CU.today(),time:CU.nowTime()});
+    if(next&&due){d.nextTitle=next;d.nextDue=due;CU.state.actions.push({id:CU.uid('A'),title:next,due,status:'open',owner:d.owner,entityType:'deal',entityId:d.id})}
+    CU.addEvent(`Conversa registrada · ${d.name}`);CU.saveState('conversation');CU.closeModal();CU.renderApp(false);CU.state.ui.context={type:'deal',id};CU.renderContext();CU.toast('Conversa registrada');
+  };
+};
+
+CU.proposalForm=id=>{
+  const d=CU.state.deals.find(x=>x.id===id),existing=CU.state.proposals.find(p=>p.dealId===id);
+  CU.openModal(`${existing?'Proposta':'Criar proposta'} · ${d.name}`,`<div class="form-grid"><div><div class="form-label">VALOR</div><input class="form-control" id="proposalValue" type="number" step="0.01" value="${existing?.value||d.value}"></div><div><div class="form-label">PRÓXIMO RETORNO</div><input class="form-control" id="proposalFollow" type="date" value="${existing?.followupDue||CU.addDays(2)}"></div><div class="wide"><div class="form-label">STATUS</div><select class="form-control" id="proposalStatus"><option value="draft">Rascunho</option><option value="sent" ${existing?.status==='sent'?'selected':''}>Enviada</option></select></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveProposal">SALVAR</button>`);
+  document.getElementById('saveProposal').onclick=()=>{
+    const value=Number(document.getElementById('proposalValue').value),follow=CU.v('proposalFollow'),status=CU.v('proposalStatus');if(!value||!follow)return CU.toast('Preencha valor e próximo retorno.','err');
+    if(existing){existing.value=value;existing.followupDue=follow;existing.status=status}else CU.state.proposals.push({id:CU.uid('PR'),dealId:id,value,status,createdAt:CU.today(),followupDue:follow});
+    d.value=value;d.nextTitle='Acompanhar proposta';d.nextDue=follow;if(!['proposta','decisao'].includes(d.stage)){d.stage='proposta';d.enteredAt=CU.today()}
+    d.history.unshift({text:`Proposta ${existing?'atualizada':'criada'} · ${CU.money(value)}`,actor:CU.session.user,date:CU.today(),time:CU.nowTime()});
+    CU.addEvent(`Proposta ${existing?'atualizada':'criada'} · ${d.name}`);CU.saveState('proposal');CU.closeModal();CU.renderApp(false);CU.state.ui.context={type:'deal',id};CU.renderContext();CU.toast('Proposta salva');
+  };
+};
+
+CU.requestAdvance=(id,target=null)=>{
+  const d=CU.state.deals.find(x=>x.id===id);if(!d||d.status!=='open')return;
+  const idx=CU.state.stages.findIndex(s=>s.id===d.stage),targetStage=target||CU.state.stages[idx+1]?.id;
+  if(!targetStage)return CU.toast('A venda já está na última etapa. Use a decisão comercial.','info');
+  if(CU.state.stages.findIndex(s=>s.id===targetStage)<=idx)return CU.moveDeal(d,targetStage,'Retorno manual');
+  const missing=CU.gateFor(d).filter(x=>!x.ok);
+  if(!missing.length)return CU.moveDeal(d,targetStage,'Gate atendido');
+  CU.openModal('Avançar com pendências',`<p class="muted">Faltam ${missing.length} item(ns). O gate é suave: você pode avançar, mas precisa registrar o motivo.</p><div class="gate-list">${missing.map(x=>`<div class="gate-item"><span class="gate-miss">!</span><span>${CU.esc(x.label)}</span></div>`).join('')}</div><div class="field"><label>MOTIVO DO OVERRIDE</label><textarea class="form-control" id="overrideReason"></textarea></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="confirmAdvance">AVANÇAR</button>`);
+  document.getElementById('confirmAdvance').onclick=()=>{const reason=CU.v('overrideReason');if(!reason)return CU.toast('Informe o motivo para avançar.','err');CU.moveDeal(d,targetStage,reason);CU.closeModal()};
+};
+CU.moveDeal=(d,target,reason)=>{
+  const old=d.stage;d.stage=target;d.enteredAt=CU.today();d.risk=false;d.history.unshift({text:`Etapa: ${CU.stageName(old)} → ${CU.stageName(target)} · ${reason}`,actor:CU.session.user,date:CU.today(),time:CU.nowTime()});
+  CU.addEvent(`${d.name} avançou para ${CU.stageName(target)}`);CU.saveState('deal.advance');CU.renderApp(false);CU.state.ui.context={type:'deal',id:d.id};CU.renderContext();CU.toast(`${d.name} → ${CU.stageName(target)}`);
+};
+
+CU.dealAction=(action,id)=>{
+  if(action==='conversation')CU.conversationForm(id);
+  if(action==='task')CU.actionForm('deal',id);
+  if(action==='proposal')CU.proposalForm(id);
+  if(action==='advance')CU.requestAdvance(id);
+};
+
+CU.dealFinal=(type,id)=>{
+  const d=CU.state.deals.find(x=>x.id===id);
+  if(type==='won'){
+    CU.openModal(`Venda ganha · ${d.name}`,`<p class="muted">Ganhou cria cliente, projeto e recebíveis. Não registra pagamento automaticamente.</p><div class="form-grid"><div><div class="form-label">VALOR FINAL</div><input class="form-control" id="wonValue" type="number" step="0.01" value="${d.value}"></div><div><div class="form-label">PARCELAS</div><input class="form-control" id="wonInstallments" type="number" min="1" max="24" value="2"></div><div><div class="form-label">CONDIÇÃO</div><input class="form-control" id="wonCondition" value="50% + 50%"></div><div><div class="form-label">INÍCIO PREVISTO</div><input class="form-control" id="wonStart" type="date" value="${CU.addDays(3)}"></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn success" id="saveWon">CONFIRMAR VENDA</button>`);
+    document.getElementById('saveWon').onclick=()=>CU.confirmWon(d);
+  }
+  if(type==='lost'){
+    CU.openModal(`Venda perdida · ${d.name}`,`<div class="field"><label>MOTIVO</label><textarea class="form-control" id="lostReason"></textarea></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn danger" id="saveLost">REGISTRAR PERDA</button>`);
+    document.getElementById('saveLost').onclick=()=>{const reason=CU.v('lostReason');if(!reason)return CU.toast('Informe o motivo.','err');d.status='lost';d.history.unshift({text:`Venda perdida · ${reason}`,actor:CU.session.user,date:CU.today(),time:CU.nowTime()});CU.addEvent(`Venda perdida · ${d.name}`);CU.saveState('deal.lost');CU.closeModal();CU.state.ui.context=null;CU.renderApp(false);CU.toast('Perda registrada','info')};
+  }
+  if(type==='later'){
+    CU.openModal(`Não agora · ${d.name}`,`<div class="form-grid"><div><div class="form-label">RETORNAR EM</div><input class="form-control" id="laterDate" type="date" value="${CU.addDays(30)}"></div><div class="wide"><div class="form-label">CONDIÇÃO / MOTIVO</div><textarea class="form-control" id="laterReason"></textarea></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn warn" id="saveLater">AGENDAR RETORNO</button>`);
+    document.getElementById('saveLater').onclick=()=>{const date=CU.v('laterDate'),reason=CU.v('laterReason');if(!date||!reason)return CU.toast('Informe data e condição de retorno.','err');d.status='later';d.history.unshift({text:`Não agora · ${reason}`,actor:CU.session.user,date:CU.today(),time:CU.nowTime()});CU.state.actions.push({id:CU.uid('A'),title:`Retomar ${d.name}`,due:date,status:'open',owner:d.owner,entityType:'deal',entityId:d.id});CU.addEvent(`Venda marcada para retorno · ${d.name}`);CU.saveState('deal.later');CU.closeModal();CU.state.ui.context=null;CU.renderApp(false);CU.toast('Retorno agendado')};
+  }
+};
+
+CU.confirmWon=d=>{
+  const value=Number(document.getElementById('wonValue').value),n=Math.max(1,Number(document.getElementById('wonInstallments').value)||1),condition=CU.v('wonCondition'),start=CU.v('wonStart');
+  if(!value||!condition||!start)return CU.toast('Preencha os campos da venda ganha.','err');
+  d.value=value;d.status='won';d.history.unshift({text:`Venda ganha · ${CU.money(value)} · ${condition}`,actor:CU.session.user,date:CU.today(),time:CU.nowTime()});
+  let c=CU.state.clients.find(c=>c.name.toLowerCase()===d.name.toLowerCase());
+  if(!c){c={id:CU.uid('C'),name:d.name,contact:d.contact,role:'Contato principal',phone:'',email:'',service:d.service,owner:d.owner,status:'active'};CU.state.clients.push(c)}
+  const p={id:CU.uid('P'),clientId:c.id,name:d.service,status:'planned',progress:0,due:CU.addDays(14),blockedReason:''};CU.state.projects.push(p);
+  const base=Math.floor((value/n)*100)/100;let created=0;
+  for(let i=1;i<=n;i++){const amount=i===n?Number((value-created).toFixed(2)):base;created=Number((created+amount).toFixed(2));CU.state.receivables.push({id:CU.uid('R'),clientId:c.id,dealId:d.id,projectId:p.id,description:`Parcela ${i}/${n} · ${d.name}`,amount,due:CU.addDays((i-1)*30),status:'open'})}
+  CU.addEvent(`Venda ganha · ${d.name} · ${CU.money(value)}`);CU.saveState('deal.won');CU.closeModal();CU.state.ui.route='clients';CU.state.ui.context={type:'client',id:c.id};CU.renderApp();CU.toast('Venda confirmada. Cliente, projeto e recebíveis criados.');
+};
+
+CU.paymentForm=(receivableId='')=>{
+  const open=CU.state.receivables.filter(r=>CU.remainingReceivable(r)>0&&r.status!=='cancelled');if(!open.length)return CU.toast('Não há valor a receber em aberto.','info');
+  CU.openModal('Registrar pagamento',`<div class="form-grid"><div class="wide"><div class="form-label">VALOR A RECEBER</div><select class="form-control" id="payRec">${open.map(r=>`<option value="${r.id}" ${r.id===receivableId?'selected':''}>${CU.esc(CU.clientName(r.clientId))} · ${CU.esc(r.description)} · saldo ${CU.money(CU.remainingReceivable(r))}</option>`).join('')}</select></div><div><div class="form-label">VALOR RECEBIDO</div><input class="form-control" id="payAmount" type="number" step="0.01"></div><div><div class="form-label">DATA</div><input class="form-control" id="payDate" type="date" value="${CU.today()}"></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn success" id="savePayment">REGISTRAR</button>`);
+  const sel=document.getElementById('payRec'),amount=document.getElementById('payAmount'),sync=()=>amount.value=CU.remainingReceivable(CU.state.receivables.find(r=>r.id===sel.value)).toFixed(2);sel.onchange=sync;sync();
+  document.getElementById('savePayment').onclick=()=>{const rid=CU.v('payRec'),amt=Number(document.getElementById('payAmount').value),date=CU.v('payDate'),r=CU.state.receivables.find(x=>x.id===rid),rem=CU.remainingReceivable(r);if(!amt||amt<=0||amt>rem+.001)return CU.toast(`Valor deve ser entre R$ 0,01 e ${CU.money(rem)}.`,'err');CU.state.payments.push({id:CU.uid('PAY'),receivableId:rid,amount:amt,date,type:'received'});CU.addEvent(`Pagamento recebido · ${CU.clientName(r.clientId)} · ${CU.money(amt)}`);CU.saveState('payment');CU.closeModal();CU.state.ui.route='finance';CU.state.ui.financeView='overview';CU.renderApp();CU.toast('Pagamento registrado')};
+};
+
+CU.expenseForm=()=>{
+  CU.openModal('Nova despesa',`<div class="form-grid"><div class="wide"><div class="form-label">DESCRIÇÃO</div><input class="form-control" id="eDesc"></div><div><div class="form-label">CATEGORIA</div><select class="form-control" id="eCat">${CU.state.budgets.categories.map(c=>`<option>${CU.esc(c.name)}</option>`).join('')}</select></div><div><div class="form-label">TIPO</div><select class="form-control" id="eKind"><option value="fixed">Fixa / recorrente</option><option value="variable">Variável</option><option value="one">Única</option></select></div><div><div class="form-label">VALOR</div><input class="form-control" id="eAmount" type="number" step="0.01"></div><div><div class="form-label">VENCIMENTO</div><input class="form-control" id="eDue" type="date" value="${CU.addDays(5)}"></div><div><div class="form-label">FORNECEDOR</div><input class="form-control" id="eSupplier"></div><div><div class="form-label">SITUAÇÃO</div><select class="form-control" id="eStatus"><option value="open">A pagar</option><option value="paid">Já paga</option></select></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveExpense">SALVAR</button>`);
+  document.getElementById('saveExpense').onclick=()=>{const description=CU.v('eDesc'),category=CU.v('eCat'),kind=CU.v('eKind'),amount=Number(document.getElementById('eAmount').value),due=CU.v('eDue'),supplier=CU.v('eSupplier'),status=CU.v('eStatus');if(!description||!amount||!due)return CU.toast('Preencha descrição, valor e vencimento.','err');CU.state.expenses.push({id:CU.uid('E'),description,category,kind,amount,due,supplier,status,paidAt:status==='paid'?CU.today():null});CU.addEvent(`Despesa registrada · ${description} · ${CU.money(amount)}`);CU.saveState('expense');CU.closeModal();CU.state.ui.route='finance';CU.state.ui.financeView='expenses';CU.renderApp();CU.toast('Despesa registrada')};
+};
+
+CU.projectForm=()=>{
+  if(!CU.state.clients.length)return CU.toast('Cadastre ou converta um cliente antes.','err');
+  CU.openModal('Novo projeto',`<div class="form-grid"><div class="wide"><div class="form-label">CLIENTE</div><select class="form-control" id="pjClient">${CU.state.clients.map(c=>`<option value="${c.id}">${CU.esc(c.name)}</option>`).join('')}</select></div><div class="wide"><div class="form-label">PROJETO</div><input class="form-control" id="pjName"></div><div><div class="form-label">PRAZO</div><input class="form-control" id="pjDue" type="date" value="${CU.addDays(14)}"></div><div><div class="form-label">STATUS</div><select class="form-control" id="pjStatus"><option value="planned">Planejado</option><option value="doing">Em andamento</option></select></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveProject">SALVAR</button>`);
+  document.getElementById('saveProject').onclick=()=>{const clientId=CU.v('pjClient'),name=CU.v('pjName'),due=CU.v('pjDue'),status=CU.v('pjStatus');if(!name||!due)return CU.toast('Informe projeto e prazo.','err');CU.state.projects.push({id:CU.uid('P'),clientId,name,status,progress:0,due,blockedReason:''});CU.addEvent(`Projeto criado · ${CU.clientName(clientId)} · ${name}`);CU.saveState('project');CU.closeModal();CU.state.ui.route='work';CU.state.ui.workView='projects';CU.renderApp();CU.toast('Projeto criado')};
+};
+
+CU.markExpensePaid=id=>{const e=CU.state.expenses.find(x=>x.id===id);if(!e||e.paidAt)return CU.toast('Despesa já está paga.','info');e.status='paid';e.paidAt=CU.today();CU.addEvent(`Despesa paga · ${e.description} · ${CU.money(e.amount)}`);CU.saveState('expense.paid');CU.renderApp(false);CU.toast('Despesa marcada como paga')};
+CU.editBudget=cat=>{const c=CU.state.budgets.categories.find(x=>x.name===cat);CU.openModal(`Orçamento · ${cat}`,`<div class="field"><label>PLANEJADO PARA O MÊS</label><input class="form-control" id="budgetValue" type="number" step="0.01" value="${c.planned}"></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveBudget">SALVAR</button>`);document.getElementById('saveBudget').onclick=()=>{const n=Number(document.getElementById('budgetValue').value);if(n<0)return CU.toast('Valor inválido.','err');c.planned=n;CU.saveState('budget');CU.closeModal();CU.renderApp(false);CU.toast('Orçamento atualizado')}};
+CU.setOpeningBalance=()=>{CU.openModal('Definir saldo inicial registrado',`<p class="muted">Use um saldo que você realmente conferiu. O laboratório não consulta banco.</p><div class="field"><label>SALDO INICIAL</label><input class="form-control" id="openingBalance" type="number" step="0.01" value="${CU.state.meta.openingBalance??''}"></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveBalance">SALVAR</button>`);document.getElementById('saveBalance').onclick=()=>{const n=Number(document.getElementById('openingBalance').value);if(Number.isNaN(n))return CU.toast('Informe um valor válido.','err');CU.state.meta.openingBalance=n;CU.saveState('opening.balance');CU.closeModal();CU.renderApp(false);CU.toast('Saldo inicial registrado')}};
+
+})();
+
+
+(() => {
+'use strict';
+const CU=window.CU;
+CU.stageMetrics=stage=>{const ds=CU.openDeals().filter(d=>d.stage===stage);return{count:ds.length,value:ds.reduce((a,d)=>a+Number(d.value),0),avg:ds.length?Math.round(ds.reduce((a,d)=>a+CU.dealAge(d),0)/ds.length):0,attention:ds.filter(d=>d.risk||d.nextDue<CU.today()).length}};
+CU.salesFunnelView=()=>{
+  const f=CU.state.ui.filters;
+  const deals=CU.openDeals().filter(d=>(f.owner==='all'||d.owner===f.owner)&&(f.stage==='all'||d.stage===f.stage)&&(f.risk==='all'||(f.risk==='risk'?d.risk:!d.risk))&&(f.service==='all'||d.service===f.service)&&(f.next==='all'||(f.next==='late'?d.nextDue<CU.today():f.next==='today'?d.nextDue===CU.today():true)));
+  const services=[...new Set(CU.state.deals.map(d=>d.service))];
+  return `<div class="sales-toolbar">
+  <select class="filter" data-filter="owner"><option value="all">Todos responsáveis</option><option value="admin123" ${f.owner==='admin123'?'selected':''}>Sócio A</option><option value="Gadmin123" ${f.owner==='Gadmin123'?'selected':''}>Sócio B</option></select>
+  <select class="filter" data-filter="stage"><option value="all">Todas etapas</option>${CU.state.stages.map(s=>`<option value="${s.id}" ${f.stage===s.id?'selected':''}>${s.name}</option>`).join('')}</select>
+  <select class="filter" data-filter="risk"><option value="all">Todo risco</option><option value="risk" ${f.risk==='risk'?'selected':''}>Com atenção</option><option value="ok" ${f.risk==='ok'?'selected':''}>Sem atenção</option></select>
+  <select class="filter" data-filter="service"><option value="all">Todos serviços</option>${services.map(s=>`<option ${f.service===s?'selected':''}>${CU.esc(s)}</option>`).join('')}</select>
+  <select class="filter" data-filter="next"><option value="all">Todo próximo passo</option><option value="today" ${f.next==='today'?'selected':''}>Hoje</option><option value="late" ${f.next==='late'?'selected':''}>Vencido</option></select></div>
+  <div class="funnel-wrap"><div class="funnel">${CU.state.stages.map(s=>{const m=CU.stageMetrics(s.id);return `<div class="stage" data-stage="${s.id}"><div class="stage-head"><b>${CU.esc(s.name.toUpperCase())}</b><span>${deals.filter(d=>d.stage===s.id).length}</span><div class="stage-stats"><div>VALOR <strong>${CU.money(m.value)}</strong></div><div>MÉDIA <strong>${m.avg}d</strong></div><div>ATENÇÃO <strong class="${m.attention?'red':''}">${m.attention}</strong></div><div>TOTAL <strong>${m.count}</strong></div></div></div><div class="deal-list">${deals.filter(d=>d.stage===s.id).map(CU.dealCard).join('')}</div></div>`}).join('')}</div></div>`;
+};
+CU.salesFollowView=()=>{
+  const rows=CU.openDeals().filter(d=>d.nextTitle&&d.nextDue).sort((a,b)=>a.nextDue.localeCompare(b.nextDue));
+  return `<div class="panel"><div class="panel-head"><b>PRÓXIMOS PASSOS</b><span>${rows.length}</span></div><div class="panel-body"><div class="follow-list">${rows.map(d=>{const cls=d.nextDue<CU.today()?'overdue':d.nextDue===CU.today()?'today':'';return `<div class="follow-card ${cls}"><div><h3>${CU.esc(d.name)} <span class="operator-chip">${CU.ownerName(d.owner)}</span></h3><p>${CU.esc(d.nextTitle)} · ${CU.fmtDate(d.nextDue)}</p><p>${CU.stageName(d.stage)} · ${CU.money(d.value)} · ${CU.dealAge(d)} dia(s) na etapa</p></div><div class="follow-actions"><button class="btn sm" data-open-entity="${d.id}" data-type="deal">ABRIR</button><button class="btn sm primary" data-v103-conversation="${d.id}">REGISTRAR CONVERSA</button></div></div>`}).join('')||'<div class="muted">Nenhum próximo passo aberto.</div>'}</div></div></div>`;
+};
+CU.salesProposalView=()=>{
+  const rows=CU.state.proposals.filter(p=>['draft','sent'].includes(p.status)).sort((a,b)=>a.followupDue.localeCompare(b.followupDue));
+  return `<div class="proposal-grid">${rows.map(p=>{const d=CU.state.deals.find(d=>d.id===p.dealId);return `<article class="proposal-card" data-open-entity="${d?.id||''}" data-type="deal"><h3>${CU.esc(d?.name||'Venda removida')}</h3><div class="value">${CU.money(p.value)}</div><div class="proposal-meta"><span>${p.status==='sent'?'ENVIADA':'RASCUNHO'}</span><span>retorno ${CU.fmtDate(p.followupDue)}</span></div><div class="proposal-meta"><span>${d?CU.ownerName(d.owner):'—'}</span><span>${d?CU.stageName(d.stage):'—'}</span></div></article>`}).join('')||'<div class="muted">Nenhuma proposta aberta.</div>'}</div>`;
+};
+CU.sceneSales=()=>{
+  const view=CU.state.ui.salesView||'funnel';
+  return `<section class="scene"><div class="scene-head"><div><div class="eyebrow">VENDAS / CRM COMERCIAL</div><h1>Vendas</h1><div class="scene-sub">Funil, acompanhamentos e propostas usam a mesma fonte de verdade. A tela troca de visão sem abrir várias áreas simultâneas.</div></div><div class="head-actions"><button class="btn" id="newProspectBtn">+ POSSÍVEL CLIENTE</button><button class="btn primary" id="newDealBtn">+ NOVA VENDA</button></div></div>
+  <div class="kpis"><div class="kpi" style="--c:var(--blue)"><label>VENDAS ABERTAS</label><strong>${CU.openDeals().length}</strong><small>em andamento</small></div><div class="kpi" style="--c:var(--blue)"><label>VALOR EM ANDAMENTO</label><strong>${CU.money(CU.openDeals().reduce((a,d)=>a+Number(d.value),0))}</strong><small>potencial, não caixa</small></div><div class="kpi" style="--c:var(--purple)"><label>PROPOSTAS ABERTAS</label><strong>${CU.proposalsOpen().length}</strong><small>retorno pendente</small></div><div class="kpi" style="--c:var(--red)"><label>PRECISAM DE ATENÇÃO</label><strong>${CU.openDeals().filter(d=>d.risk||d.nextDue<CU.today()).length}</strong><small>risco ou prazo vencido</small></div></div>
+  <div class="panel" style="margin-bottom:9px"><div class="panel-head"><b>POSSÍVEIS CLIENTES</b><span>${CU.state.prospects.length}</span></div><div class="panel-body"><div class="prospect-strip">${CU.state.prospects.map(p=>`<div class="prospect-card"><b>${CU.esc(p.name)}</b><p>${CU.esc(p.contact)} · ${CU.esc(p.channel)}</p><p>${CU.esc(p.next)}</p><div class="actions"><button class="btn sm primary" data-prospect-qualify="${p.id}">QUALIFICAR</button><button class="btn sm ghost" data-prospect-action="${p.id}">NOVA AÇÃO</button></div></div>`).join('')}</div></div></div>
+  <div class="subnav"><button class="seg-btn ${view==='funnel'?'active':''}" data-sales-view="funnel">FUNIL</button><button class="seg-btn ${view==='follow'?'active':''}" data-sales-view="follow">ACOMPANHAMENTOS</button><button class="seg-btn ${view==='proposals'?'active':''}" data-sales-view="proposals">PROPOSTAS</button></div>
+  ${view==='follow'?CU.salesFollowView():view==='proposals'?CU.salesProposalView():CU.salesFunnelView()}</section>`;
+};
+})();
+
+(() => {
+'use strict';
+const CU=window.CU;
+const oldFinanceView=CU.financeView;
+CU.financeClosing=()=>{
+  CU.ensureV103State();const month=CU.state.meta.financeMonth||CU.month(),c=CU.state.monthClosures[month];
+  const items=[
+    ['payments','Pagamentos recebidos conferidos','Comparar os recebimentos cadastrados com os comprovantes/controle real.'],
+    ['expenses','Despesas pagas conferidas','Confirmar que o que foi pago no mês está registrado.'],
+    ['overdue','Atrasos revisados','Olhar valores a receber e a pagar vencidos e definir próximo passo.'],
+    ['recurrence','Recorrências conferidas','Separar infraestrutura recorrente de serviço recorrente.'],
+    ['budget','Orçamento comparado','Revisar planejado x realizado antes de virar o mês.'],
+    ['nextMonth','Próximo mês revisado','Conferir compromissos e recebimentos previstos do próximo período.']
+  ];
+  const complete=items.every(([k])=>c.items[k]);
+  return `<div class="grid"><div class="panel s8"><div class="panel-head"><b>FECHAMENTO OPERACIONAL · ${month}</b><span>${complete?'PRONTO':'EM REVISÃO'}</span></div><div class="panel-body"><div class="close-list">${items.map(([k,t,d])=>`<div class="close-item ${c.items[k]?'done':''}"><button class="close-check" data-close-item="${k}">${c.items[k]?'✓':''}</button><div><b>${t}</b><p>${d}</p></div><span class="close-status">${c.items[k]?'CONFERIDO':'PENDENTE'}</span></div>`).join('')}</div></div></div><div class="panel s4"><div class="panel-head"><b>STATUS</b></div><div class="panel-body">${c.closedAt?`<div class="pill green">FECHADO</div><div class="ctx-row"><span>Data</span><strong>${CU.fmtDate(c.closedAt)}</strong></div><div class="ctx-row"><span>Por</span><strong>${CU.ownerName(c.closedBy)}</strong></div><button class="btn ghost" data-reopen-close style="margin-top:8px">REABRIR CONFERÊNCIA</button>`:`<p class="muted" style="font-size:10px;line-height:1.55">Fechamento operacional é um checklist de organização. Não é fechamento contábil.</p><button class="btn primary" data-finalize-close ${complete?'':'disabled'}>CONCLUIR FECHAMENTO</button>`}</div></div></div>`;
+};
+CU.financeView=(view,fm)=>view==='closing'?CU.financeClosing():oldFinanceView(view,fm);
+CU.sceneFinance=()=>{
+  CU.ensureV103State();const view=CU.state.ui.financeView||'overview',fm=CU.financeMetrics();
+  const tabs=[['overview','VISÃO GERAL'],['receive','RECEBER'],['pay','PAGAR'],['expenses','DESPESAS'],['budget','ORÇAMENTO'],['recurrence','RECORRÊNCIA'],['cashflow','FLUXO DE CAIXA'],['calendar','CALENDÁRIO'],['closing','FECHAMENTO']];
+  return `<section class="scene"><div class="scene-head"><div><div class="eyebrow">FINANCEIRO / ORGANIZAÇÃO OPERACIONAL</div><h1>Financeiro</h1><div class="scene-sub">Recebimentos, contas, orçamento, recorrência e fechamento operacional. Não substitui contabilidade.</div></div><div class="head-actions"><button class="btn" id="newExpenseBtn">+ DESPESA</button><button class="btn primary" id="registerPaymentBtn">+ PAGAMENTO</button></div></div><div class="finance-hero"><div class="fin-card"><label>RECEBIDO NO MÊS</label><strong class="green">${CU.money(fm.received)}</strong><small>pagamentos - estornos</small></div><div class="fin-card"><label>A RECEBER</label><strong>${CU.money(fm.toReceive)}</strong><small>a vencer / hoje</small></div><div class="fin-card"><label>ATRASADO</label><strong class="${fm.late?'red':''}">${CU.money(fm.late)}</strong><small>saldo vencido</small></div><div class="fin-card"><label>DESPESAS PAGAS</label><strong>${CU.money(fm.expensesPaid)}</strong><small>mês atual</small></div><div class="fin-card"><label>A PAGAR</label><strong>${CU.money(fm.toPay)}</strong><small>inclui vencidas</small></div><div class="fin-card"><label>RECORRÊNCIA ATIVA</label><strong class="cyan">${CU.money(fm.recurring)}/m</strong><small>infra + serviço</small></div></div><div class="finance-tabs">${tabs.map(([k,n])=>`<button class="seg-btn ${view===k?'active':''}" data-finance-view="${k}">${n}</button>`).join('')}</div>${CU.financeView(view,fm)}</section>`;
+};
+})();
+
+(() => {
+'use strict';
+const CU=window.CU;
+const baseContext=CU.contextHTML;
+CU.contextHTML=()=>{
+  const c=CU.state.ui.context;
+  if(c?.type==='client'){
+    const x=CU.state.clients.find(v=>v.id===c.id);if(!x)return'<div class="ctx-empty">Cliente não encontrado.</div>';
+    const ps=CU.state.projects.filter(p=>p.clientId===x.id),rs=CU.state.receivables.filter(r=>r.clientId===x.id),notes=CU.state.clientNotes.filter(n=>n.clientId===x.id).sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
+    return `<div class="ctx-kicker">CLIENTE 360</div><div class="ctx-title">${CU.esc(x.name)}</div><div class="ctx-sub">${CU.esc(x.contact)} · ${CU.esc(x.service)}</div><div class="ctx-section"><div class="ctx-row"><span>Responsável</span><strong>${CU.ownerName(x.owner)}</strong></div><div class="ctx-row"><span>Telefone</span><strong>${CU.esc(x.phone||'—')}</strong></div><div class="ctx-row"><span>E-mail</span><strong>${CU.esc(x.email||'—')}</strong></div><div class="context-actions"><button class="btn" data-edit-client="${x.id}">EDITAR CONTATO</button><button class="btn primary" data-client-action="${x.id}">NOVA AÇÃO</button></div></div><details class="accordion" open><summary>Projetos <span>${ps.length}</span></summary><div class="accordion-content">${ps.map(p=>`${CU.esc(p.name)} · ${p.progress}% · ${CU.fmtDate(p.due)}`).join('<br>')||'Sem projeto.'}</div></details><details class="accordion"><summary>Financeiro <span>${CU.money(rs.reduce((a,r)=>a+CU.remainingReceivable(r),0))}</span></summary><div class="accordion-content">${rs.map(r=>`${CU.esc(r.description)} · saldo ${CU.money(CU.remainingReceivable(r))}`).join('<br>')||'Sem recebíveis.'}</div></details><details class="accordion"><summary>Notas <span>${notes.length}</span></summary><div class="accordion-content"><button class="btn sm" data-add-note="${x.id}">+ NOTA</button>${notes.map(n=>`<div class="note-card"><b>${CU.ownerName(n.actor)} · ${CU.fmtDate(n.createdAt)}</b><p>${CU.esc(n.text)}</p></div>`).join('')||'<p>Sem notas.</p>'}</div></details>`;
+  }
+  if(c?.type==='project'){
+    const p=CU.state.projects.find(x=>x.id===c.id);if(!p)return'<div class="ctx-empty">Projeto não encontrado.</div>';
+    return `<div class="ctx-kicker">PROJETO 360</div><div class="ctx-title">${CU.esc(p.name)}</div><div class="ctx-sub">${CU.esc(CU.clientName(p.clientId))}</div><div class="ctx-section"><div class="ctx-row"><span>Status</span><strong>${CU.esc(p.status)}</strong></div><div class="ctx-row"><span>Progresso</span><strong>${p.progress}%</strong></div><div class="ctx-row"><span>Prazo</span><strong>${CU.fmtDate(p.due)}</strong></div>${p.blockedReason?`<div class="ctx-row"><span>Bloqueio</span><strong class="yellow">${CU.esc(p.blockedReason)}</strong></div>`:''}<div class="context-actions"><button class="btn" data-update-project="${p.id}">ATUALIZAR</button><button class="btn primary" data-project-action="${p.id}">NOVA AÇÃO</button></div></div><details class="accordion"><summary>Processo aplicado <span>${p.processSnapshot?'1':'0'}</span></summary><div class="accordion-content">${p.processSnapshot?CU.esc(p.processSnapshot.name):'Nenhum processo aplicado neste laboratório.'}</div></details>`;
+  }
+  return baseContext();
+};
+
+CU.editClient=id=>{const c=CU.state.clients.find(x=>x.id===id);CU.openModal(`Editar cliente · ${c.name}`,`<div class="form-grid"><div><div class="form-label">CONTATO</div><input class="form-control" id="ecContact" value="${CU.esc(c.contact)}"></div><div><div class="form-label">FUNÇÃO</div><input class="form-control" id="ecRole" value="${CU.esc(c.role||'')}"></div><div><div class="form-label">TELEFONE</div><input class="form-control" id="ecPhone" value="${CU.esc(c.phone||'')}"></div><div><div class="form-label">E-MAIL</div><input class="form-control" id="ecEmail" value="${CU.esc(c.email||'')}"></div><div><div class="form-label">RESPONSÁVEL</div><select class="form-control" id="ecOwner"><option value="admin123">Sócio A</option><option value="Gadmin123">Sócio B</option></select></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveClientEdit">SALVAR</button>`);document.getElementById('ecOwner').value=c.owner;document.getElementById('saveClientEdit').onclick=()=>{c.contact=CU.v('ecContact');c.role=CU.v('ecRole');c.phone=CU.v('ecPhone');c.email=CU.v('ecEmail');c.owner=CU.v('ecOwner');CU.addEvent(`Cliente atualizado · ${c.name}`);CU.saveState('client.edit');CU.closeModal();CU.renderApp(false);CU.state.ui.context={type:'client',id};CU.renderContext();CU.toast('Cliente atualizado')}};
+CU.addClientNote=id=>{const c=CU.state.clients.find(x=>x.id===id);CU.openModal(`Nova nota · ${c.name}`,`<div class="field"><label>NOTA INTERNA</label><textarea class="form-control" id="clientNote" placeholder="Contexto que vale preservar no CRM."></textarea></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveClientNote">SALVAR NOTA</button>`);document.getElementById('saveClientNote').onclick=()=>{const text=CU.v('clientNote');if(!text)return CU.toast('Escreva a nota.','err');CU.state.clientNotes.push({id:CU.uid('N'),clientId:id,text,actor:CU.session.user,createdAt:CU.today()});CU.addEvent(`Nota adicionada · ${c.name}`);CU.saveState('client.note');CU.closeModal();CU.renderContext();CU.toast('Nota salva')}};
+CU.updateProject=id=>{const p=CU.state.projects.find(x=>x.id===id);CU.openModal(`Atualizar projeto · ${CU.clientName(p.clientId)}`,`<div class="form-grid"><div><div class="form-label">STATUS</div><select class="form-control" id="upStatus"><option value="planned">Planejado</option><option value="doing">Em andamento</option><option value="waiting">Aguardando cliente</option><option value="blocked">Bloqueado</option><option value="done">Entregue</option></select></div><div><div class="form-label">PROGRESSO %</div><input class="form-control" id="upProgress" type="number" min="0" max="100" value="${p.progress}"></div><div><div class="form-label">PRAZO</div><input class="form-control" id="upDue" type="date" value="${p.due}"></div><div class="wide"><div class="form-label">BLOQUEIO / OBSERVAÇÃO</div><textarea class="form-control" id="upBlock">${CU.esc(p.blockedReason||'')}</textarea></div></div>`,`<button class="btn" data-close-modal>CANCELAR</button><button class="btn primary" id="saveProjectUpdate">SALVAR</button>`);document.getElementById('upStatus').value=p.status;document.getElementById('saveProjectUpdate').onclick=()=>{p.status=CU.v('upStatus');p.progress=Math.max(0,Math.min(100,Number(document.getElementById('upProgress').value)||0));p.due=CU.v('upDue');p.blockedReason=CU.v('upBlock');CU.addEvent(`Projeto atualizado · ${CU.projectName(p)}`);CU.saveState('project.update');CU.closeModal();CU.renderApp(false);CU.state.ui.context={type:'project',id};CU.renderContext();CU.toast('Projeto atualizado')}};
+
+document.addEventListener('click',e=>{
+  const sv=e.target.closest('[data-sales-view]');if(sv){CU.state.ui.salesView=sv.dataset.salesView;CU.saveState('sales.view');CU.renderScene();CU.bindScene();return}
+  const conv=e.target.closest('[data-v103-conversation]');if(conv){CU.conversationForm(conv.dataset.v103Conversation);return}
+  const ec=e.target.closest('[data-edit-client]');if(ec){CU.editClient(ec.dataset.editClient);return}
+  const note=e.target.closest('[data-add-note]');if(note){CU.addClientNote(note.dataset.addNote);return}
+  const up=e.target.closest('[data-update-project]');if(up){CU.updateProject(up.dataset.updateProject);return}
+  const ci=e.target.closest('[data-close-item]');if(ci){CU.ensureV103State();const m=CU.state.meta.financeMonth||CU.month(),c=CU.state.monthClosures[m];c.items[ci.dataset.closeItem]=!c.items[ci.dataset.closeItem];c.closedAt=null;c.closedBy=null;CU.saveState('month.close.item');CU.renderScene();CU.bindScene();return}
+  if(e.target.closest('[data-finalize-close]')){CU.ensureV103State();const m=CU.state.meta.financeMonth||CU.month(),c=CU.state.monthClosures[m];if(!Object.values(c.items).every(Boolean))return CU.toast('Conclua os itens antes de fechar.','err');c.closedAt=CU.today();c.closedBy=CU.session.user;CU.addEvent(`Fechamento operacional concluído · ${m}`);CU.saveState('month.close');CU.renderScene();CU.bindScene();CU.toast('Fechamento operacional concluído');return}
+  if(e.target.closest('[data-reopen-close]')){CU.ensureV103State();const m=CU.state.meta.financeMonth||CU.month(),c=CU.state.monthClosures[m];c.closedAt=null;c.closedBy=null;CU.saveState('month.reopen');CU.renderScene();CU.bindScene();CU.toast('Fechamento reaberto','info');return}
+});
+})();
+
+
+(() => {
+'use strict';
+const CU=window.CU;
+
+CU.stageMetricsV104=stage=>{
+  const ds=CU.openDeals().filter(d=>d.stage===stage);
+  return{
+    count:ds.length,
+    value:ds.reduce((a,d)=>a+Number(d.value),0),
+    avg:ds.length?Math.round(ds.reduce((a,d)=>a+CU.dealAge(d),0)/ds.length):null,
+    attention:ds.filter(CU.hasAttention).length
+  };
+};
+
+CU.dealCardV104=(d,mobile=false)=>{
+  const task=CU.nextActionOf(d);
+  const bucket=CU.nextActionBucket(d);
+  const dueText=!task?'Sem próximo passo':task.due===CU.today()?'Hoje':task.due<CU.today()?`Vencido · ${CU.fmtDate(task.due)}`:CU.fmtDate(task.due);
+  const status=!task?'SEM PRÓXIMO PASSO':bucket==='overdue'?'VENCIDO':d.risk?'ATENÇÃO':'OK';
+  const statusClass=!task?'purple':bucket==='overdue'?'red':d.risk?'yellow':'green';
+  return `<article class="deal ${CU.hasAttention(d)?'risk':''}" ${mobile?'':'draggable="true"'} data-open-entity="${d.id}" data-type="deal">
+    <div class="deal-top">
+      <div class="deal-name">${CU.esc(d.name)}</div>
+      <div class="deal-value">${CU.money(d.value)}</div>
+    </div>
+    <div class="deal-contact">${CU.esc(d.contact)} · ${CU.esc(d.service||'Serviço não definido')}</div>
+    <div class="deal-stage">${CU.esc(CU.stageName(d.stage))} · ${CU.dealAge(d)} dia(s)</div>
+    <div class="deal-next-label">Próximo passo</div>
+    <div class="deal-next">${task?CU.esc(task.title):'Definir próximo passo'}</div>
+    <div class="deal-next-date">${CU.esc(dueText)}</div>
+    <div class="deal-foot">
+      <span>${CU.ownerName(d.owner)}</span>
+      <span class="deal-status ${statusClass}">${status}</span>
+    </div>
+  </article>`;
+};
+
+CU.salesFiltersV104=()=>{
+  const f=CU.state.ui.filters,services=[...new Set(CU.state.deals.map(d=>d.service).filter(Boolean))];
+  return `<div class="sales-toolbar">
+    <select class="filter" data-filter="owner"><option value="all">Todos responsáveis</option><option value="admin123" ${f.owner==='admin123'?'selected':''}>Sócio A</option><option value="Gadmin123" ${f.owner==='Gadmin123'?'selected':''}>Sócio B</option></select>
+    <select class="filter" data-filter="stage"><option value="all">Todas etapas</option>${CU.state.stages.map(s=>`<option value="${s.id}" ${f.stage===s.id?'selected':''}>${CU.esc(s.name)}</option>`).join('')}</select>
+    <select class="filter" data-filter="risk"><option value="all">Toda atenção</option><option value="risk" ${f.risk==='risk'?'selected':''}>Precisa de atenção</option><option value="ok" ${f.risk==='ok'?'selected':''}>Sem atenção</option></select>
+    <select class="filter" data-filter="service"><option value="all">Todos serviços</option>${services.map(s=>`<option value="${CU.esc(s)}" ${f.service===s?'selected':''}>${CU.esc(s)}</option>`).join('')}</select>
+    <select class="filter" data-filter="next"><option value="all">Todo próximo passo</option><option value="today" ${f.next==='today'?'selected':''}>Hoje</option><option value="late" ${f.next==='late'?'selected':''}>Vencido</option></select>
+  </div>`;
+};
+
+CU.filteredDealsV104=()=>{
+  const f=CU.state.ui.filters;
+  return CU.openDeals().filter(d=>{
+    const task=CU.nextActionOf(d);
+    const risk=CU.hasAttention(d);
+    return (f.owner==='all'||d.owner===f.owner)
+      &&(f.stage==='all'||d.stage===f.stage)
+      &&(f.risk==='all'||(f.risk==='risk'?risk:!risk))
+      &&(f.service==='all'||d.service===f.service)
+      &&(f.next==='all'||(f.next==='late'?(task&&task.due<CU.today()):f.next==='today'?(task&&task.due===CU.today()):true));
+  });
+};
+
+CU.salesFunnelDesktopV104=deals=>`<div class="funnel-desktop">
+  <div class="funnel-wrap"><div class="funnel">${CU.state.stages.map(s=>{
+    const m=CU.stageMetricsV104(s.id),visible=deals.filter(d=>d.stage===s.id);
+    return `<section class="stage" data-stage="${s.id}">
+      <div class="stage-head">
+        <div class="stage-title-row"><div class="stage-name">${CU.esc(s.name)}</div><div class="stage-count">${visible.length}</div></div>
+        <div class="stage-summary">
+          <div class="stage-metric"><span>Potencial atual</span><strong>${CU.money(m.value)}</strong></div>
+          <div class="stage-metric"><span>Média no laboratório</span><strong>${m.avg===null?'—':`${m.avg} dias`}</strong></div>
+          <div class="stage-metric"><span>Precisa de atenção</span><strong class="${m.attention?'red':''}">${m.attention}</strong></div>
+          <div class="stage-metric"><span>Total na etapa</span><strong>${m.count}</strong></div>
+        </div>
+      </div>
+      <div class="deal-list">${visible.map(d=>CU.dealCardV104(d,false)).join('')||'<div class="empty-structured">Nenhuma venda nesta etapa com os filtros atuais.</div>'}</div>
+    </section>`;
+  }).join('')}</div></div>
+</div>`;
+
+CU.salesFunnelMobileV104=deals=>{
+  let stage=CU.state.ui.mobileSalesStage;
+  if(!CU.state.stages.some(s=>s.id===stage))stage=CU.state.stages[0]?.id;
+  const def=CU.state.stages.find(s=>s.id===stage),visible=deals.filter(d=>d.stage===stage),m=CU.stageMetricsV104(stage);
+  return `<div class="funnel-mobile">
+    <div class="mobile-stage-strip" aria-label="Etapas do funil">${CU.state.stages.map(s=>`<button class="mobile-stage-btn ${s.id===stage?'active':''}" data-v104-stage="${s.id}">${CU.esc(s.name)} · ${deals.filter(d=>d.stage===s.id).length}</button>`).join('')}</div>
+    <div class="mobile-stage-summary">
+      <div><h2>${CU.esc(def?.name||'Etapa')}</h2><p>${visible.length} venda(s) · ${m.attention} pedindo atenção</p></div>
+      <strong>${CU.money(visible.reduce((a,d)=>a+Number(d.value),0))}</strong>
+    </div>
+    <div class="mobile-deal-list">${visible.map(d=>CU.dealCardV104(d,true)).join('')||'<div class="empty-structured">Nenhuma venda nesta etapa com os filtros atuais.</div>'}</div>
+  </div>`;
+};
+
+CU.salesFunnelView=()=>{
+  const deals=CU.filteredDealsV104();
+  return `${CU.salesFiltersV104()}${CU.salesFunnelDesktopV104(deals)}${CU.salesFunnelMobileV104(deals)}`;
+};
+
+CU.followItemV104=(d,bucket)=>{
+  const task=CU.nextActionOf(d);
+  const cls=bucket==='overdue'?'overdue':bucket==='today'?'today':bucket==='missing'?'missing':'';
+  return `<article class="follow-card-v104 ${cls}">
+    <div class="follow-main">
+      <h3>${CU.esc(d.name)} <span class="operator-chip">${CU.ownerName(d.owner)}</span></h3>
+      <div class="next">${task?CU.esc(task.title):'Definir próximo passo'}</div>
+      <div class="meta">${CU.stageName(d.stage)} · ${CU.money(d.value)} · ${task?CU.fmtDate(task.due):'sem prazo'} · ${CU.dealAge(d)} dia(s) na etapa</div>
+    </div>
+    <div class="follow-actions">
+      <button class="btn sm" data-open-entity="${d.id}" data-type="deal">ABRIR VENDA</button>
+      <button class="btn sm primary" data-v103-conversation="${d.id}">REGISTRAR CONVERSA</button>
+      ${bucket==='missing'?`<button class="btn sm warn" data-v104-next-action="${d.id}">DEFINIR PRÓXIMO PASSO</button>`:''}
+    </div>
+  </article>`;
+};
+
+CU.salesFollowView=()=>{
+  const groups=[
+    ['VENCIDOS','overdue'],
+    ['HOJE','today'],
+    ['PRÓXIMOS','next'],
+    ['SEM PRÓXIMO PASSO','missing']
+  ];
+  return `<div>${groups.map(([label,key])=>{
+    const rows=CU.openDeals().filter(d=>CU.nextActionBucket(d)===key).sort((a,b)=>{
+      const ta=CU.nextActionOf(a),tb=CU.nextActionOf(b);
+      return String(ta?.due||'9999').localeCompare(String(tb?.due||'9999'));
+    });
+    return `<section class="follow-section">
+      <div class="follow-section-title"><h2>${label}</h2><span>${rows.length} venda(s)</span></div>
+      ${rows.map(d=>CU.followItemV104(d,key)).join('')||'<div class="empty-structured">Nenhuma venda neste grupo.</div>'}
+    </section>`;
+  }).join('')}</div>`;
+};
+
+CU.proposalCardV104=(p)=>{
+  const d=CU.state.deals.find(d=>d.id===p.dealId),st=CU.proposalDisplayState(p);
+  return `<article class="proposal-card-v104" data-open-entity="${d?.id||''}" data-type="deal">
+    <h3>${CU.esc(d?.name||'Venda removida')}</h3>
+    <div class="proposal-value">${CU.money(p.value)}</div>
+    <div class="proposal-row"><span>Responsável</span><strong>${d?CU.ownerName(d.owner):'—'}</strong></div>
+    <div class="proposal-row"><span>Etapa da venda</span><strong>${d?CU.stageName(d.stage):'—'}</strong></div>
+    <div class="proposal-row"><span>Criada em</span><strong>${CU.fmtDate(p.createdAt)}</strong></div>
+    <div class="proposal-row"><span>Retorno previsto</span><strong>${CU.fmtDate(p.followupDue)}</strong></div>
+    <span class="proposal-state ${st.key==='waiting'?'yellow':st.key==='accepted'?'green':st.key==='closed'?'red':'purple'}">${CU.esc(st.label)}</span>
+  </article>`;
+};
+
+CU.salesProposalView=()=>{
+  const order=[
+    ['RASCUNHO','draft'],
+    ['ENVIADA','sent'],
+    ['AGUARDANDO RETORNO','waiting'],
+    ['ACEITA','accepted'],
+    ['RECUSADA / ENCERRADA','closed']
+  ];
+  return `<div class="proposal-board-v104">${order.map(([label,key])=>{
+    const rows=CU.state.proposals.filter(p=>CU.proposalDisplayState(p).key===key);
+    return `<section class="proposal-group"><h2>${label} · ${rows.length}</h2>
+      ${rows.length?`<div class="proposal-grid-v104">${rows.map(CU.proposalCardV104).join('')}</div>`:'<div class="empty-structured">Nenhuma proposta neste estado.</div>'}
+    </section>`;
+  }).join('')}</div>`;
+};
+
+CU.sceneSales=()=>{
+  const view=CU.state.ui.salesView||'funnel';
+  const open=CU.openDeals(),attention=open.filter(CU.hasAttention).length;
+  return `<section class="scene sales-v104">
+    <div class="scene-head">
+      <div><div class="eyebrow">Vendas · Funnel UX Lab</div><h1>Vendas</h1><div class="scene-sub">O Funil mostra o estado comercial; Acompanhamentos mostra o próximo movimento; Propostas mostra o que está em decisão. Todos apontam para a mesma Venda 360.</div></div>
+      <div class="head-actions"><button class="btn" id="newProspectBtn">+ Possível cliente</button><button class="btn primary" id="newDealBtn">+ Nova venda</button></div>
+    </div>
+    <div class="kpis">
+      <div class="kpi" style="--c:var(--blue)"><label>Vendas abertas</label><strong>${open.length}</strong><small>em andamento</small></div>
+      <div class="kpi" style="--c:var(--blue)"><label>Potencial em andamento</label><strong>${CU.money(open.reduce((a,d)=>a+Number(d.value),0))}</strong><small>não é dinheiro recebido</small></div>
+      <div class="kpi" style="--c:var(--purple)"><label>Propostas abertas</label><strong>${CU.proposalsOpen().length}</strong><small>em decisão / retorno</small></div>
+      <div class="kpi" style="--c:var(--red)"><label>Precisa de atenção</label><strong>${attention}</strong><small>próximo passo ou risco</small></div>
+    </div>
+    <div class="panel" style="margin-bottom:12px"><div class="panel-head"><b>Possíveis clientes</b><span>${CU.state.prospects.length}</span></div><div class="panel-body"><div class="prospect-strip">${CU.state.prospects.map(p=>`<div class="prospect-card"><b>${CU.esc(p.name)}</b><p>${CU.esc(p.contact)} · ${CU.esc(p.channel)}</p><p>${CU.esc(p.next)}</p><div class="actions"><button class="btn sm primary" data-prospect-qualify="${p.id}">Qualificar</button><button class="btn sm ghost" data-prospect-action="${p.id}">Nova ação</button></div></div>`).join('')}</div></div></div>
+    <div class="subnav">
+      <button class="seg-btn ${view==='funnel'?'active':''}" data-sales-view="funnel">Funil</button>
+      <button class="seg-btn ${view==='follow'?'active':''}" data-sales-view="follow">Acompanhamentos</button>
+      <button class="seg-btn ${view==='proposals'?'active':''}" data-sales-view="proposals">Propostas</button>
+    </div>
+    ${view==='follow'?CU.salesFollowView():view==='proposals'?CU.salesProposalView():CU.salesFunnelView()}
+  </section>`;
+};
+
+document.addEventListener('click',e=>{
+  const stage=e.target.closest('[data-v104-stage]');
+  if(stage){
+    CU.state.ui.mobileSalesStage=stage.dataset.v104Stage;
+    CU.saveState('v104.mobile.stage');
+    CU.renderScene();CU.bindScene();
+    return;
+  }
+  const next=e.target.closest('[data-v104-next-action]');
+  if(next){
+    CU.actionForm('deal',next.dataset.v104NextAction);
+  }
+});
+})();
+
+
+
+(() => {
+'use strict';
+const CU=window.CU;
+const baseContext=CU.contextHTML;
+
+CU.dealContextV104=id=>{
+  const d=CU.state.deals.find(x=>x.id===id);
+  if(!d)return '<div class="ctx-empty">Venda não encontrada.</div>';
+  const proposal=CU.state.proposals.find(p=>p.dealId===id);
+  const gate=CU.gateFor(d);
+  const task=CU.nextActionOf(d);
+  const bucket=CU.nextActionBucket(d);
+  const history=d.history||[];
+  const diagnosis=history.filter(h=>/diagn|problema|conversa|evid/i.test(h.text));
+  const proposalState=proposal?CU.proposalDisplayState(proposal):null;
+
+  const taskBox=!task
+    ? `<div class="next-action-box missing"><div class="next-action-label">Próximo passo</div><div class="next-action-title">Ainda não definido</div><div class="next-action-meta">A venda precisa sair daqui com uma ação real.</div><button class="btn sm warn" style="margin-top:10px" data-v104-next-action="${d.id}">Definir próximo passo</button></div>`
+    : `<div class="next-action-box ${bucket==='overdue'?'attention':''}"><div class="next-action-label">Próximo passo</div><div class="next-action-title">${CU.esc(task.title)}</div><div class="next-action-meta">${bucket==='overdue'?'Vencido · ':bucket==='today'?'Hoje · ':''}${CU.fmtDate(task.due)} · ${CU.ownerName(task.owner)}</div></div>`;
+
+  return `<div class="deal360-head">
+    <div class="ctx-kicker">Venda 360 · Cockpit comercial</div>
+    <div class="deal360-title-row"><div><div class="deal360-title">${CU.esc(d.name)}</div><div class="deal360-contact">${CU.esc(d.contact)} · ${CU.esc(d.service||'Serviço não definido')}</div></div><div class="deal360-value">${CU.money(d.value)}</div></div>
+    <div class="deal360-meta">
+      <div><span>Etapa</span><strong>${CU.stageName(d.stage)}</strong></div>
+      <div><span>Tempo na etapa</span><strong>${CU.dealAge(d)} dia(s)</strong></div>
+      <div><span>Responsável</span><strong>${CU.ownerName(d.owner)}</strong></div>
+      <div><span>Origem</span><strong>${CU.esc(d.source||'Não informada')}</strong></div>
+    </div>
+    <div class="deal360-primary">
+      <button class="btn" data-deal-action="conversation" data-id="${d.id}">Registrar conversa</button>
+      <button class="btn" data-deal-action="task" data-id="${d.id}">Nova ação</button>
+      <button class="btn primary" data-deal-action="proposal" data-id="${d.id}">${proposal?'Abrir / atualizar proposta':'Criar proposta'}</button>
+      <button class="btn primary" data-deal-action="advance" data-id="${d.id}">Avançar etapa</button>
+    </div>
+  </div>
+
+  <div class="ctx-section">${taskBox}</div>
+
+  <details class="accordion" open>
+    <summary>Para avançar <span>${gate.filter(x=>x.ok).length}/${gate.length}</span></summary>
+    <div class="accordion-content"><div class="gate-list">${gate.map(x=>`<div class="gate-item"><span class="${x.ok?'gate-ok':'gate-miss'}">${x.ok?'✓':'!'}</span><span>${CU.esc(x.label)}</span></div>`).join('')}</div><p style="margin:12px 0 0;color:var(--muted)">Gate suave no laboratório: pendência exige motivo ao avançar.</p></div>
+  </details>
+
+  <details class="accordion">
+    <summary>Diagnóstico e evidências <span>${diagnosis.length}</span></summary>
+    <div class="accordion-content">${diagnosis.length?diagnosis.map(h=>`<div class="history-line"><b>${CU.esc(h.text)}</b><span>${CU.ownerName(h.actor)} · ${CU.fmtDate(h.date)}</span></div>`).join(''):'<div class="empty-structured">Nenhuma evidência estruturada neste laboratório. Não inventamos dado para preencher o bloco.</div>'}</div>
+  </details>
+
+  <details class="accordion">
+    <summary>Histórico <span>${history.length}</span></summary>
+    <div class="accordion-content">${history.length?history.map(h=>`<div class="history-line"><b>${CU.esc(h.text)}</b><span>${CU.ownerName(h.actor)} · ${CU.fmtDate(h.date)}</span></div>`).join(''):'Sem histórico.'}</div>
+  </details>
+
+  <details class="accordion">
+    <summary>Proposta <span>${proposal?CU.money(proposal.value):'—'}</span></summary>
+    <div class="accordion-content">${proposal?`<div class="ctx-row"><span>Estado</span><strong>${CU.esc(proposalState.label)}</strong></div><div class="ctx-row"><span>Valor</span><strong>${CU.money(proposal.value)}</strong></div><div class="ctx-row"><span>Criada em</span><strong>${CU.fmtDate(proposal.createdAt)}</strong></div><div class="ctx-row"><span>Retorno</span><strong>${CU.fmtDate(proposal.followupDue)}</strong></div>`:'<div class="empty-structured">Nenhuma proposta criada.</div>'}</div>
+  </details>
+
+  <details class="accordion">
+    <summary>Contatos <span>${d.contact?1:0}</span></summary>
+    <div class="accordion-content">${d.contact?`<div class="ctx-row"><span>Contato principal</span><strong>${CU.esc(d.contact)}</strong></div>`:'<div class="empty-structured">Contato principal ainda não registrado.</div>'}</div>
+  </details>
+
+  <details class="accordion">
+    <summary>Arquivos <span>0</span></summary>
+    <div class="accordion-content"><div class="empty-structured">Arquivos comerciais ainda não foram estruturados neste UX Lab.</div></div>
+  </details>
+
+  <details class="accordion">
+    <summary>Notas <span>0</span></summary>
+    <div class="accordion-content"><div class="empty-structured">Notas comerciais estruturadas entram no Funnel Engine real; este laboratório não cria conteúdo fictício.</div></div>
+  </details>
+
+  <div class="ctx-section">
+    <div class="ctx-label">Decisão comercial</div>
+    <div class="context-actions">
+      <button class="btn success" data-deal-final="won" data-id="${d.id}">Ganhou</button>
+      <button class="btn danger" data-deal-final="lost" data-id="${d.id}">Perdeu</button>
+      <button class="btn warn wide" data-deal-final="later" data-id="${d.id}">Não agora</button>
+    </div>
+  </div>`;
+};
+
+CU.contextHTML=()=>{
+  const c=CU.state.ui.context;
+  if(c?.type==='deal')return CU.dealContextV104(c.id);
+  return baseContext();
+};
+})();
+
+
+
+(() => {
+'use strict';
+const CU=window.CU;
+const app=document.getElementById('app');
+
+CU.renderLogin=()=>{
+  app.innerHTML=`<section class="login">
+    <div class="login-visual"><div class="login-core"><div class="orbit"></div><div class="orbit o2"></div><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20120%20120%22%3E%0A%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2373B7FF%22%20stop-opacity%3D%22.28%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23141414%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%0A%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2256%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2238%22%20fill%3D%22none%22%20stroke%3D%22%23303238%22%20stroke-width%3D%221.3%22%20stroke-dasharray%3D%223%206%22%2F%3E%0A%3Cellipse%20cx%3D%2260%22%20cy%3D%2260%22%20rx%3D%2243%22%20ry%3D%2217%22%20fill%3D%22none%22%20stroke%3D%22%2373B7FF%22%20stroke-opacity%3D%22.55%22%2F%3E%3Cellipse%20cx%3D%2260%22%20cy%3D%2260%22%20rx%3D%2243%22%20ry%3D%2217%22%20transform%3D%22rotate%2860%2060%2060%29%22%20fill%3D%22none%22%20stroke%3D%22%23A991E8%22%20stroke-opacity%3D%22.5%22%2F%3E%0A%3Cellipse%20cx%3D%2260%22%20cy%3D%2260%22%20rx%3D%2243%22%20ry%3D%2217%22%20transform%3D%22rotate%28120%2060%2060%29%22%20fill%3D%22none%22%20stroke%3D%22%2368D7BA%22%20stroke-opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%228%22%20fill%3D%22%23171717%22%20stroke%3D%22%2368D7BA%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%223%22%20fill%3D%22%2368D7BA%22%2F%3E%0A%3C%2Fsvg%3E" alt=""></div><div class="login-copy"><div class="eyebrow">COAL UP CRM / SIMPLE OPS</div><h1>Organizar a empresa sem complicar a operação.</h1><p>Funil comercial legível no desktop e no celular, com Acompanhamentos, Propostas e Venda 360 conectados.</p></div></div>
+    <div class="login-side"><form class="login-card" id="loginForm"><div class="login-brand"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20120%20120%22%3E%0A%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2373B7FF%22%20stop-opacity%3D%22.28%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23141414%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%0A%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2256%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2238%22%20fill%3D%22none%22%20stroke%3D%22%23303238%22%20stroke-width%3D%221.3%22%20stroke-dasharray%3D%223%206%22%2F%3E%0A%3Cellipse%20cx%3D%2260%22%20cy%3D%2260%22%20rx%3D%2243%22%20ry%3D%2217%22%20fill%3D%22none%22%20stroke%3D%22%2373B7FF%22%20stroke-opacity%3D%22.55%22%2F%3E%3Cellipse%20cx%3D%2260%22%20cy%3D%2260%22%20rx%3D%2243%22%20ry%3D%2217%22%20transform%3D%22rotate%2860%2060%2060%29%22%20fill%3D%22none%22%20stroke%3D%22%23A991E8%22%20stroke-opacity%3D%22.5%22%2F%3E%0A%3Cellipse%20cx%3D%2260%22%20cy%3D%2260%22%20rx%3D%2243%22%20ry%3D%2217%22%20transform%3D%22rotate%28120%2060%2060%29%22%20fill%3D%22none%22%20stroke%3D%22%2368D7BA%22%20stroke-opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%228%22%20fill%3D%22%23171717%22%20stroke%3D%22%2368D7BA%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%223%22%20fill%3D%22%2368D7BA%22%2F%3E%0A%3C%2Fsvg%3E" alt=""><div><b>COAL UP CRM V10.4</b><span>READABILITY + FUNNEL UX · MODO TREINO</span></div></div><h2>Entrar no CRM</h2><p>Dados deste laboratório são sintéticos e não representam faturamento real da COAL UP.</p><div class="field"><label>USUÁRIO</label><input id="loginUser" autocomplete="username" required></div><div class="field"><label>SENHA</label><input id="loginPass" type="password" autocomplete="current-password" required></div><button class="login-submit">ENTRAR</button><div class="login-error" id="loginError"></div><div class="demo-login">Contas de laboratório:<div class="demo-users"><span class="demo-user">admin123</span><span class="demo-user">Gadmin123</span></div></div></form></div>
+  </section>`;
+  document.getElementById('loginForm').onsubmit=CU.loginSubmit;
+};
+
+CU.loginSubmit=async e=>{
+  e.preventDefault();
+  const user=document.getElementById('loginUser').value.trim(),password=document.getElementById('loginPass').value;
+  if(!CU.USERS[user])return document.getElementById('loginError').textContent='Usuário não encontrado.';
+  if(await CU.sha256(password)!==CU.USERS[user].hash)return document.getElementById('loginError').textContent='Senha incorreta.';
+  CU.session={user,route:'today',focus:'Hoje',loginAt:Date.now()};CU.saveSession();CU.startPresence();CU.addEvent(`${CU.ownerName(user)} entrou no CRM`,user);CU.renderApp();
+};
+
+CU.logout=()=>{CU.addEvent(`${CU.ownerName(CU.session.user)} saiu do CRM`,CU.session.user);CU.stopPresence();CU.session=null;CU.clearSession();CU.renderLogin()};
+
+CU.startPresence=()=>{CU.stopPresence();CU.publishPresence();CU.presenceTimer=setInterval(CU.publishPresence,3500)};
+CU.stopPresence=()=>{if(CU.presenceTimer)clearInterval(CU.presenceTimer);CU.presenceTimer=null;if(CU.bc&&CU.session)CU.bc.postMessage({type:'off',user:CU.session.user})};
+CU.publishPresence=()=>{if(!CU.session)return;const p={user:CU.session.user,route:CU.state.ui.route,focus:CU.session.focus||CU.state.ui.route,last:Date.now()};CU.presence[CU.session.user]=p;if(CU.bc)CU.bc.postMessage({type:'presence',payload:p});CU.renderPresence()};
+CU.presenceSnapshot=()=>{const cut=Date.now()-12000;Object.keys(CU.presence).forEach(k=>{if(CU.presence[k].last<cut)delete CU.presence[k]});return CU.presence};
+CU.presenceHTML=()=>{CU.presenceSnapshot();const all=[CU.presence[CU.session?.user],...Object.values(CU.presence).filter(p=>p.user!==CU.session?.user)].filter(Boolean);if(!all.length&&CU.session)all.push({user:CU.session.user,route:CU.state.ui.route,focus:CU.session.focus||CU.state.ui.route,last:Date.now()});return all.map(p=>`<div class="coop-item ${p.user!==CU.session.user?'partner':''}"><div class="avatar">${p.user==='Gadmin123'?'G':'A'}</div><div><div class="coop-name">${CU.ownerName(p.user)} ${p.user===CU.session.user?'<span class="muted">(você)</span>':''}</div><div class="coop-meta">${CU.esc(p.focus||p.route)}</div></div><span class="online">ONLINE</span></div>`).join('')};
+CU.renderPresence=()=>{if(!CU.session)return;CU.presenceSnapshot();const other=Object.values(CU.presence).find(p=>p.user!==CU.session.user),top=document.getElementById('partnerTop');if(top)top.textContent=other?`${CU.ownerName(other.user)} · ${other.focus||other.route}`:'parceiro offline';const co=document.getElementById('coopToday');if(co)co.innerHTML=CU.presenceHTML()};
+if(CU.bc)CU.bc.onmessage=e=>{const m=e.data||{};if(m.type==='presence'){CU.presence[m.payload.user]=m.payload;CU.renderPresence()}if(m.type==='off'){delete CU.presence[m.user];CU.renderPresence()}if(m.type==='state'&&m.from!==CU.session?.user){CU.state=m.state;CU.renderApp(false);CU.toast(`Atualização recebida de ${CU.ownerName(m.from)}`,'info')}};
+
+CU.renderApp=(full=true)=>{
+  if(!CU.session)return CU.renderLogin();
+  if(full)app.innerHTML=CU.shell();
+  CU.renderScene();CU.renderContext();CU.bindShell();CU.bindScene();CU.renderPresence();
+};
+
+CU.bindShell=()=>{
+  document.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>CU.openRoute(b.dataset.route));
+  document.getElementById('quickNew')?.addEventListener('click',CU.quickNew);
+  document.getElementById('userBtn')?.addEventListener('click',CU.userMenu);
+  document.getElementById('contextClose')?.addEventListener('click',CU.clearContext);
+  const gs=document.getElementById('globalSearch');if(gs){gs.oninput=()=>CU.renderSearch(gs.value);gs.onfocus=()=>{if(gs.value.trim())CU.renderSearch(gs.value)}}
+  const ms=document.getElementById('mobileSearchBtn');if(ms)ms.onclick=()=>{document.getElementById('searchWrap').classList.toggle('mobile-open');setTimeout(()=>document.getElementById('globalSearch')?.focus(),20)};
+};
+
+CU.bindScene=()=>{
+  document.querySelectorAll('[data-open-entity]').forEach(e=>e.onclick=()=>CU.openEntity(e.dataset.type,e.dataset.openEntity));
+  document.querySelectorAll('[data-priority]').forEach(e=>e.onclick=()=>CU.openEntity(e.dataset.type,e.dataset.priority));
+  document.querySelectorAll('[data-prospect-qualify]').forEach(e=>e.onclick=()=>CU.qualifyProspect(e.dataset.prospectQualify));
+  document.querySelectorAll('[data-prospect-action]').forEach(e=>e.onclick=()=>CU.actionForm('prospect',e.dataset.prospectAction));
+  document.querySelectorAll('[data-filter]').forEach(e=>e.onchange=()=>{CU.state.ui.filters[e.dataset.filter]=e.value;CU.saveState('filter');CU.renderScene();CU.bindScene()});
+  document.querySelectorAll('[data-finance-view]').forEach(e=>e.onclick=()=>{CU.state.ui.financeView=e.dataset.financeView;CU.saveState('finance.view');CU.renderScene();CU.bindScene()});
+  document.querySelectorAll('[data-work-view]').forEach(e=>e.onclick=()=>{CU.state.ui.workView=e.dataset.workView;CU.saveState('work.view');CU.renderScene();CU.bindScene()});
+  document.querySelectorAll('[data-manual]').forEach(e=>e.onclick=()=>{CU.state.ui.manualTopic=e.dataset.manual;CU.saveState('manual');CU.renderScene();CU.bindScene()});
+  document.querySelectorAll('[data-toggle-action]').forEach(e=>e.onclick=()=>CU.toggleAction(e.dataset.toggleAction));
+  document.querySelectorAll('[data-budget-edit]').forEach(e=>e.onclick=()=>CU.editBudget(e.dataset.budgetEdit));
+  document.querySelectorAll('[data-set-balance]').forEach(e=>e.onclick=CU.setOpeningBalance);
+  document.querySelectorAll('[data-route-jump]').forEach(e=>e.onclick=()=>CU.openRoute(e.dataset.routeJump));
+  document.querySelectorAll('[data-pay-receivable]').forEach(e=>e.onclick=()=>CU.paymentForm(e.dataset.payReceivable));
+  document.querySelectorAll('[data-pay-expense]').forEach(e=>e.onclick=()=>CU.markExpensePaid(e.dataset.payExpense));
+  const buttons={todayNew:CU.quickNew,newProspectBtn:CU.prospectForm,newDealBtn:CU.dealForm,newClientAction:()=>CU.actionForm(),newActionBtn:()=>CU.actionForm(),newProjectBtn:CU.projectForm,newExpenseBtn:CU.expenseForm,registerPaymentBtn:()=>CU.paymentForm()};
+  Object.entries(buttons).forEach(([id,fn])=>{const e=document.getElementById(id);if(e)e.onclick=fn});
+  const cf=document.getElementById('clientFilter');if(cf)cf.oninput=()=>CU.filterClients(cf.value);
+  CU.setupDrag();
+};
+
+CU.renderContext=()=>{
+  const box=document.getElementById('contextBody');if(!box)return;const html=CU.contextHTML();box.innerHTML=html;
+  const mob=document.getElementById('mobileContext');if(mob)mob.innerHTML=`<div class="context-head"><span>DETALHES</span><button class="icon-button" id="mobileCtxClose">×</button></div><div class="context-body">${html}</div>`;
+  CU.bindContext();
+};
+
+CU.bindContext=()=>{
+  document.querySelectorAll('[data-deal-action]').forEach(b=>b.onclick=()=>CU.dealAction(b.dataset.dealAction,b.dataset.id));
+  document.querySelectorAll('[data-deal-final]').forEach(b=>b.onclick=()=>CU.dealFinal(b.dataset.dealFinal,b.dataset.id));
+  document.querySelectorAll('.context-body [data-toggle-action]').forEach(b=>b.onclick=()=>CU.toggleAction(b.dataset.toggleAction));
+  document.querySelectorAll('[data-client-action]').forEach(b=>b.onclick=()=>CU.actionForm('client',b.dataset.clientAction));
+  document.querySelectorAll('[data-project-action]').forEach(b=>b.onclick=()=>CU.actionForm('project',b.dataset.projectAction));
+  document.getElementById('mobileCtxClose')?.addEventListener('click',CU.closeMobileContext);
+};
+
+CU.openRoute=route=>{CU.state.ui.route=route;CU.state.ui.context=null;CU.session.route=route;CU.session.focus=route;CU.saveSession();CU.saveState('route');CU.publishPresence();CU.renderApp()};
+CU.clearContext=()=>{CU.state.ui.context=null;CU.renderContext();CU.closeMobileContext()};
+CU.openEntity=(type,id)=>{
+  CU.closeFloating();
+  if(type==='deal'){CU.state.ui.route='sales';CU.state.ui.context={type:'deal',id}}
+  if(type==='client'){CU.state.ui.route='clients';CU.state.ui.context={type:'client',id}}
+  if(type==='project'){CU.state.ui.route='work';CU.state.ui.workView='projects';CU.state.ui.context={type:'project',id}}
+  if(type==='action'){CU.state.ui.route='work';CU.state.ui.workView='actions';CU.state.ui.context={type:'action',id}}
+  CU.session.focus=`${type}:${id}`;CU.saveSession();CU.saveState('open.entity');CU.renderApp();CU.openMobileContext();
+};
+
+CU.searchData=q=>{
+  q=q.trim().toLowerCase();if(!q)return{};
+  const match=(...v)=>v.some(x=>String(x||'').toLowerCase().includes(q));
+  return{
+    Vendas:CU.state.deals.filter(d=>match(d.name,d.contact,d.service,d.nextTitle)).slice(0,5).map(d=>({label:d.name,sub:`${CU.stageName(d.stage)} · ${CU.money(d.value)}`,type:'deal',id:d.id})),
+    Clientes:CU.state.clients.filter(c=>match(c.name,c.contact,c.service,c.email)).slice(0,5).map(c=>({label:c.name,sub:`${c.contact} · ${c.service}`,type:'client',id:c.id})),
+    Projetos:CU.state.projects.filter(p=>match(p.name,CU.clientName(p.clientId),p.status)).slice(0,5).map(p=>({label:CU.projectName(p),sub:`${p.progress}% · ${p.status}`,type:'project',id:p.id})),
+    Ações:CU.state.actions.filter(a=>match(a.title,CU.entityLabel(a.entityType,a.entityId))).slice(0,5).map(a=>({label:a.title,sub:`${CU.fmtDate(a.due)} · ${CU.ownerName(a.owner)}`,type:'action',id:a.id}))
+  };
+};
+CU.renderSearch=q=>{
+  const box=document.getElementById('searchResults');if(!box)return;const groups=CU.searchData(q);let html='';
+  Object.entries(groups).forEach(([g,items])=>{if(items.length)html+=`<div class="search-group">${g}</div>`+items.map(i=>`<div class="search-item" data-search-type="${i.type}" data-search-id="${i.id}"><div><b>${CU.esc(i.label)}</b><span>${CU.esc(i.sub)}</span></div><span>abrir</span></div>`).join('')});
+  box.innerHTML=html||'<div class="search-group">Nenhum resultado</div>';box.classList.remove('hidden');box.querySelectorAll('[data-search-id]').forEach(el=>el.onclick=()=>CU.openEntity(el.dataset.searchType,el.dataset.searchId));
+};
+CU.userMenu=()=>{
+  CU.closeFloating();const box=document.createElement('div');box.className='user-menu';box.id='floatingMenu';box.innerHTML=`<div style="padding:10px;font-size:10px;color:var(--muted)">${CU.ownerName(CU.session.user)} · ${CU.session.user}</div><button id="resetDemo">Reiniciar modo treino</button><button id="logoutMenu">Sair</button>`;document.body.appendChild(box);
+  document.getElementById('logoutMenu').onclick=CU.logout;document.getElementById('resetDemo').onclick=()=>{if(confirm('Reiniciar todos os dados sintéticos deste CRM?')){CU.state=CU.seed();CU.saveState('reset');CU.renderApp();CU.toast('Modo treino reiniciado','info')}};
+};
+CU.closeFloating=()=>{document.getElementById('floatingMenu')?.remove();document.getElementById('searchResults')?.classList.add('hidden')};
+CU.filterClients=q=>{q=q.toLowerCase();document.querySelectorAll('.list-item[data-type="client"]').forEach(el=>{const c=CU.state.clients.find(x=>x.id===el.dataset.openEntity);el.style.display=(c.name+' '+c.contact+' '+c.service).toLowerCase().includes(q)?'block':'none'})};
+
+CU.setupDrag=()=>{
+  document.querySelectorAll('.deal').forEach(d=>{d.ondragstart=e=>{window.__dragDeal=d.dataset.openEntity;e.dataTransfer.effectAllowed='move'}});
+  document.querySelectorAll('.stage').forEach(s=>{s.ondragover=e=>{e.preventDefault();s.classList.add('dragover')};s.ondragleave=()=>s.classList.remove('dragover');s.ondrop=e=>{e.preventDefault();s.classList.remove('dragover');const id=window.__dragDeal;if(id)CU.requestAdvance(id,s.dataset.stage)}});
+};
+CU.openMobileContext=()=>{if(innerWidth<=980)document.getElementById('mobileContext')?.classList.add('open')};
+CU.closeMobileContext=()=>document.getElementById('mobileContext')?.classList.remove('open');
+
+document.addEventListener('click',e=>{if(!e.target.closest('#userBtn')&&!e.target.closest('#floatingMenu'))document.getElementById('floatingMenu')?.remove();if(!e.target.closest('#searchWrap'))document.getElementById('searchResults')?.classList.add('hidden')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){CU.closeModal();CU.closeMobileContext();CU.closeFloating()}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();document.getElementById('searchWrap')?.classList.add('mobile-open');document.getElementById('globalSearch')?.focus()}});
+window.addEventListener('beforeunload',CU.stopPresence);
+
+if(CU.session){CU.startPresence();CU.renderApp()}else CU.renderLogin();
+})();
+</script>
+</body>
+</html>

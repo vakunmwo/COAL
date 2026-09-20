@@ -1,0 +1,161 @@
+{
+  "name": "Entrada pelo site",
+  "key": "entrada_site",
+  "version": 1,
+  "scope": "marketing_public_intake",
+  "status": "draft",
+  "stages": [
+    {
+      "key": "entrada",
+      "name": "Entrada",
+      "entity_mode": "lead",
+      "objective": "Registrar a solicitação pública e preservar sua origem.",
+      "default_next_action": "Revisar nova entrada",
+      "planning_note": "SLA não calibrado.",
+      "requirements": [
+        {
+          "type": "field_present",
+          "field_key": "organization_id",
+          "label": "Negócio identificado",
+          "severity": "required",
+          "override_allowed": false
+        },
+        {
+          "type": "field_present",
+          "field_key": "primary_contact_id",
+          "label": "Contato identificado",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Próxima ação definida",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ]
+    },
+    {
+      "key": "triagem",
+      "name": "Triagem",
+      "entity_mode": "lead",
+      "objective": "Revisar a entrada, eliminar duplicidade e decidir se existe fit para diagnóstico.",
+      "default_next_action": "Preparar diagnóstico",
+      "planning_note": "SLA não calibrado.",
+      "requirements": [
+        {
+          "type": "owner_present",
+          "label": "Responsável definido",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "dedupe_reviewed",
+          "label": "Duplicidade revisada",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Próxima ação definida",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ]
+    },
+    {
+      "key": "diagnostico",
+      "name": "Diagnóstico",
+      "entity_mode": "opportunity",
+      "objective": "Confirmar a dor e entender o que precisa ser resolvido.",
+      "default_next_action": "Desenhar oferta",
+      "planning_note": "SLA não calibrado.",
+      "requirements": [
+        {
+          "type": "owner_present",
+          "label": "Responsável definido",
+          "severity": "required",
+          "override_allowed": false
+        },
+        {
+          "type": "diagnosis_present",
+          "label": "Diagnóstico registrado",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Próxima ação definida",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ]
+    },
+    {
+      "key": "oferta",
+      "name": "Oferta",
+      "entity_mode": "opportunity",
+      "objective": "Definir a solução e o valor potencial.",
+      "default_next_action": "Preparar proposta",
+      "planning_note": "SLA não calibrado.",
+      "requirements": [
+        {
+          "type": "offer_present",
+          "label": "Oferta registrada",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Próxima ação definida",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ]
+    },
+    {
+      "key": "proposta",
+      "name": "Proposta",
+      "entity_mode": "opportunity",
+      "objective": "Colocar uma proposta real em decisão.",
+      "default_next_action": "Acompanhar proposta",
+      "planning_note": "SLA não calibrado.",
+      "requirements": [
+        {
+          "type": "proposal_present",
+          "label": "Proposta criada",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Acompanhamento definido",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ]
+    },
+    {
+      "key": "decisao",
+      "name": "Decisão",
+      "entity_mode": "opportunity",
+      "objective": "Registrar a decisão comercial real.",
+      "default_next_action": "Obter decisão",
+      "planning_note": "SLA não calibrado.",
+      "requirements": [
+        {
+          "type": "proposal_present",
+          "label": "Proposta existente",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ]
+    }
+  ],
+  "terminal_states": [
+    "won",
+    "lost",
+    "later",
+    "disqualified"
+  ]
+}

@@ -1,0 +1,495 @@
+openapi: 3.0.3
+info:
+  title: COAL UP CRM Funnel Engine API
+  version: 1.0.0
+  description: |
+    API privada do CRM da COAL UP Marketing e Presença Digital.
+    A V10.4 aprovada é a referência visual. Este contrato não inclui Coal TV.
+servers:
+  - url: https://coalup.com.br/crm/api/v1
+    description: Produção planejada
+paths:
+  /funnel/board:
+    get:
+      summary: Quadro do Funil
+      parameters:
+        - in: query
+          name: owner_id
+          schema: {type: string, format: uuid}
+        - in: query
+          name: stage_id
+          schema: {type: string, format: uuid}
+        - in: query
+          name: attention
+          schema: {type: string, enum: [all, attention, ok]}
+        - in: query
+          name: service
+          schema: {type: string}
+        - in: query
+          name: next_action
+          schema: {type: string, enum: [all, overdue, today, upcoming, missing]}
+      responses:
+        '200':
+          description: Board do Funil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BoardResponse'
+        '401': {$ref: '#/components/responses/Unauthorized'}
+  /funnel/followups:
+    get:
+      summary: Acompanhamentos derivados do próximo passo real
+      responses:
+        '200':
+          description: Grupos de acompanhamento
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      overdue: {type: array, items: {$ref: '#/components/schemas/CaseCard'}}
+                      today: {type: array, items: {$ref: '#/components/schemas/CaseCard'}}
+                      upcoming: {type: array, items: {$ref: '#/components/schemas/CaseCard'}}
+                      missing_next_action: {type: array, items: {$ref: '#/components/schemas/CaseCard'}}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+  /proposals:
+    get:
+      summary: Lista propostas
+      parameters:
+        - in: query
+          name: status
+          schema: {type: string}
+        - in: query
+          name: owner_id
+          schema: {type: string, format: uuid}
+        - in: query
+          name: commercial_case_id
+          schema: {type: string, format: uuid}
+      responses:
+        '200':
+          description: Propostas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: {$ref: '#/components/schemas/Proposal'}
+    post:
+      summary: Cria proposta em rascunho
+      parameters:
+        - $ref: '#/components/parameters/Csrf'
+        - $ref: '#/components/parameters/Idempotency'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProposalRequest'
+      responses:
+        '201': {description: Proposta criada}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/DomainError'}
+  /proposals/{proposalId}:
+    patch:
+      summary: Atualiza proposta ou muda estado explicitamente
+      parameters:
+        - in: path
+          name: proposalId
+          required: true
+          schema: {type: string, format: uuid}
+        - $ref: '#/components/parameters/Csrf'
+        - $ref: '#/components/parameters/Idempotency'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [expected_version]
+              properties:
+                expected_version: {type: integer, minimum: 1}
+                status: {type: string, enum: [draft, sent, accepted, rejected, closed]}
+                amount_cents: {type: integer, minimum: 0}
+                followup_due_at: {type: string, format: date-time, nullable: true}
+                valid_until: {type: string, format: date-time, nullable: true}
+      responses:
+        '200': {description: Proposta atualizada}
+        '409': {$ref: '#/components/responses/Conflict'}
+  /commercial-cases:
+    post:
+      summary: Cria caso comercial manual
+      parameters:
+        - $ref: '#/components/parameters/Csrf'
+        - $ref: '#/components/parameters/Idempotency'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCaseRequest'
+      responses:
+        '201': {description: Caso criado}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/DomainError'}
+  /commercial-cases/{caseId}:
+    get:
+      summary: Venda 360
+      parameters:
+        - in: path
+          name: caseId
+          required: true
+          schema: {type: string, format: uuid}
+      responses:
+        '200':
+          description: Case completo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: {$ref: '#/components/schemas/Case360'}
+        '404': {description: Caso não encontrado}
+  /commercial-cases/{caseId}/activities:
+    post:
+      summary: Registra conversa/atividade e opcionalmente próximo passo explícito
+      parameters:
+        - $ref: '#/components/parameters/CaseId'
+        - $ref: '#/components/parameters/Csrf'
+        - $ref: '#/components/parameters/Idempotency'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterActivityRequest'
+      responses:
+        '201': {description: Atividade registrada}
+        '409': {$ref: '#/components/responses/Conflict'}
+  /commercial-cases/{caseId}/next-action:
+    put:
+      summary: Define explicitamente o próximo passo
+      parameters:
+        - $ref: '#/components/parameters/CaseId'
+        - $ref: '#/components/parameters/Csrf'
+        - $ref: '#/components/parameters/Idempotency'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetNextActionRequest'
+      responses:
+        '200': {description: Próximo passo definido}
+        '409': {$ref: '#/components/responses/Conflict'}
+  /commercial-cases/{caseId}/transition:
+    post:
+      summary: Executa transição de etapa de forma transacional
+      parameters:
+        - $ref: '#/components/parameters/CaseId'
+        - $ref: '#/components/parameters/Csrf'
+        - $ref: '#/components/parameters/Idempotency'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransitionRequest'
+      responses:
+        '200':
+          description: Transição concluída
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransitionResponse'
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/DomainError'}
+  /commercial-cases/{caseId}/decision:
+    post:
+      summary: Ganhou, perdeu, não agora ou desqualificou
+      parameters:
+        - $ref: '#/components/parameters/CaseId'
+        - $ref: '#/components/parameters/Csrf'
+        - $ref: '#/components/parameters/Idempotency'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisionRequest'
+      responses:
+        '200': {description: Decisão registrada}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/DomainError'}
+  /tasks/{taskId}/complete:
+    post:
+      summary: Conclui uma Task; se for próximo passo atual, limpa o ponteiro
+      parameters:
+        - in: path
+          name: taskId
+          required: true
+          schema: {type: string, format: uuid}
+        - $ref: '#/components/parameters/Csrf'
+        - $ref: '#/components/parameters/Idempotency'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [expected_version]
+              properties:
+                expected_version: {type: integer, minimum: 1}
+                completion_note: {type: string, maxLength: 700, nullable: true}
+      responses:
+        '200': {description: Task concluída}
+        '409': {$ref: '#/components/responses/Conflict'}
+components:
+  parameters:
+    CaseId:
+      in: path
+      name: caseId
+      required: true
+      schema: {type: string, format: uuid}
+    Csrf:
+      in: header
+      name: X-CSRF-Token
+      required: true
+      schema: {type: string}
+    Idempotency:
+      in: header
+      name: Idempotency-Key
+      required: true
+      schema: {type: string, minLength: 8, maxLength: 100}
+    RequestId:
+      in: header
+      name: X-Request-ID
+      required: true
+      schema: {type: string, format: uuid}
+  responses:
+    Unauthorized:
+      description: Sessão ausente ou expirada
+    Conflict:
+      description: Conflito de versão, estado ou idempotência
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    DomainError:
+      description: Regra de domínio não atendida
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+  schemas:
+    NextAction:
+      type: object
+      nullable: true
+      properties:
+        id: {type: string, format: uuid}
+        title: {type: string}
+        due_at: {type: string, format: date-time, nullable: true}
+        status: {type: string}
+        assigned_to: {type: string, format: uuid, nullable: true}
+    CaseCard:
+      type: object
+      properties:
+        id: {type: string, format: uuid}
+        version: {type: integer}
+        organization_name: {type: string}
+        contact_name: {type: string, nullable: true}
+        amount_cents: {type: integer, nullable: true}
+        currency: {type: string, example: BRL}
+        service_label: {type: string, nullable: true}
+        stage_name: {type: string}
+        stage_entered_at: {type: string, format: date-time}
+        owner_name: {type: string, nullable: true}
+        next_action: {$ref: '#/components/schemas/NextAction'}
+        attention_reasons:
+          type: array
+          items: {type: string}
+    BoardResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            summary:
+              type: object
+              properties:
+                open_cases: {type: integer}
+                potential_amount_cents: {type: integer}
+                open_proposals: {type: integer}
+                attention_cases: {type: integer}
+            stages:
+              type: array
+              items:
+                type: object
+                properties:
+                  id: {type: string, format: uuid}
+                  key: {type: string}
+                  name: {type: string}
+                  position: {type: integer}
+                  current_count: {type: integer}
+                  current_potential_cents: {type: integer}
+                  observed_average_seconds: {type: integer, nullable: true}
+                  sla_days: {type: integer, nullable: true}
+                  attention_count: {type: integer}
+                  cases:
+                    type: array
+                    items: {$ref: '#/components/schemas/CaseCard'}
+    Proposal:
+      type: object
+      properties:
+        id: {type: string, format: uuid}
+        version: {type: integer}
+        commercial_case_id: {type: string, format: uuid}
+        organization_name: {type: string}
+        amount_cents: {type: integer}
+        currency: {type: string}
+        status: {type: string}
+        created_at: {type: string, format: date-time}
+        sent_at: {type: string, format: date-time, nullable: true}
+        followup_due_at: {type: string, format: date-time, nullable: true}
+        stage_name: {type: string}
+        owner_name: {type: string, nullable: true}
+    Case360:
+      type: object
+      properties:
+        id: {type: string, format: uuid}
+        version: {type: integer}
+        status: {type: string}
+        organization: {type: object, additionalProperties: true}
+        primary_contact: {type: object, nullable: true, additionalProperties: true}
+        lead: {type: object, nullable: true, additionalProperties: true}
+        opportunity: {type: object, nullable: true, additionalProperties: true}
+        stage: {type: object, additionalProperties: true}
+        owner: {type: object, nullable: true, additionalProperties: true}
+        next_action: {$ref: '#/components/schemas/NextAction'}
+        gate: {type: object, additionalProperties: true}
+        dossier: {type: array, items: {type: object, additionalProperties: true}}
+        activities: {type: array, items: {type: object, additionalProperties: true}}
+        proposals: {type: array, items: {$ref: '#/components/schemas/Proposal'}}
+        notes: {type: array, items: {type: object, additionalProperties: true}}
+        files: {type: array, items: {type: object, additionalProperties: true}}
+    TaskInput:
+      type: object
+      required: [title]
+      properties:
+        title: {type: string, maxLength: 190}
+        due_at: {type: string, format: date-time, nullable: true}
+        assigned_to: {type: string, format: uuid, nullable: true}
+    CreateCaseRequest:
+      type: object
+      required: [business_name, contact_name, funnel_key]
+      properties:
+        business_name: {type: string, maxLength: 190}
+        contact_name: {type: string, maxLength: 160}
+        phone: {type: string, nullable: true}
+        email: {type: string, format: email, nullable: true}
+        source: {type: string, nullable: true}
+        source_detail: {type: string, nullable: true}
+        funnel_key: {type: string}
+        owner_id: {type: string, format: uuid, nullable: true}
+        first_action: {$ref: '#/components/schemas/TaskInput'}
+    RegisterActivityRequest:
+      type: object
+      required: [expected_version, kind, occurred_at, summary]
+      properties:
+        expected_version: {type: integer, minimum: 1}
+        kind: {type: string}
+        channel: {type: string, nullable: true}
+        occurred_at: {type: string, format: date-time}
+        summary: {type: string, maxLength: 1200}
+        agreement_note: {type: string, maxLength: 700, nullable: true}
+        next_action: {$ref: '#/components/schemas/TaskInput'}
+    SetNextActionRequest:
+      type: object
+      required: [expected_version, title]
+      properties:
+        expected_version: {type: integer, minimum: 1}
+        title: {type: string, maxLength: 190}
+        due_at: {type: string, format: date-time, nullable: true}
+        assigned_to: {type: string, format: uuid, nullable: true}
+        replace_open_task:
+          type: object
+          nullable: true
+          properties:
+            task_id: {type: string, format: uuid, nullable: true}
+            resolution: {type: string, enum: [complete, cancel, keep]}
+    TransitionRequest:
+      type: object
+      required: [expected_version, target_stage_id]
+      properties:
+        expected_version: {type: integer, minimum: 1}
+        target_stage_id: {type: string, format: uuid}
+        transition_reason: {type: string, maxLength: 500, nullable: true}
+        override_reason: {type: string, maxLength: 700, nullable: true}
+        next_action: {$ref: '#/components/schemas/TaskInput'}
+    TransitionResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            case_id: {type: string, format: uuid}
+            version: {type: integer}
+            transition_id: {type: string, format: uuid}
+            current_stage_id: {type: string, format: uuid}
+            current_stage_entered_at: {type: string, format: date-time}
+            next_action: {$ref: '#/components/schemas/NextAction'}
+            gate_snapshot: {type: object, additionalProperties: true}
+    DecisionRequest:
+      type: object
+      required: [expected_version, decision]
+      properties:
+        expected_version: {type: integer, minimum: 1}
+        decision: {type: string, enum: [won, lost, later, disqualified]}
+        final_amount_cents: {type: integer, minimum: 0, nullable: true}
+        currency: {type: string, default: BRL}
+        commercial_condition: {type: string, nullable: true}
+        reason: {type: string, nullable: true}
+        return_at: {type: string, format: date-time, nullable: true}
+        return_condition: {type: string, nullable: true}
+        project: {type: object, nullable: true, additionalProperties: true}
+        receivables:
+          type: array
+          items:
+            type: object
+            required: [description, amount_cents, due_at]
+            properties:
+              description: {type: string}
+              amount_cents: {type: integer, minimum: 0}
+              due_at: {type: string, format: date-time}
+    CreateProposalRequest:
+      type: object
+      required: [commercial_case_id, expected_case_version, amount_cents]
+      properties:
+        commercial_case_id: {type: string, format: uuid}
+        expected_case_version: {type: integer, minimum: 1}
+        amount_cents: {type: integer, minimum: 0}
+        currency: {type: string, default: BRL}
+        followup_due_at: {type: string, format: date-time, nullable: true}
+        valid_until: {type: string, format: date-time, nullable: true}
+        snapshot: {type: object, nullable: true, additionalProperties: true}
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: {type: string}
+            message: {type: string}
+            fields: {type: object, additionalProperties: true}
+            current_version: {type: integer, nullable: true}
+            request_id: {type: string, nullable: true}

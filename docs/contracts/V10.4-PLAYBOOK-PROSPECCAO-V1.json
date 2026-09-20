@@ -1,0 +1,207 @@
+{
+  "name": "Prospecção COAL UP",
+  "version": 1,
+  "scope": "marketing_presence_internal_crm",
+  "status": "draft",
+  "stages": [
+    {
+      "key": "pesquisa",
+      "name": "Pesquisa",
+      "entity_mode": "lead",
+      "objective": "Entender o negócio e montar contexto suficiente para investigar.",
+      "default_next_action": "Levantar evidências",
+      "requirements": [
+        {
+          "type": "field_present",
+          "field_key": "organization_id",
+          "label": "Negócio identificado",
+          "severity": "required",
+          "override_allowed": false
+        },
+        {
+          "type": "field_present",
+          "field_key": "source",
+          "label": "Origem registrada",
+          "severity": "advisory",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Próxima ação definida",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ],
+      "planning_note": "SLA ainda não calibrado com dados observados; definir após medição real ou decisão explícita."
+    },
+    {
+      "key": "evidencia",
+      "name": "Evidência",
+      "entity_mode": "lead",
+      "objective": "Registrar um problema digital demonstrável.",
+      "default_next_action": "Preparar abordagem",
+      "requirements": [
+        {
+          "type": "evidence_present",
+          "label": "Evidência registrada",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "note_present",
+          "label": "Contexto registrado",
+          "severity": "advisory",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Próxima ação definida",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ],
+      "planning_note": "SLA ainda não calibrado com dados observados; definir após medição real ou decisão explícita."
+    },
+    {
+      "key": "abordagem",
+      "name": "Abordagem",
+      "entity_mode": "lead",
+      "objective": "Iniciar contato real e definir o próximo movimento.",
+      "default_next_action": "Confirmar interesse e contexto",
+      "requirements": [
+        {
+          "type": "activity_present",
+          "label": "Contato ou tentativa registrada",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Próximo passo definido",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ],
+      "planning_note": "SLA ainda não calibrado com dados observados; definir após medição real ou decisão explícita."
+    },
+    {
+      "key": "diagnostico",
+      "name": "Diagnóstico",
+      "entity_mode": "opportunity",
+      "objective": "Confirmar a dor e entender o que precisa ser resolvido.",
+      "default_next_action": "Desenhar oferta",
+      "requirements": [
+        {
+          "type": "primary_contact_present",
+          "label": "Contato principal identificado",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "diagnosis_present",
+          "label": "Diagnóstico registrado",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "field_present",
+          "field_key": "service_context",
+          "label": "Linha de solução definida",
+          "severity": "advisory",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Próximo passo definido",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ],
+      "planning_note": "SLA ainda não calibrado com dados observados; definir após medição real ou decisão explícita."
+    },
+    {
+      "key": "oferta",
+      "name": "Oferta",
+      "entity_mode": "opportunity",
+      "objective": "Definir solução, escopo inicial e valor comercial.",
+      "default_next_action": "Preparar proposta",
+      "requirements": [
+        {
+          "type": "offer_present",
+          "label": "Solução / oferta registrada",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "amount_present",
+          "label": "Valor potencial definido",
+          "severity": "advisory",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Próximo passo definido",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ],
+      "planning_note": "SLA ainda não calibrado com dados observados; definir após medição real ou decisão explícita."
+    },
+    {
+      "key": "proposta",
+      "name": "Proposta",
+      "entity_mode": "opportunity",
+      "objective": "Colocar uma proposta real em decisão.",
+      "default_next_action": "Acompanhar proposta",
+      "requirements": [
+        {
+          "type": "proposal_present",
+          "label": "Proposta criada",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "amount_present",
+          "label": "Valor definido",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Acompanhamento definido",
+          "severity": "required",
+          "override_allowed": true
+        }
+      ],
+      "planning_note": "SLA ainda não calibrado com dados observados; definir após medição real ou decisão explícita."
+    },
+    {
+      "key": "decisao",
+      "name": "Decisão",
+      "entity_mode": "opportunity",
+      "objective": "Registrar a decisão comercial real.",
+      "default_next_action": "Obter decisão",
+      "requirements": [
+        {
+          "type": "proposal_present",
+          "label": "Proposta existente",
+          "severity": "required",
+          "override_allowed": true
+        },
+        {
+          "type": "next_action_present",
+          "label": "Próximo movimento definido enquanto aberto",
+          "severity": "advisory",
+          "override_allowed": true
+        }
+      ],
+      "planning_note": "SLA ainda não calibrado com dados observados; definir após medição real ou decisão explícita."
+    }
+  ],
+  "terminal_states": [
+    "won",
+    "lost",
+    "later",
+    "disqualified"
+  ]
+}

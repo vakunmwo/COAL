@@ -1,0 +1,31 @@
+<?php
+declare(strict_types=1);
+require dirname(__DIR__).'/src/bootstrap.php'; use CoalUp\CRM\Storage\JsonStore;
+$config=require dirname(__DIR__).'/config/app.php'; $store=new JsonStore($config['data_file']); $playbookPath=dirname(__DIR__).'/playbooks/01-prospeccao-coalup-v1.json';
+$play=json_decode(file_get_contents($playbookPath),true,512,JSON_THROW_ON_ERROR);
+$store->transaction(function(array &$s) use($play): void {
+    if (!$s['users']) throw new RuntimeException('Crie ao menos um usuário com bin/bootstrap-user.php antes do seed.');
+    $actor=array_key_first($s['users']);
+    foreach($s['funnels'] as $f) if(($f['funnel_key']??'')==='prospeccao_coalup') { echo "Demo já preparada.\n"; return; }
+    $fid=coalup_uuid(); $vid=coalup_uuid();
+    $s['funnels'][$fid]=['id'=>$fid,'funnel_key'=>'prospeccao_coalup','name'=>$play['name'],'description'=>'Playbook sintético local','scope'=>'marketing','status'=>'active','active_version_id'=>$vid,'created_by'=>$actor,'created_at'=>coalup_now(),'version'=>1];
+    $s['funnel_versions'][$vid]=['id'=>$vid,'funnel_id'=>$fid,'version_number'=>1,'status'=>'published','created_by'=>$actor,'published_by'=>$actor,'published_at'=>coalup_now(),'created_at'=>coalup_now()];
+    $stageIds=[];
+    foreach($play['stages'] as $i=>$st){ $sid=coalup_uuid(); $stageIds[$st['key']]=$sid; $s['stages'][$sid]=['id'=>$sid,'funnel_version_id'=>$vid,'stage_key'=>$st['key'],'name'=>$st['name'],'position'=>$i+1,'entity_mode'=>$st['entity_mode'],'stage_type'=>'open','objective'=>$st['objective'],'entry_note'=>null,'exit_note'=>null,'sla_days'=>null,'default_next_action'=>$st['default_next_action']??null]; foreach($st['requirements'] as $pos=>$rq){$rid=coalup_uuid();$cfg=[];if(isset($rq['field_key']))$cfg['field_key']=$rq['field_key'];$s['requirements'][$rid]=['id'=>$rid,'stage_id'=>$sid,'checker_key'=>$rq['type'],'label'=>$rq['label'],'config'=>$cfg,'severity'=>$rq['severity'],'override_allowed'=>(bool)$rq['override_allowed'],'position'=>$pos,'active'=>true];}}
+    $make=function(string $name,string $contact,string $stageKey,?int $amount,string $service,string $nextTitle,int $dueDays) use (&$s,$actor,$vid,$stageIds): void {
+        $org=coalup_uuid();$ct=coalup_uuid();$lead=coalup_uuid();$case=coalup_uuid();$opp=null;
+        $s['organizations'][$org]=['id'=>$org,'name'=>$name,'public_name'=>$name,'relationship_state'=>'prospect','origin'=>'demo','primary_contact_id'=>$ct,'created_by'=>$actor,'created_source'=>'demo','created_at'=>coalup_now(),'archived_at'=>null,'version'=>1];
+        $s['contacts'][$ct]=['id'=>$ct,'organization_id'=>$org,'name'=>$contact,'phone'=>null,'email'=>null,'created_by'=>$actor,'created_source'=>'demo','created_at'=>coalup_now(),'archived_at'=>null,'version'=>1];
+        $s['leads'][$lead]=['id'=>$lead,'organization_id'=>$org,'primary_contact_id'=>$ct,'owner_id'=>$actor,'source'=>'demo','source_detail'=>'UX/backend local','qualification_state'=>'new','created_by'=>$actor,'created_source'=>'demo','created_at'=>coalup_now(),'archived_at'=>null,'version'=>1];
+        $position=$s['stages'][$stageIds[$stageKey]]['position']; if($position>=4){$opp=coalup_uuid();$s['opportunities'][$opp]=['id'=>$opp,'organization_id'=>$org,'primary_contact_id'=>$ct,'title'=>$name,'amount_cents'=>$amount,'currency'=>'BRL','service_label'=>$service,'owner_id'=>$actor,'lifecycle_status'=>'open','created_by'=>$actor,'created_at'=>coalup_now(),'archived_at'=>null,'version'=>1];$s['leads'][$lead]['qualification_state']='qualified';$s['leads'][$lead]['qualified_at']=coalup_now();$s['leads'][$lead]['converted_at']=coalup_now();}
+        $entered=gmdate('Y-m-d\\TH:i:s\\Z',time()-max(1,$position)*86400);$s['cases'][$case]=['id'=>$case,'organization_id'=>$org,'primary_contact_id'=>$ct,'lead_id'=>$lead,'opportunity_id'=>$opp,'owner_id'=>$actor,'funnel_version_id'=>$vid,'current_stage_id'=>$stageIds[$stageKey],'current_stage_entered_at'=>$entered,'status'=>'open','next_action_task_id'=>null,'opened_at'=>$entered,'created_by'=>$actor,'created_source'=>'demo','created_at'=>$entered,'archived_at'=>null,'version'=>1];
+        $tid=coalup_uuid();$due=gmdate('Y-m-d\\TH:i:s\\Z',time()+$dueDays*86400);$s['tasks'][$tid]=['id'=>$tid,'organization_id'=>$org,'commercial_case_id'=>$case,'opportunity_id'=>$opp,'project_id'=>null,'source_activity_id'=>null,'assigned_to'=>$actor,'created_by'=>$actor,'title'=>$nextTitle,'description'=>null,'priority'=>'normal','due_at'=>$due,'status'=>'open','completed_at'=>null,'completion_note'=>null,'created_at'=>coalup_now(),'archived_at'=>null,'version'=>1];$s['cases'][$case]['next_action_task_id']=$tid;
+        $eid=coalup_uuid();$s['stage_events'][$eid]=['id'=>$eid,'commercial_case_id'=>$case,'funnel_version_id'=>$vid,'stage_id'=>$stageIds[$stageKey],'event_type'=>'enter','counterpart_stage_id'=>null,'transition_id'=>coalup_uuid(),'transition_reason'=>'Seed sintético','override_reason'=>null,'gate_snapshot'=>null,'actor_user_id'=>$actor,'occurred_at'=>$entered];
+        if($stageKey==='diagnostico'){$aid=coalup_uuid();$s['activities'][$aid]=['id'=>$aid,'organization_id'=>$org,'commercial_case_id'=>$case,'opportunity_id'=>$opp,'contact_id'=>$ct,'kind'=>'diagnosis','channel'=>'whatsapp','occurred_at'=>coalup_now(),'summary'=>'Diagnóstico sintético registrado para teste local.','agreement_note'=>null,'created_by'=>$actor,'created_at'=>coalup_now(),'archived_at'=>null,'version'=>1];}
+        if($stageKey==='proposta'){$pid=coalup_uuid();$s['proposals'][$pid]=['id'=>$pid,'organization_id'=>$org,'commercial_case_id'=>$case,'opportunity_id'=>$opp,'primary_contact_id'=>$ct,'proposal_number'=>'DEMO-001','status'=>'sent','amount_cents'=>$amount??0,'currency'=>'BRL','followup_due_at'=>$due,'valid_until'=>null,'snapshot_json'=>null,'sent_at'=>coalup_now(),'accepted_at'=>null,'rejected_at'=>null,'created_by'=>$actor,'created_at'=>coalup_now(),'archived_at'=>null,'version'=>1];}
+    };
+    $make('Oficina Aurora Demo','Mateus Demo','pesquisa',null,'Site','Levantar evidências',1);
+    $make('Estúdio Prisma Demo','Lívia Demo','diagnostico',199000,'Presença Digital','Desenhar oferta',0);
+    $make('Casa Norte Demo','Marina Demo','proposta',180000,'Site','Retomar proposta',-1);
+});
+echo "Playbook e dados sintéticos locais preparados.\n";

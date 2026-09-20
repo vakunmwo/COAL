@@ -1,0 +1,29 @@
+{
+  "version": "10.6",
+  "front": "Frente 2 — COAL UP Marketing e Presença Digital",
+  "php_lint": {
+    "files": 16,
+    "all_pass": true
+  },
+  "preflight": {
+    "php_version": "8.4.23",
+    "php_8_2_plus": true,
+    "argon2id": true,
+    "json_extension": true,
+    "pdo": true,
+    "pdo_mysql": false,
+    "mysqli": false,
+    "openssl": true,
+    "sodium": true,
+    "app_env": "local",
+    "cookie_secure": false,
+    "data_dir": "/mnt/data/COALUP-CRM-V10.6-BACKEND-LOCAL-SLICE/var",
+    "data_dir_writable": true
+  },
+  "http_smoke": "SMOKE PASS: auth, rate-limit, CSRF, board, venda360, activity+next-action, next-action, stale-version, transition, gate, idempotency, task-complete, missing-next-action, followups, proposals",
+  "invariants": "INVARIANTS PASS: next-action pointers, stage transitions, opportunity truth, session hashes",
+  "empty_catch_found": true,
+  "mysql_runtime_tested": false,
+  "production_changed": false,
+  "real_data_used": false
+}

@@ -1,0 +1,44 @@
+{
+  "version": "10.4",
+  "status": {
+    "static": "pass",
+    "chromium_runtime": "pass",
+    "safari_physical": "pending",
+    "production": "not_started"
+  },
+  "desktop_1440x900": {
+    "scene_title_px": 32,
+    "deal_name_px": 16,
+    "deal_next_px": 15,
+    "button_min_height_px": 44,
+    "stage_columns": 7,
+    "deal360": true,
+    "followup_groups": 4,
+    "proposal_groups": 5,
+    "js_errors": 0
+  },
+  "mobile": {
+    "320x568": {
+      "overflow_horizontal": false
+    },
+    "360x800": {
+      "overflow_horizontal": false
+    },
+    "390x844": {
+      "overflow_horizontal": false
+    },
+    "430x932": {
+      "overflow_horizontal": false
+    },
+    "844x390": {
+      "overflow_horizontal": false
+    },
+    "scene_title_px": 27,
+    "deal_name_px": 16,
+    "input_px": 16,
+    "button_min_height_px": 46,
+    "single_stage_funnel": true,
+    "deal360_100dvh": true,
+    "js_errors": 0
+  }
+}
